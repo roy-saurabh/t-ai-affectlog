@@ -112,9 +112,7 @@ async def get_metrics(run_id: str) -> AuditMetricsResponse:
     metrics_path = run_dir / "metrics.json"
     if not metrics_path.exists():
         raise HTTPException(status_code=404, detail="metrics.json not found for this run.")
-    return AuditMetricsResponse(
-        run_id=run_id, metrics=json.loads(metrics_path.read_text())
-    )
+    return AuditMetricsResponse(run_id=run_id, metrics=json.loads(metrics_path.read_text()))
 
 
 @router.get("/{run_id}/sop", response_class=PlainTextResponse, summary="Get SOP markdown")

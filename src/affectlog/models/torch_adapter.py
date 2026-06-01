@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import io
 from pathlib import Path
 from typing import Any
 
@@ -34,16 +35,16 @@ class TorchAdapter(BaseModelAdapter):
             resolved = resolve_safe_path(Path(trusted_dir), path)
         except ValueError as exc:
             raise ModelAdapterError(str(exc)) from exc
-        if expected_sha256 is not None:
-            actual = hashlib.sha256(resolved.read_bytes()).hexdigest()
-            if actual != expected_sha256:
-                raise ModelAdapterError(
-                    f"SHA-256 mismatch for '{resolved}': expected {expected_sha256}, got {actual}"
-                )
+        model_bytes = resolved.read_bytes()
+        actual_sha256 = hashlib.sha256(model_bytes).hexdigest()
+        if expected_sha256 is not None and actual_sha256 != expected_sha256:
+            raise ModelAdapterError(
+                f"SHA-256 mismatch for '{resolved}': expected {expected_sha256}, got {actual_sha256}"
+            )
         try:
             import torch
 
-            model = torch.jit.load(str(resolved))
+            model = torch.jit.load(io.BytesIO(model_bytes))
             model.eval()
             return cls(model)
         except ImportError as exc:
