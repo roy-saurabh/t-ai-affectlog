@@ -17,18 +17,27 @@ class OnnxAdapter(BaseModelAdapter):
         self._input_name = input_name or session.get_inputs()[0].name
 
     @classmethod
-    def from_file(cls, path: Path | str) -> OnnxAdapter:
+    def from_file(cls, path: Path | str, *, trusted_dir: Path | None = None) -> OnnxAdapter:
+        if trusted_dir is None:
+            raise ModelAdapterError(
+                "trusted_dir is required; pass the directory that contains trusted model files."
+            )
+        resolved = Path(path).resolve()
+        if not resolved.is_relative_to(trusted_dir.resolve()):
+            raise ModelAdapterError(
+                f"Model path '{resolved}' is outside the trusted directory '{trusted_dir}'"
+            )
         try:
             import onnxruntime as ort
 
-            sess = ort.InferenceSession(str(path))
+            sess = ort.InferenceSession(str(resolved))
             return cls(sess)
         except ImportError as exc:
             raise ModelAdapterError(
                 "onnxruntime not installed. Install with: pip install onnxruntime"
             ) from exc
         except Exception as exc:
-            raise ModelAdapterError(f"Cannot load ONNX model from {path}: {exc}") from exc
+            raise ModelAdapterError(f"Cannot load ONNX model from {resolved}: {exc}") from exc
 
     def predict(self, X: np.ndarray | list[Any]) -> list[Any]:
         arr = np.array(X, dtype=np.float32)

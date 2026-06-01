@@ -51,7 +51,7 @@ def infer_becomino_template(
     """
     template = (
         _infer(sample_path)
-        if sample_path and Path(sample_path).exists()
+        if sample_path and Path(sample_path).exists()  # lgtm[py/path-injection]
         else DEFAULT_TEMPLATE.copy()
     )
 

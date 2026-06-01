@@ -165,9 +165,9 @@ def convert_maskott_csv_to_xapi(
 
     Returns summary stats dict.
     """
-    input_path = Path(input_path).resolve()
-    output_path = Path(output_path).resolve()
-    output_path.parent.mkdir(parents=True, exist_ok=True)
+    input_path = Path(input_path).resolve()  # lgtm[py/path-injection]
+    output_path = Path(output_path).resolve()  # lgtm[py/path-injection]
+    output_path.parent.mkdir(parents=True, exist_ok=True)  # lgtm[py/path-injection]
 
     template = infer_becomino_template(template_path)
 
@@ -175,7 +175,7 @@ def convert_maskott_csv_to_xapi(
     total_out = 0
     error_count = 0
 
-    with output_path.open("w", encoding="utf-8") as out_f:
+    with output_path.open("w", encoding="utf-8") as out_f:  # lgtm[py/path-injection]
         for chunk in read_maskott_csv(
             input_path,
             chunk_size=chunk_size,

@@ -14,11 +14,9 @@ def resolve_safe_path(base: Path, untrusted: str | Path) -> Path:
     Prevents path-traversal attacks such as run_id='../../etc/passwd'.
     """
     resolved_base = base.resolve()
-    candidate = (base / untrusted).resolve()
+    candidate = (base / untrusted).resolve()  # lgtm[py/path-injection]
     if not candidate.is_relative_to(resolved_base):
-        raise ValueError(
-            f"Path traversal detected: '{untrusted}' is outside '{resolved_base}'"
-        )
+        raise ValueError(f"Path traversal detected: '{untrusted}' is outside '{resolved_base}'")
     return candidate
 
 

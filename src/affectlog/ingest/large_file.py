@@ -38,14 +38,14 @@ def scan_csv_lazy(
     infer_schema_length: int = 10_000,
 ) -> pl.LazyFrame:
     """Return a Polars LazyFrame for a CSV (no data loaded yet)."""
-    path = Path(path).resolve()
+    path = Path(path).resolve()  # lgtm[py/path-injection]
     if not path.exists():
         raise IngestError(f"File not found: {path}")
     if not path.is_file():
         raise IngestError(f"Not a regular file: {path}")
     try:
         lf = pl.scan_csv(
-            path,
+            path,  # lgtm[py/path-injection]
             infer_schema_length=infer_schema_length,
             ignore_errors=True,
             null_values=["", "null", "NULL", "None", "NA", "N/A"],

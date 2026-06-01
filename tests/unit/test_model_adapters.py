@@ -48,7 +48,7 @@ def test_sklearn_adapter_from_fixture(tmp_path):
         joblib.dump(model, model_path)
         from affectlog.models.sklearn_adapter import SklearnAdapter
 
-        adapter = SklearnAdapter.from_file(model_path)
+        adapter = SklearnAdapter.from_file(model_path, trusted_dir=tmp_path)
         preds = adapter.predict(X)
         assert len(preds) == 4
         assert adapter.is_classifier()

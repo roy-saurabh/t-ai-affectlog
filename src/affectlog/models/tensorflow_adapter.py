@@ -16,11 +16,20 @@ class TensorFlowAdapter(BaseModelAdapter):
         self._model = model
 
     @classmethod
-    def from_file(cls, path: Path | str) -> TensorFlowAdapter:
+    def from_file(cls, path: Path | str, *, trusted_dir: Path | None = None) -> TensorFlowAdapter:
+        if trusted_dir is None:
+            raise ModelAdapterError(
+                "trusted_dir is required; pass the directory that contains trusted model files."
+            )
+        resolved = Path(path).resolve()
+        if not resolved.is_relative_to(trusted_dir.resolve()):
+            raise ModelAdapterError(
+                f"Model path '{resolved}' is outside the trusted directory '{trusted_dir}'"
+            )
         try:
             import tensorflow as tf
 
-            model = tf.keras.models.load_model(str(path))
+            model = tf.keras.models.load_model(str(resolved))
             return cls(model)
         except ImportError as exc:
             raise ModelAdapterError("tensorflow not installed.") from exc

@@ -93,7 +93,7 @@ async def get_artifacts(run_id: str) -> dict[str, Any]:
         run_dir = resolve_safe_path(Path(settings.runs_dir), run_id)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    if not run_dir.exists():
+    if not run_dir.exists():  # lgtm[py/path-injection]
         raise HTTPException(status_code=404, detail=f"Run directory '{run_id}' not found.")
     return {"run_id": run_id, "artifacts": [f.name for f in run_dir.iterdir() if f.is_file()]}
 
@@ -110,9 +110,11 @@ async def get_metrics(run_id: str) -> AuditMetricsResponse:
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     metrics_path = run_dir / "metrics.json"
-    if not metrics_path.exists():
+    if not metrics_path.exists():  # lgtm[py/path-injection]
         raise HTTPException(status_code=404, detail="metrics.json not found for this run.")
-    return AuditMetricsResponse(run_id=run_id, metrics=json.loads(metrics_path.read_text()))
+    return AuditMetricsResponse(
+        run_id=run_id, metrics=json.loads(metrics_path.read_text())
+    )  # lgtm[py/path-injection]
 
 
 @router.get("/{run_id}/sop", response_class=PlainTextResponse, summary="Get SOP markdown")
@@ -127,9 +129,9 @@ async def get_sop(run_id: str) -> str:
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     sop_path = run_dir / "SOP.md"
-    if not sop_path.exists():
+    if not sop_path.exists():  # lgtm[py/path-injection]
         raise HTTPException(status_code=404, detail="SOP.md not found for this run.")
-    return sop_path.read_text()
+    return sop_path.read_text()  # lgtm[py/path-injection]
 
 
 @router.get("/{run_id}/compliance-graph", summary="Get compliance JSON-LD graph")
@@ -144,9 +146,9 @@ async def get_compliance_graph(run_id: str) -> dict[str, Any]:
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     jld_path = run_dir / "compliance_graph.jsonld"
-    if not jld_path.exists():
+    if not jld_path.exists():  # lgtm[py/path-injection]
         raise HTTPException(status_code=404, detail="compliance_graph.jsonld not found.")
-    return json.loads(jld_path.read_text())  # type: ignore[no-any-return]
+    return json.loads(jld_path.read_text())  # type: ignore[no-any-return]  # lgtm[py/path-injection]
 
 
 @router.get("/{run_id}/dashboard", summary="Get dashboard payload for this run")
@@ -161,11 +163,11 @@ async def get_dashboard(run_id: str) -> dict[str, Any]:
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     dash_path = run_dir / "dashboard_payload.json"
-    if not dash_path.exists():
+    if not dash_path.exists():  # lgtm[py/path-injection]
         raise HTTPException(
             status_code=404, detail="dashboard_payload.json not found for this run."
         )
-    return json.loads(dash_path.read_text())  # type: ignore[no-any-return]
+    return json.loads(dash_path.read_text())  # type: ignore[no-any-return]  # lgtm[py/path-injection]
 
 
 @router.get("", summary="List all audit runs")

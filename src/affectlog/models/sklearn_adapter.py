@@ -29,8 +29,12 @@ class SklearnAdapter(BaseModelAdapter):
         *,
         trusted_dir: Path | None = None,
     ) -> SklearnAdapter:
+        if trusted_dir is None:
+            raise ModelAdapterError(
+                "trusted_dir is required; pass the directory that contains trusted model files."
+            )
         resolved = Path(path).resolve()
-        if trusted_dir is not None and not resolved.is_relative_to(trusted_dir.resolve()):
+        if not resolved.is_relative_to(trusted_dir.resolve()):
             raise ModelAdapterError(
                 f"Model path '{resolved}' is outside the trusted directory '{trusted_dir}'"
             )

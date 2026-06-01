@@ -26,6 +26,7 @@ class Settings(BaseSettings):
     # Storage
     data_dir: Path = Path("data")
     runs_dir: Path = Path("runs")
+    models_dir: Path = Path("models")
     chunk_size: int = 100_000
 
     # Logging
