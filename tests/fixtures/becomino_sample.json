@@ -1,0 +1,50 @@
+{
+  "statements": [
+    {
+      "id": "sample-stmt-001",
+      "timestamp": "2024-03-15T09:30:00Z",
+      "stored": "2024-03-15T09:30:01Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0001"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {"en-US": "accessed"}
+      },
+      "object": {
+        "id": "urn:becomino:resource:r42",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {"en-US": "Introduction to Python"}
+        }
+      },
+      "context": {
+        "registration": "session-abc-123",
+        "contextActivities": {
+          "grouping": [{"id": "urn:becomino:collection:c10"}],
+          "category": [{"id": "ACCESSED"}]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true
+        }
+      },
+      "result": {
+        "duration": "PT45S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    }
+  ],
+  "_meta": {
+    "source": "Inokufu/Becomino",
+    "schema_version": "becomino_json_v1",
+    "anonymized": true
+  }
+}

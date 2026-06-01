@@ -1,0 +1,34 @@
+AffectLog – Trustworthy AI Assessment Building Block (ALT-AI)
+=============================================================
+
+This software was developed as part of EDGE-Skills / WP3 / D3.7 Trustworthy AI,
+a project supported by the Prometheus-X association and the EDGE-Skills consortium.
+
+Project: https://github.com/roy-saurabh/edge_affectlog
+Organization: AffectLog / Prometheus-X
+
+Third-party components used under their respective licenses:
+- FastAPI — MIT
+- Pydantic — MIT
+- Polars — MIT
+- PyArrow — Apache-2.0
+- DuckDB — MIT
+- scikit-learn — BSD-3-Clause
+- onnxruntime — MIT
+- SHAP — MIT
+- Typer — MIT
+- Rich — MIT
+- PyYAML — MIT
+- pandas — BSD-3-Clause
+- NumPy — BSD-3-Clause
+- httpx — BSD-3-Clause
+- pytest — MIT
+- Ruff — MIT
+- Bandit — Apache-2.0
+
+See pyproject.toml for the full dependency list.
+
+Data governance notice:
+Raw partner datasets (Maskott/Tactileo, Inokufu/Becomino) are NOT included in
+this repository. Only synthetic samples are committed. Real data must be obtained
+under a lawful data-sharing agreement with the respective data controllers.

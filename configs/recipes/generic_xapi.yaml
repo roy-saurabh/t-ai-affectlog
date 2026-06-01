@@ -1,0 +1,22 @@
+name: generic_xapi
+input_schema: xapi_jsonl_v1
+source_platform: "Generic"
+mode: dataset_only
+
+privacy:
+  pseudonymize: true
+  method: sha256
+  hash_fields: []
+  allow_raw_identifiers: false
+
+xapi:
+  verb_default: accessed
+
+metrics:
+  profile_verbs: true
+  profile_temporal: true
+
+compliance:
+  export_jsonld: true
+  export_data_card: true
+  export_sop: true

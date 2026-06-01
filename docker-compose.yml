@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - AFFECTLOG_LOG_LEVEL=INFO
+      - AFFECTLOG_DATA_DIR=/app/data
+      - AFFECTLOG_RUNS_DIR=/app/runs
+      - AFFECTLOG_HASH_SECRET=${AFFECTLOG_HASH_SECRET:-dev-secret-change-in-prod}
+      - AFFECTLOG_ALLOW_RAW_IDENTIFIERS=false
+    volumes:
+      - ./data:/app/data
+      - ./runs:/app/runs
+      - ./configs:/app/configs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      - AFFECTLOG_LOG_LEVEL=INFO
+      - AFFECTLOG_DATA_DIR=/app/data
+      - AFFECTLOG_RUNS_DIR=/app/runs
+      - AFFECTLOG_HASH_SECRET=${AFFECTLOG_HASH_SECRET:-dev-secret-change-in-prod}
+    volumes:
+      - ./data:/app/data
+      - ./runs:/app/runs
+      - ./configs:/app/configs
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: src/affectlog/frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    depends_on:
+      - api
+    restart: unless-stopped

@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use ALT-AI in research, please cite it as below."
+type: software
+title: "AffectLog Trustworthy AI Assessment Building Block (ALT-AI)"
+version: 0.1.0
+date-released: 2024-12-20
+repository-code: https://github.com/roy-saurabh/edge_affectlog
+license: MIT
+abstract: >
+  ALT-AI provides dataset profiling, privacy-preserving pseudonymisation,
+  xAPI normalization, fairness/concentration metrics, model explainability,
+  and EU AI Act / GDPR compliance exports for educational AI systems.
+  Developed as D3.7 of the EDGE-Skills / Prometheus-X project.
+authors:
+  - name: "AffectLog Team"
+    affiliation: "AffectLog"
+  - name: "Prometheus-X EDGE-Skills Consortium"
+keywords:
+  - trustworthy-ai
+  - xapi
+  - fairness
+  - explainability
+  - education-technology
+  - gdpr
+  - eu-ai-act
+  - prometheus-x

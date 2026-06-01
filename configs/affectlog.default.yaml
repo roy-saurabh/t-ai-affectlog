@@ -1,0 +1,21 @@
+# AffectLog ALT-AI — Default configuration
+# Override with environment variables (AFFECTLOG_*) or recipe YAML
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+
+storage:
+  data_dir: "data"
+  runs_dir: "runs"
+  chunk_size: 100000
+
+privacy:
+  pseudonymize: true
+  method: "hmac_sha256"
+  allow_raw_identifiers: false
+
+logging:
+  level: "INFO"
+  format: "json"

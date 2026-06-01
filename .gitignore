@@ -1,0 +1,101 @@
+# === AffectLog ALT-AI — .gitignore ===
+# Raw and private partner data — NEVER commit
+data/raw/maskott/
+data/raw/becomino/
+data/raw/tactileo/
+data/raw/inokufu/
+data/raw/*.csv
+data/raw/*.json
+data/raw/*.jsonl
+data/raw/*.parquet
+data/raw/*.xlsx
+data/raw/*.xls
+data/private/
+data/processed/
+runs/
+
+# Synthetic samples committed intentionally — do NOT ignore data/samples/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.env
+.venv
+venv/
+env/
+.Python
+pip-wheel-metadata/
+*.pth
+.installed.cfg
+*.manifest
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.dmypy.json
+dmypy.json
+.pytest_cache/
+.hypothesis/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.log
+.tox/
+.nox/
+
+# uv / Poetry
+uv.lock
+# poetry.lock is committed, uv.lock is project-specific — adjust as needed
+
+# Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.secret
+
+# Node / Frontend
+node_modules/
+src/affectlog/frontend/node_modules/
+src/affectlog/frontend/dist/
+src/affectlog/frontend/.vite/
+src/affectlog/frontend/build/
+
+# macOS / IDE
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V7
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Docker
+.docker/
+
+# MkDocs
+site/
+
+# Benchmark artefacts
+benchmark_results/
+
+# Large data artefacts (prevent accidental commit)
+*.jsonl
+!data/samples/*.jsonl
+!tests/fixtures/*.jsonl
+*.parquet
+!tests/fixtures/*.parquet

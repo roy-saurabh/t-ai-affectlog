@@ -1,0 +1,1137 @@
+openapi: 3.1.0
+info:
+  title: AffectLog Trustworthy AI Assessment Building Block (ALT-AI)
+  description: API for dataset profiling, xAPI normalization, fairness metrics, model
+    explainability, and EU AI Act / GDPR compliance exports. Aligned with D3.7 EDGE-Skills
+    / Prometheus-X.
+  contact:
+    name: AffectLog
+    url: https://github.com/roy-saurabh/edge_affectlog
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 0.1.0
+paths:
+  /healthz:
+    get:
+      tags:
+      - Health
+      summary: Liveness check
+      operationId: healthz_healthz_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /readyz:
+    get:
+      tags:
+      - Health
+      summary: Readiness check
+      operationId: readyz_readyz_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /metrics:
+    get:
+      tags:
+      - Health
+      summary: Prometheus-compatible metrics (stub)
+      operationId: metrics_metrics_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Metrics Metrics Get
+  /v1/datasets/validate:
+    post:
+      tags:
+      - Datasets
+      summary: Validate CSV schema
+      operationId: validate_dataset_v1_datasets_validate_post
+      parameters:
+      - name: x-request-id
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Request-Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatasetValidateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetValidateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/datasets/ingest:
+    post:
+      tags:
+      - Datasets
+      summary: Register a dataset for processing
+      operationId: ingest_dataset_v1_datasets_ingest_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatasetIngestRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetIngestResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/datasets/{dataset_id}:
+    get:
+      tags:
+      - Datasets
+      summary: Get dataset info
+      operationId: get_dataset_v1_datasets__dataset_id__get
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Dataset V1 Datasets  Dataset Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/datasets/{dataset_id}/transform:
+    post:
+      tags:
+      - Datasets
+      summary: Transform Dataset
+      operationId: transform_dataset_v1_datasets__dataset_id__transform_post
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatasetTransformRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetTransformResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/datasets/{dataset_id}/profile:
+    post:
+      tags:
+      - Datasets
+      summary: Profile a dataset
+      operationId: profile_dataset_v1_datasets__dataset_id__profile_post
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Profile Dataset V1 Datasets  Dataset Id  Profile Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/transforms/infer-template:
+    post:
+      tags:
+      - Transforms
+      summary: Infer Becomino xAPI template from a JSON sample
+      operationId: infer_template_v1_transforms_infer_template_post
+      parameters:
+      - name: sample_path
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Sample Path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Infer Template V1 Transforms Infer Template Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/audits/run:
+    post:
+      tags:
+      - Audits
+      summary: Start an audit pipeline run
+      operationId: run_audit_endpoint_v1_audits_run_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuditRunRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditRunResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/audits/{run_id}:
+    get:
+      tags:
+      - Audits
+      summary: Get audit run status
+      operationId: get_audit_v1_audits__run_id__get
+      parameters:
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditRunResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/audits/{run_id}/artifacts:
+    get:
+      tags:
+      - Audits
+      summary: List run artifacts
+      operationId: get_artifacts_v1_audits__run_id__artifacts_get
+      parameters:
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Artifacts V1 Audits  Run Id  Artifacts Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/audits/{run_id}/metrics:
+    get:
+      tags:
+      - Audits
+      summary: Get run metrics
+      operationId: get_metrics_v1_audits__run_id__metrics_get
+      parameters:
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditMetricsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/audits/{run_id}/sop:
+    get:
+      tags:
+      - Audits
+      summary: Get SOP markdown
+      operationId: get_sop_v1_audits__run_id__sop_get
+      parameters:
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/plain:
+              schema:
+                type: string
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/audits/{run_id}/compliance-graph:
+    get:
+      tags:
+      - Audits
+      summary: Get compliance JSON-LD graph
+      operationId: get_compliance_graph_v1_audits__run_id__compliance_graph_get
+      parameters:
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Compliance Graph V1 Audits  Run Id  Compliance
+                  Graph Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/models/register:
+    post:
+      tags:
+      - Models
+      summary: Register a model
+      operationId: register_model_v1_models_register_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelRegisterRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelRegisterResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/models/{model_id}:
+    get:
+      tags:
+      - Models
+      summary: Get model metadata
+      operationId: get_model_v1_models__model_id__get
+      parameters:
+      - name: model_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Model Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Model V1 Models  Model Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/models/{model_id}/predict:
+    post:
+      tags:
+      - Models
+      summary: Run model prediction
+      operationId: predict_v1_models__model_id__predict_post
+      parameters:
+      - name: model_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Model Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/models/{model_id}/explain:
+    post:
+      tags:
+      - Models
+      summary: Generate model explanations
+      operationId: explain_v1_models__model_id__explain_post
+      parameters:
+      - name: model_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Model Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExplainResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/models/compare:
+    post:
+      tags:
+      - Models
+      summary: Compare registered models
+      operationId: compare_models_endpoint_v1_models_compare_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_compare_models_endpoint_v1_models_compare_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompareResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/explanations/{model_id}/feature-importance:
+    post:
+      tags:
+      - Explanations
+      summary: Get feature importance for a model
+      operationId: feature_importance_v1_explanations__model_id__feature_importance_post
+      parameters:
+      - name: model_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Model Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Feature Importance V1 Explanations  Model Id  Feature
+                  Importance Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/compliance/jsonld:
+    post:
+      tags:
+      - Compliance
+      summary: Build and return compliance JSON-LD graph
+      operationId: build_jsonld_v1_compliance_jsonld_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceJSONLDRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Build Jsonld V1 Compliance Jsonld Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/compliance/data-card:
+    post:
+      tags:
+      - Compliance
+      summary: Build Data Card for a run
+      operationId: build_data_card_endpoint_v1_compliance_data_card_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataCardRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Build Data Card Endpoint V1 Compliance Data Card Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/compliance/model-card:
+    post:
+      tags:
+      - Compliance
+      summary: Build Model Card for a registered model
+      operationId: build_model_card_endpoint_v1_compliance_model_card_post
+      parameters:
+      - name: model_id
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Model Id
+      - name: run_id
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Build Model Card Endpoint V1 Compliance Model Card
+                  Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/pdc/request-model-artifacts:
+    post:
+      tags:
+      - PDC
+      summary: Request model artifacts via PDC (mock)
+      operationId: request_model_artifacts_v1_pdc_request_model_artifacts_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PDCPolicyRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Request Model Artifacts V1 Pdc Request Model Artifacts
+                  Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/pdc/mock/policies/evaluate:
+    post:
+      tags:
+      - PDC
+      summary: Evaluate ODRL policy (mock)
+      operationId: evaluate_policy_v1_pdc_mock_policies_evaluate_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PDCPolicyRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PDCPolicyResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    AuditMetricsResponse:
+      properties:
+        run_id:
+          type: string
+          title: Run Id
+        metrics:
+          additionalProperties: true
+          type: object
+          title: Metrics
+          default: {}
+      type: object
+      required:
+      - run_id
+      title: AuditMetricsResponse
+    AuditRunRequest:
+      properties:
+        input_path:
+          type: string
+          title: Input Path
+        recipe:
+          type: string
+          title: Recipe
+          default: configs/recipes/maskott_tactileo.yaml
+        output_dir:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Dir
+        chunk_size:
+          type: integer
+          title: Chunk Size
+          default: 100000
+      type: object
+      required:
+      - input_path
+      title: AuditRunRequest
+      example:
+        input_path: data/processed/maskott_1m.normalized.jsonl
+        recipe: configs/recipes/maskott_tactileo.yaml
+    AuditRunResponse:
+      properties:
+        run_id:
+          type: string
+          title: Run Id
+        status:
+          type: string
+          title: Status
+        recipe:
+          type: string
+          title: Recipe
+        artifacts:
+          additionalProperties:
+            type: string
+          type: object
+          title: Artifacts
+          default: {}
+      type: object
+      required:
+      - run_id
+      - status
+      - recipe
+      title: AuditRunResponse
+    Body_compare_models_endpoint_v1_models_compare_post:
+      properties:
+        model_ids:
+          items:
+            type: string
+          type: array
+          title: Model Ids
+        req:
+          $ref: '#/components/schemas/PredictRequest'
+      type: object
+      required:
+      - model_ids
+      - req
+      title: Body_compare_models_endpoint_v1_models_compare_post
+    CompareResponse:
+      properties:
+        comparison:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Comparison
+      type: object
+      required:
+      - comparison
+      title: CompareResponse
+    ComplianceJSONLDRequest:
+      properties:
+        run_id:
+          type: string
+          title: Run Id
+        dataset_name:
+          type: string
+          title: Dataset Name
+          default: unknown
+      type: object
+      required:
+      - run_id
+      title: ComplianceJSONLDRequest
+    DataCardRequest:
+      properties:
+        run_id:
+          type: string
+          title: Run Id
+        dataset_name:
+          type: string
+          title: Dataset Name
+      type: object
+      required:
+      - run_id
+      - dataset_name
+      title: DataCardRequest
+    DatasetIngestRequest:
+      properties:
+        file_path:
+          type: string
+          title: File Path
+        schema_name:
+          type: string
+          title: Schema Name
+          default: maskott_csv_v1
+        recipe:
+          type: string
+          title: Recipe
+          default: maskott_tactileo
+      type: object
+      required:
+      - file_path
+      title: DatasetIngestRequest
+    DatasetIngestResponse:
+      properties:
+        dataset_id:
+          type: string
+          title: Dataset Id
+        file_path:
+          type: string
+          title: File Path
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - dataset_id
+      - file_path
+      - status
+      title: DatasetIngestResponse
+    DatasetTransformRequest:
+      properties:
+        recipe:
+          type: string
+          title: Recipe
+          default: configs/recipes/maskott_tactileo.yaml
+        output_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Path
+        chunk_size:
+          type: integer
+          title: Chunk Size
+          default: 100000
+        template_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Template Path
+      type: object
+      title: DatasetTransformRequest
+    DatasetTransformResponse:
+      properties:
+        dataset_id:
+          type: string
+          title: Dataset Id
+        output_path:
+          type: string
+          title: Output Path
+        total_rows_in:
+          type: integer
+          title: Total Rows In
+        total_rows_out:
+          type: integer
+          title: Total Rows Out
+        error_count:
+          type: integer
+          title: Error Count
+      type: object
+      required:
+      - dataset_id
+      - output_path
+      - total_rows_in
+      - total_rows_out
+      - error_count
+      title: DatasetTransformResponse
+    DatasetValidateRequest:
+      properties:
+        file_path:
+          type: string
+          title: File Path
+          description: Absolute or relative path to the input file
+        schema_name:
+          type: string
+          title: Schema Name
+          description: Named schema to validate against
+          default: maskott_csv_v1
+      type: object
+      required:
+      - file_path
+      title: DatasetValidateRequest
+      example:
+        file_path: data/samples/maskott_csv_sample.csv
+        schema_name: maskott_csv_v1
+    DatasetValidateResponse:
+      properties:
+        valid:
+          type: boolean
+          title: Valid
+        schema_name:
+          type: string
+          title: Schema Name
+        actual_columns:
+          items:
+            type: string
+          type: array
+          title: Actual Columns
+          default: []
+        missing_columns:
+          items:
+            type: string
+          type: array
+          title: Missing Columns
+          default: []
+        extra_columns:
+          items:
+            type: string
+          type: array
+          title: Extra Columns
+          default: []
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - valid
+      - schema_name
+      title: DatasetValidateResponse
+    ExplainResponse:
+      properties:
+        model_id:
+          type: string
+          title: Model Id
+        explanations:
+          additionalProperties: true
+          type: object
+          title: Explanations
+      type: object
+      required:
+      - model_id
+      - explanations
+      title: ExplainResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    HealthResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          examples:
+          - ok
+        version:
+          type: string
+          title: Version
+          examples:
+          - 0.1.0
+        timestamp:
+          type: string
+          title: Timestamp
+      type: object
+      required:
+      - status
+      - version
+      - timestamp
+      title: HealthResponse
+    ModelRegisterRequest:
+      properties:
+        model_path:
+          type: string
+          title: Model Path
+        adapter_type:
+          type: string
+          title: Adapter Type
+          description: sklearn | onnx | torch | tensorflow | http | dummy
+        model_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Id
+        feature_names:
+          items:
+            type: string
+          type: array
+          title: Feature Names
+          default: []
+      type: object
+      required:
+      - model_path
+      - adapter_type
+      title: ModelRegisterRequest
+    ModelRegisterResponse:
+      properties:
+        model_id:
+          type: string
+          title: Model Id
+        adapter_type:
+          type: string
+          title: Adapter Type
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - model_id
+      - adapter_type
+      - status
+      title: ModelRegisterResponse
+    PDCPolicyRequest:
+      properties:
+        policy_id:
+          type: string
+          title: Policy Id
+        asset_id:
+          type: string
+          title: Asset Id
+        consent_token:
+          type: string
+          title: Consent Token
+          default: ''
+      type: object
+      required:
+      - policy_id
+      - asset_id
+      title: PDCPolicyRequest
+    PDCPolicyResponse:
+      properties:
+        allowed:
+          type: boolean
+          title: Allowed
+        policy_id:
+          type: string
+          title: Policy Id
+        reason:
+          type: string
+          title: Reason
+          default: ''
+      type: object
+      required:
+      - allowed
+      - policy_id
+      title: PDCPolicyResponse
+    PredictRequest:
+      properties:
+        instances:
+          items:
+            items: {}
+            type: array
+          type: array
+          title: Instances
+      type: object
+      required:
+      - instances
+      title: PredictRequest
+      example:
+        instances:
+        - - 1.0
+          - 2.0
+          - 3.0
+    PredictResponse:
+      properties:
+        model_id:
+          type: string
+          title: Model Id
+        predictions:
+          items: {}
+          type: array
+          title: Predictions
+      type: object
+      required:
+      - model_id
+      - predictions
+      title: PredictResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError

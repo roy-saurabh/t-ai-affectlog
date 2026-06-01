@@ -1,0 +1,20 @@
+# xAPI Verb Mapping for ALT-AI
+# Maps ViewContext strings to xAPI verb IDs
+GROUP_SESSION:
+  id: "https://w3id.org/xapi/dod-isd/verbs/accessed"
+  display: "accessed"
+TEST:
+  id: "https://w3id.org/xapi/dod-isd/verbs/assessed"
+  display: "assessed"
+OPENED:
+  id: "https://w3id.org/xapi/dod-isd/verbs/opened"
+  display: "opened"
+SEARCHED:
+  id: "http://id.tincanapi.com/verb/searched"
+  display: "searched"
+ACCESSED:
+  id: "https://w3id.org/xapi/dod-isd/verbs/accessed"
+  display: "accessed"
+_default:
+  id: "https://w3id.org/xapi/dod-isd/verbs/accessed"
+  display: "accessed"

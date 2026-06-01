@@ -1,0 +1,29 @@
+# GDPR field classifications for Maskott CSV
+_id:
+  category: identifier
+  personal_data: true
+  action: hash
+EntityId:
+  category: identifier
+  personal_data: true
+  action: hash
+EntityUaiCode:
+  category: quasi_identifier
+  personal_data: true
+  action: hash
+ActivitySessionId:
+  category: session_identifier
+  personal_data: true
+  action: hash
+AccessDate:
+  category: temporal
+  personal_data: false
+  action: retain
+ResourceId:
+  category: resource_reference
+  personal_data: false
+  action: retain
+IsViewerAnonymous:
+  category: anonymity_flag
+  personal_data: true
+  action: retain_flag_only

@@ -1,0 +1,40 @@
+name: maskott_tactileo
+input_schema: maskott_csv_v1
+source_platform: "Maskott/Tactileo"
+mode: dataset_only
+
+privacy:
+  pseudonymize: true
+  method: hmac_sha256
+  hash_fields:
+    - _id
+    - EntityId
+    - EntityUaiCode
+    - ActivitySessionId
+  suppress_fields: []
+  allow_raw_identifiers: false
+
+xapi:
+  verb_default: accessed
+  verb_mapping:
+    GROUP_SESSION: accessed
+    TEST: assessed
+    OPENED: opened
+    SEARCHED: searched
+    ACCESSED: accessed
+  resource_id_field: ResourceId
+  actor_field: EntityId
+  timestamp_field: AccessDate
+
+metrics:
+  coverage_k: [10, 20, 50]
+  dominance_top_percent: [1, 5, 10]
+  profile_verbs: true
+  profile_temporal: true
+
+compliance:
+  export_jsonld: true
+  export_data_card: true
+  export_sop: true
+  export_field_inventory: true
+  export_model_card: false

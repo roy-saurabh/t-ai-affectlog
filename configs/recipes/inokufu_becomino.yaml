@@ -1,0 +1,24 @@
+name: inokufu_becomino
+input_schema: becomino_json_v1
+source_platform: "Inokufu/Becomino"
+mode: dataset_only
+
+privacy:
+  anonymized_source_expected: true
+  residual_identifier_scan: true
+  allow_raw_identifiers: false
+  hash_fields: []
+
+xapi:
+  verb_default: accessed
+  expected_verbs: [accessed, opened, searched]
+
+metrics:
+  profile_verbs: true
+  profile_cooccurrence: true
+  profile_temporal: true
+
+compliance:
+  export_jsonld: true
+  export_data_card: true
+  export_sop: true

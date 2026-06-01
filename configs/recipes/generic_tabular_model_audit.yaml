@@ -1,0 +1,19 @@
+name: generic_tabular_model_audit
+input_schema: tabular_csv_v1
+source_platform: "Generic"
+mode: model_and_dataset
+
+privacy:
+  pseudonymize: true
+  method: sha256
+  hash_fields: []
+
+metrics:
+  profile_verbs: false
+  profile_temporal: false
+
+compliance:
+  export_jsonld: true
+  export_model_card: true
+  export_data_card: true
+  export_sop: true

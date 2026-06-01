@@ -1,0 +1,13 @@
+# EU AI Act Annex IV technical documentation fields
+risk_category: limited_risk
+documentation_status: partial
+technical_documentation:
+  general_description: "ALT-AI Trustworthy AI Assessment Building Block"
+  intended_purpose: "Dataset profiling, fairness metrics, compliance documentation"
+  human_oversight: true
+transparency_measures:
+  - "SOP.md per audit run"
+  - "Data Card (Gebru et al. 2018)"
+  - "Model Card (Mitchell et al. 2019)"
+  - "JSON-LD compliance graph"
+  - "SHAP / permutation feature importance"
