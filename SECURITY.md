@@ -10,7 +10,7 @@
 
 Please **do not** open a public GitHub issue for security vulnerabilities.
 
-Email: security@affectlog.eu (or open a private advisory via GitHub Security tab)
+Email: security@affectlog.com (or open a private advisory via GitHub Security tab)
 
 We aim to respond within 72 hours and issue a fix within 14 days for confirmed vulnerabilities.
 
