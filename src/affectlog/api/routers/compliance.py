@@ -39,8 +39,8 @@ async def build_data_card_endpoint(req: DataCardRequest) -> dict[str, Any]:
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     dc_path = run_dir / "data_card.json"
-    if dc_path.exists():  # lgtm[py/path-injection]
-        return json.loads(dc_path.read_text())  # type: ignore[no-any-return]  # lgtm[py/path-injection]
+    if dc_path.exists():
+        return json.loads(dc_path.read_text())  # type: ignore[no-any-return]
     from affectlog.compliance.data_card import build_data_card
 
     return build_data_card(req.dataset_name, [], 0, run_id=req.run_id)

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 from typing import Any
 
@@ -21,16 +22,24 @@ class TorchAdapter(BaseModelAdapter):
         path: Path | str,
         *,
         trusted_dir: Path | None = None,
+        expected_sha256: str | None = None,
     ) -> TorchAdapter:
         if trusted_dir is None:
             raise ModelAdapterError(
                 "trusted_dir is required; pass the directory that contains trusted model files."
             )
-        resolved = Path(path).resolve()
-        if not resolved.is_relative_to(trusted_dir.resolve()):
-            raise ModelAdapterError(
-                f"Model path '{resolved}' is outside the trusted directory '{trusted_dir}'"
-            )
+        from affectlog.core.paths import resolve_safe_path
+
+        try:
+            resolved = resolve_safe_path(Path(trusted_dir), path)
+        except ValueError as exc:
+            raise ModelAdapterError(str(exc)) from exc
+        if expected_sha256 is not None:
+            actual = hashlib.sha256(resolved.read_bytes()).hexdigest()
+            if actual != expected_sha256:
+                raise ModelAdapterError(
+                    f"SHA-256 mismatch for '{resolved}': expected {expected_sha256}, got {actual}"
+                )
         try:
             import torch
 

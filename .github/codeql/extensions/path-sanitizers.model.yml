@@ -1,0 +1,10 @@
+# CodeQL MaD extension: declare resolve_safe_path as a path-injection sanitizer.
+# This prevents CodeQL from treating paths returned by resolve_safe_path as tainted,
+# matching the runtime containment check (is_relative_to) implemented inside it.
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sanitizerModel
+    data:
+      # format: [package, type, subtypes, name, signature, ext, input, output, kind]
+      - ["affectlog.core.paths", "", false, "resolve_safe_path", "(Parameter, Parameter)", "", "Argument[1]", "ReturnValue", "taint"]

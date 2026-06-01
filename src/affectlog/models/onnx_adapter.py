@@ -22,11 +22,12 @@ class OnnxAdapter(BaseModelAdapter):
             raise ModelAdapterError(
                 "trusted_dir is required; pass the directory that contains trusted model files."
             )
-        resolved = Path(path).resolve()
-        if not resolved.is_relative_to(trusted_dir.resolve()):
-            raise ModelAdapterError(
-                f"Model path '{resolved}' is outside the trusted directory '{trusted_dir}'"
-            )
+        from affectlog.core.paths import resolve_safe_path
+
+        try:
+            resolved = resolve_safe_path(Path(trusted_dir), path)
+        except ValueError as exc:
+            raise ModelAdapterError(str(exc)) from exc
         try:
             import onnxruntime as ort
 

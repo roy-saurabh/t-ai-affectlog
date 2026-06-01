@@ -1,0 +1,10 @@
+name: AffectLog CodeQL Configuration
+
+disable-default-queries: false
+
+queries:
+  - uses: security-extended
+
+# core/paths.py IS the path sanitizer — analysing its internals produces noise.
+paths-ignore:
+  - src/affectlog/core/paths.py
