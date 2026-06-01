@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Database, FlaskConical, ShieldCheck, Cpu, ChevronRight,
-  Activity, Github, ExternalLink, Menu, X,
+  Github, ExternalLink, Menu, X,
 } from "lucide-react";
 import clsx from "clsx";
 import Home from "./pages/Home";
@@ -40,15 +40,13 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
         )}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-5 py-5 border-b border-slate-700/50">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-            <Activity size={16} className="text-white" />
-          </div>
-          <div>
-            <div className="text-sm font-bold text-white leading-tight">ALT-AI</div>
-            <div className="text-xs text-slate-500 leading-tight">D3.7 · EDGE-Skills</div>
-          </div>
-          <button className="ml-auto lg:hidden text-slate-500 hover:text-slate-300" onClick={onClose}>
+        <div className="flex items-center gap-3 px-4 py-4 border-b border-slate-700/50">
+          <img
+            src="/img/affectlog360_logo_dark.svg"
+            alt="AffectLog"
+            className="h-8 w-auto flex-1 min-w-0 object-contain object-left"
+          />
+          <button className="flex-shrink-0 lg:hidden text-slate-500 hover:text-slate-300" onClick={onClose}>
             <X size={18} />
           </button>
         </div>
