@@ -59,7 +59,7 @@ def test_duration_converted_to_iso8601(tmp_path):
         assert any(d.startswith("PT") for d in durations if d)
 
 
-def test_actor_anonymous_when_flag_true(_tmp_path):
+def test_actor_anonymous_when_flag_true():
     """When IsViewerAnonymous is true, actor.name should be 'anonymous'."""
     from affectlog.transform.maskott_csv_to_xapi import row_to_xapi
 
@@ -81,7 +81,7 @@ def test_actor_anonymous_when_flag_true(_tmp_path):
     assert stmt["actor"]["account"]["name"] == "anonymous"
 
 
-def test_row_has_source_metadata(_tmp_path):
+def test_row_has_source_metadata():
     from affectlog.transform.maskott_csv_to_xapi import row_to_xapi
 
     row = {

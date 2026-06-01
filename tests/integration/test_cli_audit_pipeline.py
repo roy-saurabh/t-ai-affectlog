@@ -13,7 +13,7 @@ RECIPE = REPO_ROOT / "configs" / "recipes" / "maskott_tactileo.yaml"
 
 
 @pytest.mark.integration
-def test_cli_validate_csv(_tmp_path):
+def test_cli_validate_csv():
     result = subprocess.run(
         [
             sys.executable,

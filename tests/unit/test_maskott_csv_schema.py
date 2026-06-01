@@ -5,7 +5,7 @@ from pathlib import Path
 FIXTURE = Path(__file__).parent.parent / "fixtures" / "maskott_small.csv"
 
 
-def test_valid_maskott_csv(_tmp_path):
+def test_valid_maskott_csv():
     from affectlog.ingest.validators import validate_schema
 
     result = validate_schema(FIXTURE, "maskott_csv_v1")
