@@ -185,8 +185,7 @@ export function WizardShell() {
     try {
       const response = await runWizard(buildPlan());
       setRunResponse(response);
-      setCompletedSteps((prev) => new Set([...prev, 8, 9]));
-      advanceStep();
+      // Stay on step 9 — StepRunProgress polls and calls handleRunComplete when done
     } catch (e) {
       console.error("Run failed:", e);
     } finally {

@@ -3,10 +3,14 @@
 from __future__ import annotations
 
 import csv
+import io
 import json
 import logging
+import tempfile
+import urllib.request
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 from affectlog.capabilities.formats import FORMAT_BY_ID
 from affectlog.wizard.schemas import (
@@ -17,6 +21,36 @@ from affectlog.wizard.schemas import (
 )
 
 log = logging.getLogger(__name__)
+
+_URL_SIZE_LIMIT = 50 * 1024 * 1024  # 50 MB safety cap for remote fetches
+
+
+def _is_url(s: str) -> bool:
+    try:
+        p = urlparse(s)
+        return p.scheme in ("http", "https")
+    except Exception:
+        return False
+
+
+def _fetch_url_to_tempfile(url: str) -> tuple[Path, int] | tuple[None, str]:
+    """Download url into a named temp file. Returns (path, size) or (None, error_msg)."""
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "AffectLog-Inspector/1.0"})
+        with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310
+            content_length = int(resp.headers.get("Content-Length", 0))
+            if content_length > _URL_SIZE_LIMIT:
+                return None, f"Remote file too large ({content_length // 1_048_576} MB). Limit is 50 MB."
+            data = resp.read(_URL_SIZE_LIMIT + 1)
+            if len(data) > _URL_SIZE_LIMIT:
+                return None, "Remote file exceeds 50 MB limit."
+            suffix = Path(urlparse(url).path).suffix or ".tmp"
+            tf = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+            tf.write(data)
+            tf.flush()
+            return Path(tf.name), len(data)
+    except Exception as exc:
+        return None, f"Could not fetch URL: {exc}"
 
 MASKOTT_REQUIRED = frozenset(["_id", "AccessDate", "ResourceId", "EntityId", "ResourceType"])
 MASKOTT_ALL = frozenset(
@@ -234,14 +268,40 @@ def inspect(req: InspectInputRequest) -> InspectInputResponse:
             unsupported_reason="No dataset path or reference provided.",
         )
 
-    path = Path(path_str)
-    suffix = path.suffix.lower()
+    _temp_path: Path | None = None
+    fetched_size: int | None = None
+
+    if _is_url(path_str):
+        result, meta = _fetch_url_to_tempfile(path_str)
+        if result is None:
+            return InspectInputResponse(
+                is_supported=False,
+                unsupported_reason=str(meta),
+            )
+        _temp_path = result
+        fetched_size = meta
+        path = _temp_path
+        # Preserve original extension so format detection works by suffix
+        suffix = Path(urlparse(path_str).path).suffix.lower() or path.suffix.lower()
+    else:
+        path = Path(path_str)
+        if not path.exists():
+            return InspectInputResponse(
+                is_supported=False,
+                unsupported_reason=f"File not found: {path_str}",
+            )
+        if not path.is_file():
+            return InspectInputResponse(
+                is_supported=False,
+                unsupported_reason=f"Path is not a file: {path_str}",
+            )
+        suffix = path.suffix.lower()
 
     # ── Read sample ────────────────────────────────────────────────────
     cols: list[str] = []
     rows: list[dict[str, Any]] = []
     total_rows = 0
-    file_size = path.stat().st_size if path.exists() else None
+    file_size = fetched_size if fetched_size is not None else path.stat().st_size
 
     if suffix in (".csv", ".tsv"):
         cols, row_dicts, total_rows = _read_csv_sample(path)
@@ -250,6 +310,15 @@ def inspect(req: InspectInputRequest) -> InspectInputResponse:
         cols, rows, total_rows = _read_json_sample(path)
     elif suffix in (".jsonl", ".ndjson"):
         cols, rows, total_rows = _read_jsonl_sample(path)
+
+    # Text-based formats with no columns are unreadable — fail early rather
+    # than letting the user advance to schema mapping with an empty inventory.
+    _tabular_suffixes = {".csv", ".tsv", ".json", ".jsonl", ".ndjson"}
+    if suffix in _tabular_suffixes and not cols:
+        return InspectInputResponse(
+            is_supported=False,
+            unsupported_reason="No columns detected — file may be empty or malformed.",
+        )
 
     # ── Format detection ───────────────────────────────────────────────
     detected_format, confidence = _detect_format(path, cols, rows, suffix)
@@ -318,7 +387,7 @@ def inspect(req: InspectInputRequest) -> InspectInputResponse:
             f"Large dataset ({total_rows:,} rows). Statistical analyses will use sampling where necessary."
         )
 
-    return InspectInputResponse(
+    response = InspectInputResponse(
         detected_format=detected_format,
         detected_format_label=FORMAT_BY_ID[detected_format].label
         if detected_format in FORMAT_BY_ID
@@ -339,3 +408,11 @@ def inspect(req: InspectInputRequest) -> InspectInputResponse:
         unsupported_reason=None if is_supported else f"Unsupported file type: {suffix}",
         pre_mapped_fields=pre_mapped,
     )
+
+    if _temp_path is not None:
+        try:
+            _temp_path.unlink(missing_ok=True)
+        except Exception:
+            pass
+
+    return response
