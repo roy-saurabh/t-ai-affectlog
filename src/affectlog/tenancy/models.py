@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
+from typing import Any
 
 from sqlalchemy import (
     BigInteger,
@@ -65,7 +66,7 @@ class TenantSettings(Base):
     require_mfa: Mapped[bool] = mapped_column(Boolean, default=False)
     session_timeout_minutes: Mapped[int] = mapped_column(Integer, default=480)
     max_dataset_size_mb: Mapped[int] = mapped_column(Integer, default=500)
-    extra: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    extra: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
 
     tenant: Mapped[Tenant] = relationship("Tenant", back_populates="settings")
 
@@ -205,7 +206,7 @@ class TenantAuditLog(Base):
     event_type: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
     resource_type: Mapped[str | None] = mapped_column(String(80), nullable=True)
     resource_id: Mapped[str | None] = mapped_column(String(200), nullable=True)
-    detail: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    detail: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
     ip_address: Mapped[str | None] = mapped_column(String(50), nullable=True)
 

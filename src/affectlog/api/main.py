@@ -33,14 +33,14 @@ from affectlog.api.routers import (
     recipes,
     transforms,
 )
-from affectlog.api.routers.capabilities import router as capabilities_router
-from affectlog.api.routers.wizard import router as wizard_router
 from affectlog.api.routers.admin import router as admin_router
 from affectlog.api.routers.auth import router as auth_router
+from affectlog.api.routers.capabilities import router as capabilities_router
 from affectlog.api.routers.editions import router as editions_router
 from affectlog.api.routers.interoperability import router as interoperability_router
 from affectlog.api.routers.platform_admin import router as platform_admin_router
 from affectlog.api.routers.public import router as public_router
+from affectlog.api.routers.wizard import router as wizard_router
 from affectlog.auth.rate_limit import limiter
 from affectlog.config import get_settings
 from affectlog.logging import configure_logging
@@ -92,7 +92,7 @@ app = FastAPI(
 
 # ── Rate limiting ─────────────────────────────────────────────────────────
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
 app.add_middleware(SlowAPIMiddleware)
 
 # ── CORS ──────────────────────────────────────────────────────────────────

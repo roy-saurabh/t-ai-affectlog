@@ -6,6 +6,9 @@ and to short-circuit managed-only code paths clearly.
 """
 from __future__ import annotations
 
+from collections.abc import Callable
+from typing import Any
+
 from affectlog.editions.base import get_deployment_mode
 
 
@@ -18,9 +21,9 @@ def assert_community(message: str = "This operation is only available in Communi
         raise RuntimeError(message)
 
 
-def community_only(fn):
+def community_only(fn: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator that raises RuntimeError if not in community mode."""
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         assert_community()
         return fn(*args, **kwargs)
     return wrapper

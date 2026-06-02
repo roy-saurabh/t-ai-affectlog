@@ -9,6 +9,7 @@ Usage:
 from __future__ import annotations
 
 from collections.abc import Callable
+from typing import Any
 
 from fastapi import Cookie, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -42,7 +43,7 @@ async def get_current_user(
     return user
 
 
-def require_permission(permission: str) -> Callable:
+def require_permission(permission: str) -> Callable[..., Any]:
     async def _check(
         user: User = Depends(get_current_user),
         db: AsyncSession = Depends(get_db),
@@ -60,7 +61,7 @@ def require_permission(permission: str) -> Callable:
     return _check
 
 
-def require_any_permission(*permissions: str) -> Callable:
+def require_any_permission(*permissions: str) -> Callable[..., Any]:
     async def _check(
         user: User = Depends(get_current_user),
         db: AsyncSession = Depends(get_db),

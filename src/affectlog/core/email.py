@@ -10,6 +10,7 @@ import logging
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
+from typing import Any
 
 import aiosmtplib
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -33,7 +34,7 @@ def _get_env() -> Environment:
     return _jinja_env
 
 
-def _render(template_name: str, context: dict) -> tuple[str, str]:
+def _render(template_name: str, context: dict[str, Any]) -> tuple[str, str]:
     """Return (html_body, plain_body)."""
     env = _get_env()
     html = env.get_template(f"{template_name}.html").render(**context)
@@ -49,7 +50,7 @@ async def send_email(
     to: str,
     subject: str,
     template: str,
-    context: dict,
+    context: dict[str, Any],
 ) -> bool:
     """Send templated email. Returns True on success."""
     settings = get_settings()
@@ -73,14 +74,19 @@ async def send_email(
     msg.attach(MIMEText(html, "html", "utf-8"))
 
     try:
-        await aiosmtplib.send(
-            msg,
-            hostname=settings.smtp_host,
-            port=settings.smtp_port,
-            username=settings.smtp_username or None,
-            password=settings.smtp_password or None,
-            start_tls=settings.smtp_use_tls,
-        )
+        send_kwargs: dict[str, Any] = {
+            "hostname": settings.smtp_host,
+            "port": settings.smtp_port,
+            "username": settings.smtp_username or None,
+            "password": settings.smtp_password or None,
+        }
+        if settings.smtp_use_ssl:
+            # Port 465 — implicit SSL (Gmail default for App Passwords)
+            send_kwargs["use_tls"] = True
+        else:
+            # Port 587 — STARTTLS upgrade
+            send_kwargs["start_tls"] = settings.smtp_use_tls
+        await aiosmtplib.send(msg, **send_kwargs)
         logger.info("Email sent to %s (template=%s)", to, template)
         return True
     except Exception as exc:

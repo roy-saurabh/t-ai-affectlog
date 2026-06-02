@@ -6,6 +6,9 @@ as a managed/multi-tenant deployment.
 """
 from __future__ import annotations
 
+from collections.abc import Callable
+from typing import Any
+
 from affectlog.editions.base import get_deployment_mode
 
 
@@ -18,9 +21,9 @@ def assert_managed(message: str = "This operation requires Managed Edition.") ->
         raise RuntimeError(message)
 
 
-def managed_only(fn):
+def managed_only(fn: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator that raises RuntimeError if not in managed/enterprise mode."""
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         assert_managed()
         return fn(*args, **kwargs)
     return wrapper

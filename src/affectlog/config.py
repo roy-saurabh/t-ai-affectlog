@@ -66,9 +66,20 @@ class Settings(BaseSettings):
     smtp_password: str = Field(default="", repr=False)
     smtp_from_email: str = "noreply@affectlog.example.org"
     smtp_from_name: str = "AffectLog Trustworthy AI"
+    # smtp_use_ssl=True → port 465 implicit SSL; smtp_use_tls=True → port 587 STARTTLS.
+    smtp_use_ssl: bool = False
     smtp_use_tls: bool = True
+    support_email: str = "support@affectlog.com"
     email_send_enabled: bool = False
     dev_show_activation_link: bool = True
+
+    # ── reCAPTCHA v3 ────────────────────────────────────────────────────────
+    recaptcha_enabled: bool = False
+    recaptcha_site_key: str = ""
+    recaptcha_secret_key: str = Field(default="", repr=False)
+    recaptcha_contact_action: str = "contact"
+    recaptcha_min_score: float = 0.5
+    recaptcha_allowed_hostnames: str = "localhost,127.0.0.1"
 
     # ── Registration / Approval ────────────────────────────────────────────
     public_registration_enabled: bool = True

@@ -36,4 +36,7 @@ def password_reset_expiry() -> datetime:
 
 
 def is_expired(expires_at: datetime) -> bool:
+    # Normalise to offset-aware before comparing (SQLite returns naive datetimes).
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=UTC)
     return datetime.now(UTC) > expires_at

@@ -1,6 +1,7 @@
 """Pydantic v2 schemas for auth endpoints."""
 from __future__ import annotations
 
+from typing import Any
 from uuid import UUID
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
@@ -37,7 +38,7 @@ class ActivateRequest(BaseModel):
 
     @field_validator("confirm_password")
     @classmethod
-    def passwords_match(cls, v: str, info) -> str:
+    def passwords_match(cls, v: str, info: Any) -> str:
         if "new_password" in info.data and v != info.data["new_password"]:
             raise ValueError("Passwords do not match.")
         return v
@@ -54,7 +55,7 @@ class PasswordResetConfirmIn(BaseModel):
 
     @field_validator("confirm_password")
     @classmethod
-    def passwords_match(cls, v: str, info) -> str:
+    def passwords_match(cls, v: str, info: Any) -> str:
         if "new_password" in info.data and v != info.data["new_password"]:
             raise ValueError("Passwords do not match.")
         return v
@@ -67,7 +68,7 @@ class ChangePasswordRequest(BaseModel):
 
     @field_validator("confirm_password")
     @classmethod
-    def passwords_match(cls, v: str, info) -> str:
+    def passwords_match(cls, v: str, info: Any) -> str:
         if "new_password" in info.data and v != info.data["new_password"]:
             raise ValueError("Passwords do not match.")
         return v

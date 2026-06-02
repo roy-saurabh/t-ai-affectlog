@@ -21,6 +21,7 @@ Usage:
 from __future__ import annotations
 
 import uuid
+from typing import Any
 
 from fastapi import Depends, HTTPException, status
 from sqlalchemy import select
@@ -32,7 +33,7 @@ from affectlog.editions.base import get_tenant_mode
 
 
 async def get_tenant_id(
-    current_user=Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> uuid.UUID | None:
     """

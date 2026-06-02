@@ -86,7 +86,7 @@ class TenantFeatureFlagOut(BaseModel):
 )
 async def list_tenants(
     status_filter: str | None = Query(None),
-    _actor=Depends(_require_superadmin),
+    _actor: Any = Depends(_require_superadmin),
     db: AsyncSession = Depends(get_db),
 ) -> list[Any]:
     from affectlog.tenancy.models import Tenant
@@ -105,7 +105,7 @@ async def list_tenants(
 )
 async def create_tenant(
     body: TenantCreate,
-    _actor=Depends(_require_superadmin),
+    _actor: Any = Depends(_require_superadmin),
     db: AsyncSession = Depends(get_db),
 ) -> Any:
     from affectlog.tenancy.models import Tenant, TenantQuota, TenantSettings
@@ -140,7 +140,7 @@ async def create_tenant(
 )
 async def get_tenant(
     tenant_id: uuid.UUID,
-    _actor=Depends(_require_superadmin),
+    _actor: Any = Depends(_require_superadmin),
     db: AsyncSession = Depends(get_db),
 ) -> Any:
     from affectlog.tenancy.models import Tenant
@@ -159,7 +159,7 @@ async def get_tenant(
 async def update_tenant(
     tenant_id: uuid.UUID,
     body: TenantPatch,
-    _actor=Depends(_require_superadmin),
+    _actor: Any = Depends(_require_superadmin),
     db: AsyncSession = Depends(get_db),
 ) -> Any:
     from affectlog.tenancy.models import Tenant
@@ -185,7 +185,7 @@ async def update_tenant(
 async def suspend_tenant(
     tenant_id: uuid.UUID,
     body: SuspendTenantRequest,
-    _actor=Depends(_require_superadmin),
+    _actor: Any = Depends(_require_superadmin),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     from affectlog.tenancy.models import Tenant
@@ -208,7 +208,7 @@ async def suspend_tenant(
 )
 async def activate_tenant(
     tenant_id: uuid.UUID,
-    _actor=Depends(_require_superadmin),
+    _actor: Any = Depends(_require_superadmin),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     from affectlog.tenancy.models import Tenant
@@ -234,7 +234,7 @@ async def activate_tenant(
 )
 async def list_tenant_feature_flags(
     tenant_id: uuid.UUID,
-    _actor=Depends(_require_superadmin),
+    _actor: Any = Depends(_require_superadmin),
     db: AsyncSession = Depends(get_db),
 ) -> list[Any]:
     from affectlog.tenancy.models import TenantFeatureFlag
@@ -252,7 +252,7 @@ async def list_tenant_feature_flags(
 async def set_tenant_feature_flag(
     tenant_id: uuid.UUID,
     body: FeatureFlagPatch,
-    actor=Depends(_require_superadmin),
+    actor: Any = Depends(_require_superadmin),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     from affectlog.tenancy.models import TenantFeatureFlag
@@ -287,7 +287,7 @@ async def set_tenant_feature_flag(
 )
 async def platform_usage(
     period: str | None = Query(None, description="YYYY-MM"),
-    _actor=Depends(_require_superadmin),
+    _actor: Any = Depends(_require_superadmin),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     from affectlog.tenancy.models import UsageRecord
@@ -323,7 +323,7 @@ async def platform_usage(
 @router.get("/access-requests")
 async def list_access_requests(
     status_filter: str | None = Query("pending"),
-    _actor=Depends(_require_superadmin),
+    _actor: Any = Depends(_require_superadmin),
     db: AsyncSession = Depends(get_db),
 ) -> list[dict[str, Any]]:
     from affectlog.tenancy.models import ManagedAccessRequest

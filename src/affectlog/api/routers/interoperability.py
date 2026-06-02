@@ -31,7 +31,7 @@ _require_export = require_permission(P.COMPLIANCE_EXPORT)
 
 
 @router.get("/carisma/schema")
-async def carisma_schema(_actor=Depends(_require_read)) -> dict[str, Any]:
+async def carisma_schema(_actor: Any = Depends(_require_read)) -> dict[str, Any]:
     """Return the JSON schema for AffectLog → CARiSMA metadata exchange."""
     return CARISMA_EXCHANGE_SCHEMA
 
@@ -39,7 +39,7 @@ async def carisma_schema(_actor=Depends(_require_read)) -> dict[str, Any]:
 @router.post("/carisma/export")
 async def carisma_export(
     audit_artifacts: dict[str, Any],
-    _actor=Depends(_require_export),
+    _actor: Any = Depends(_require_export),
 ) -> dict[str, Any]:
     """
     Export AffectLog audit findings in CARiSMA-compatible format.
@@ -53,7 +53,7 @@ async def carisma_export(
 @router.post("/carisma/import-report")
 async def carisma_import_report(
     report: dict[str, Any],
-    _actor=Depends(_require_export),
+    _actor: Any = Depends(_require_export),
 ) -> dict[str, Any]:
     """
     Import a CARiSMA design-time risk report for cross-referencing
@@ -63,13 +63,13 @@ async def carisma_import_report(
 
 
 @router.get("/lola/schema")
-async def lola_schema(_actor=Depends(_require_read)) -> dict[str, Any]:
+async def lola_schema(_actor: Any = Depends(_require_read)) -> dict[str, Any]:
     """Return the JSON schema for AffectLog → LOLA metadata exchange."""
     return LOLA_EXCHANGE_SCHEMA
 
 
 @router.get("/lola/metrics-vocabulary")
-async def lola_metrics_vocabulary(_actor=Depends(_require_read)) -> dict[str, str]:
+async def lola_metrics_vocabulary(_actor: Any = Depends(_require_read)) -> dict[str, str]:
     """Return the shared metrics vocabulary aligned between AffectLog and LOLA."""
     return SHARED_METRICS_VOCABULARY
 
@@ -78,7 +78,7 @@ async def lola_metrics_vocabulary(_actor=Depends(_require_read)) -> dict[str, st
 async def lola_export(
     audit_artifacts: dict[str, Any],
     scenario_id: str = "",
-    _actor=Depends(_require_export),
+    _actor: Any = Depends(_require_export),
 ) -> dict[str, Any]:
     """
     Export AffectLog dataset metrics in LOLA-compatible format.
@@ -92,7 +92,7 @@ async def lola_export(
 @router.post("/lola/import-results")
 async def lola_import_results(
     results: dict[str, Any],
-    _actor=Depends(_require_export),
+    _actor: Any = Depends(_require_export),
 ) -> dict[str, Any]:
     """
     Import LOLA algorithm evaluation results for cross-referencing

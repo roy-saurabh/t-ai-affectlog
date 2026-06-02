@@ -58,7 +58,7 @@ _require_system = require_permission(P.SYSTEM_READ)
 @router.get("/pending-registrations", response_model=list[PendingRegistrationOut])
 async def list_pending_registrations(
     status_filter: str | None = Query("pending"),
-    _actor=Depends(_require_approve),
+    _actor: Any = Depends(_require_approve),
     db: AsyncSession = Depends(get_db),
 ) -> list[PendingRegistration]:
     q = select(PendingRegistration).order_by(PendingRegistration.created_at.desc())
@@ -72,7 +72,7 @@ async def list_pending_registrations(
 async def approve(
     reg_id: UUID,
     body: ApproveRegistrationRequest,
-    actor=Depends(_require_approve),
+    actor: Any = Depends(_require_approve),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     settings = get_settings()
@@ -106,7 +106,7 @@ async def approve(
 async def reject(
     reg_id: UUID,
     body: RejectRegistrationRequest,
-    actor=Depends(_require_approve),
+    actor: Any = Depends(_require_approve),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     reg_result = await db.execute(select(PendingRegistration).where(PendingRegistration.id == reg_id))
@@ -123,7 +123,7 @@ async def reject(
 async def request_more_info(
     reg_id: UUID,
     body: RequestMoreInfoRequest,
-    _actor=Depends(_require_approve),
+    _actor: Any = Depends(_require_approve),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     reg_result = await db.execute(select(PendingRegistration).where(PendingRegistration.id == reg_id))
@@ -150,9 +150,9 @@ async def request_more_info(
 
 @router.get("/users", response_model=list[AdminUserOut])
 async def list_users(
-    _actor=Depends(_require_user_manage),
+    _actor: Any = Depends(_require_user_manage),
     db: AsyncSession = Depends(get_db),
-) -> list[User]:
+) -> list[AdminUserOut]:
     result = await db.execute(
         select(User).options(selectinload(User.user_roles).selectinload(UserRole.role))
         .order_by(User.created_at.desc())
@@ -181,7 +181,7 @@ async def list_users(
 @router.post("/users/{user_id}/disable", status_code=200)
 async def disable_user(
     user_id: UUID,
-    actor=Depends(require_permission(P.USERS_DISABLE)),
+    actor: Any = Depends(require_permission(P.USERS_DISABLE)),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     result = await db.execute(select(User).where(User.id == user_id))
@@ -199,7 +199,7 @@ async def disable_user(
 @router.post("/users/{user_id}/resend-activation", status_code=200)
 async def resend_activation_email(
     user_id: UUID,
-    actor=Depends(_require_approve),
+    actor: Any = Depends(_require_approve),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     result = await db.execute(select(User).where(User.id == user_id))
@@ -220,7 +220,7 @@ async def resend_activation_email(
 async def assign_roles(
     user_id: UUID,
     body: AssignRolesRequest,
-    actor=Depends(require_permission(P.USERS_ASSIGN_ROLES)),
+    actor: Any = Depends(require_permission(P.USERS_ASSIGN_ROLES)),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     result = await db.execute(select(User).where(User.id == user_id))
@@ -256,7 +256,7 @@ async def assign_roles(
 async def get_audit_log(
     limit: int = Query(100, le=1000),
     offset: int = Query(0),
-    _actor=Depends(_require_audit_logs),
+    _actor: Any = Depends(_require_audit_logs),
     db: AsyncSession = Depends(get_db),
 ) -> list[AuditLogEntry]:
     result = await db.execute(
@@ -272,7 +272,7 @@ async def get_audit_log(
 
 @router.get("/email/templates")
 async def list_email_templates(
-    _actor=Depends(_require_system),
+    _actor: Any = Depends(_require_system),
 ) -> list[str]:
     return [
         "registration_received",
@@ -289,7 +289,7 @@ async def list_email_templates(
 async def test_email(
     to: str,
     template: str = "registration_received",
-    _actor=Depends(_require_system),
+    _actor: Any = Depends(_require_system),
 ) -> dict[str, str]:
     from affectlog.core.email import send_email
     await send_email(
@@ -303,7 +303,7 @@ async def test_email(
 
 @router.get("/system/health")
 async def system_health(
-    _actor=Depends(_require_system),
+    _actor: Any = Depends(_require_system),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     user_count = await db.execute(select(func.count(User.id)))
@@ -322,7 +322,7 @@ async def system_health(
 
 @router.get("/workspaces", response_model=list[WorkspaceOut])
 async def list_workspaces(
-    _actor=Depends(_require_user_manage),
+    _actor: Any = Depends(_require_user_manage),
     db: AsyncSession = Depends(get_db),
 ) -> list[Workspace]:
     result = await db.execute(select(Workspace).order_by(Workspace.slug))

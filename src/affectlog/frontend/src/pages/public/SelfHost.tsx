@@ -64,7 +64,7 @@ export default function SelfHost() {
                   View on GitHub <ExternalLink size={14} />
                 </a>
                 <a
-                  href="/api/docs"
+                  href="/docs"
                   className="inline-flex items-center gap-2 text-slate-300 hover:text-white px-6 py-3 rounded-xl hover:bg-white/[0.04] transition-all"
                 >
                   API reference <ArrowRight size={14} />
@@ -138,7 +138,7 @@ export default function SelfHost() {
                 step: 5, title: "Open",
                 code: [
                   { c: "#64748b", t: "# → http://localhost:3000  (frontend)" },
-                  { c: "#64748b", t: "# → http://localhost:8000/api/docs  (API)" },
+                  { c: "#64748b", t: "# → http://localhost:8000/docs  (API)" },
                 ],
               },
             ].map(({ step, title, code }) => (

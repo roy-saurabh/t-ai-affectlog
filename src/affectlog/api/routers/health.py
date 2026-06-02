@@ -21,6 +21,11 @@ async def readyz() -> HealthResponse:
     return HealthResponse(status="ready", version=__version__, timestamp=now_iso())
 
 
+@router.get("/", summary="API root")
+async def root() -> dict[str, str]:
+    return {"version": __version__, "status": "ok"}
+
+
 @router.get("/metrics", summary="Prometheus-compatible metrics (stub)")
 async def metrics() -> dict:  # type: ignore[type-arg]
     return {

@@ -13,6 +13,8 @@ Usage:
 """
 from __future__ import annotations
 
+from typing import Any
+
 from fastapi import Depends, HTTPException, status
 
 from affectlog.editions.base import get_feature
@@ -36,7 +38,7 @@ class FeatureGate:
             )
 
 
-def requires_feature(feature: str):
+def requires_feature(feature: str) -> Any:
     """
     FastAPI dependency that raises 403 if the named feature is not enabled.
     Tenant-level override resolution is not yet wired here (future: inject tenant context).
