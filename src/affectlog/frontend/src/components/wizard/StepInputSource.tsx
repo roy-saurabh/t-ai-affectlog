@@ -1,6 +1,7 @@
 import React from "react";
-import { type LucideIcon, Database, Cpu, FileInput, Shield } from "lucide-react";
+import { type LucideIcon, Database, Cpu, FileInput, Shield, Layers } from "lucide-react";
 import clsx from "clsx";
+import type { WizardPreset } from "../../content/wizardPresets";
 
 export type InputMode =
   | "upload_dataset"
@@ -19,6 +20,7 @@ interface StepInputSourceProps {
   onGroundTruthPathChange: (v: string) => void;
   inputMode: InputMode;
   onInputModeChange: (m: InputMode) => void;
+  activePreset?: WizardPreset | null;
 }
 
 const ACCEPTED_FORMATS = [".csv", ".tsv", ".json", ".jsonl", ".ndjson", ".parquet", ".pq"];
@@ -73,11 +75,14 @@ export function StepInputSource({
   onGroundTruthPathChange,
   inputMode,
   onInputModeChange,
+  activePreset,
 }: StepInputSourceProps) {
   const modes: { id: InputMode; label: string; desc: string }[] = [
     { id: "dataset_only", label: "Dataset-only audit", desc: "Schema, profiling, PII, compliance outputs" },
     { id: "model_aware", label: "Model-aware audit", desc: "Add model, predictions, and ground truth" },
   ];
+
+  const isIndigo = activePreset?.accent === "indigo";
 
   return (
     <div className="space-y-6">
@@ -87,6 +92,44 @@ export function StepInputSource({
           Select what data you want to assess. At minimum, a dataset file is required.
         </p>
       </div>
+
+      {/* Preset context banner */}
+      {activePreset && (
+        <div
+          className={`rounded-xl border p-4 flex gap-3 ${
+            isIndigo
+              ? "border-indigo-500/30 bg-indigo-500/8"
+              : "border-emerald-500/30 bg-emerald-500/8"
+          }`}
+        >
+          <Layers
+            size={14}
+            className={`flex-shrink-0 mt-0.5 ${isIndigo ? "text-indigo-400" : "text-emerald-400"}`}
+          />
+          <div className="space-y-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <p
+                className={`text-xs font-semibold ${isIndigo ? "text-indigo-300" : "text-emerald-300"}`}
+              >
+                {activePreset.label}
+              </p>
+              <span
+                className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                  isIndigo
+                    ? "bg-indigo-500/20 text-indigo-400"
+                    : "bg-emerald-500/20 text-emerald-400"
+                }`}
+              >
+                {activePreset.tag}
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-400 leading-relaxed">{activePreset.useCaseContext}</p>
+            <p className="text-[10px] text-slate-600">
+              Schema: <span className="font-mono">{activePreset.schemaLabel}</span> · {activePreset.rowCount}
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-3">
         {modes.map((m) => (

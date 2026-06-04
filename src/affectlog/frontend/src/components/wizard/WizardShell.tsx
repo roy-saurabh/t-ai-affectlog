@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Save, X } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import clsx from "clsx";
 
 import { WizardProgress, WIZARD_STEPS } from "./WizardProgress";
@@ -33,8 +33,10 @@ import {
   type WizardRunResultsResponse,
   type WizardPlan,
   type ValidationIssue,
+  type UserHints,
 } from "../../api/wizard";
 import { getDefaultPlotsForFormat } from "../../content/plotCatalog";
+import { WIZARD_PRESETS, type WizardPreset } from "../../content/wizardPresets";
 
 const TOTAL_STEPS = 10;
 
@@ -48,8 +50,13 @@ interface PrivacySettings {
 
 export function WizardShell() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [step, setStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
+
+  // Active preset (set from ?preset= URL param)
+  const [activePreset, setActivePreset] = useState<WizardPreset | null>(null);
+  const [activeUserHints, setActiveUserHints] = useState<UserHints>({ xapi_mode: false });
 
   // Step 1 state
   const [datasetPath, setDatasetPath] = useState("");
@@ -73,6 +80,19 @@ export function WizardShell() {
     raw_export_disabled: true,
     privacy_acknowledged: false,
   });
+
+  // Load preset from URL param on mount
+  useEffect(() => {
+    const presetId = searchParams.get("preset");
+    if (!presetId) return;
+    const preset = WIZARD_PRESETS[presetId];
+    if (!preset) return;
+    setActivePreset(preset);
+    setDatasetPath(preset.datasetPath);
+    setInputMode(preset.inputMode);
+    setPrivacySettings(preset.privacySettings);
+    setActiveUserHints(preset.userHints);
+  }, [searchParams]);
 
   // Step 5 state
   const [modelContext, setModelContext] = useState<ModelContext>({
@@ -142,7 +162,7 @@ export function WizardShell() {
         model_path: modelPath || undefined,
         prediction_path: predictionPath || undefined,
         ground_truth_path: groundTruthPath || undefined,
-        user_hints: { xapi_mode: false },
+        user_hints: activeUserHints,
       });
       setInspection(result);
       if (result.pre_mapped_fields) setFieldMappings(result.pre_mapped_fields);
@@ -284,6 +304,7 @@ export function WizardShell() {
               onGroundTruthPathChange={setGroundTruthPath}
               inputMode={inputMode}
               onInputModeChange={setInputMode}
+              activePreset={activePreset}
             />
           )}
           {step === 2 && (

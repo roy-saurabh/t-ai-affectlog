@@ -1,8 +1,9 @@
 import React, { Suspense } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { Wand2, Plus, Clock, CheckCircle, ArrowRight } from "lucide-react";
+import { Wand2, Plus, Clock, CheckCircle, ArrowRight, Database, Zap } from "lucide-react";
 import { listRuns, type WizardRunResponse } from "../../api/wizard";
 import { WizardShell } from "../../components/wizard/WizardShell";
+import { WIZARD_PRESETS } from "../../content/wizardPresets";
 
 function WizardHome() {
   const navigate = useNavigate();
@@ -83,6 +84,66 @@ function WizardHome() {
               {w}
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Real datasets — quick-start presets */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-semibold text-white">Start from a real dataset</p>
+          <span className="text-[11px] text-slate-600">Production data · pre-configured</span>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          {Object.values(WIZARD_PRESETS).map((preset) => {
+            const Icon = preset.format === "CSV" ? Database : Zap;
+            const isIndigo = preset.accent === "indigo";
+            return (
+              <div
+                key={preset.id}
+                className={`rounded-xl border p-5 space-y-3 ${
+                  isIndigo
+                    ? "border-indigo-500/30 bg-indigo-500/5"
+                    : "border-emerald-500/30 bg-emerald-500/5"
+                }`}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Icon
+                      size={14}
+                      className={isIndigo ? "text-indigo-400" : "text-emerald-400"}
+                    />
+                    <p className="text-sm font-semibold text-white">{preset.label}</p>
+                  </div>
+                  <span
+                    className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
+                      isIndigo
+                        ? "bg-indigo-500/20 text-indigo-300"
+                        : "bg-emerald-500/20 text-emerald-300"
+                    }`}
+                  >
+                    {preset.format}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed">{preset.description}</p>
+                <p className="text-[11px] text-slate-600 leading-relaxed">{preset.useCaseContext}</p>
+                <div className="flex items-center justify-between pt-1">
+                  <span className="text-[10px] text-slate-600">{preset.rowCount}</span>
+                  <button
+                    type="button"
+                    onClick={() => navigate(`new?preset=${preset.id}`)}
+                    className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] font-semibold transition-all ${
+                      isIndigo
+                        ? "bg-indigo-600 text-white hover:bg-indigo-500"
+                        : "bg-emerald-700 text-white hover:bg-emerald-600"
+                    }`}
+                  >
+                    <ArrowRight size={10} />
+                    Launch assessment
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

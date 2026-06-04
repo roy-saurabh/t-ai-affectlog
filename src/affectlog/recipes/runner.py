@@ -72,6 +72,8 @@ def run_audit(
         report = validate_csv_headers(input_path, MASKOTT_REQUIRED_COLUMNS)
         s.record_count_in = 0
         s.meta["validation_report"] = report
+        vr_path = store.write_json("validation_report.json", report)
+        ctx.add_artifact("validation_report", vr_path)
         s.finish("ok" if report["valid"] else "warning")
     else:
         s.meta["note"] = f"Validation skipped for {ext}"
@@ -119,6 +121,8 @@ def run_audit(
         s.record_count_in = summary["total_rows_in"]
         s.record_count_out = summary["total_rows_out"]
         s.meta["conversion_summary"] = summary
+        tr_path = store.write_json("transform_report.json", summary)
+        ctx.add_artifact("transform_report", tr_path)
     else:
         normalized_path = input_path  # Already normalized
         s.meta["note"] = "Input already normalized; skipping CSV conversion."
@@ -188,6 +192,20 @@ def run_audit(
     }
     metrics_path = store.write_json("metrics.json", metrics_combined)
     ctx.add_artifact("metrics", metrics_path)
+
+    # Write flat CSV of key metric values
+    import csv
+    import io
+    csv_buf = io.StringIO()
+    writer = csv.writer(csv_buf)
+    writer.writerow(["metric", "value"])
+    for k, v in metrics_combined.items():
+        if isinstance(v, (int, float, str, bool, type(None))):
+            writer.writerow([k, v])
+    csv_path = run_dir / "metrics.csv"
+    csv_path.write_text(csv_buf.getvalue(), encoding="utf-8")
+    ctx.add_artifact("metrics_csv", csv_path)
+
     s.finish("ok")
 
     # ── Stage: compliance_map / export_artifacts ─────────────────────

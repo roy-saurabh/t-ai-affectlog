@@ -203,6 +203,7 @@ export interface WizardRunResultsResponse {
   key_findings: string[];
   recommended_next_actions: string[];
   artifacts: OutputContractArtifact[];
+  selected_plots: string[];
   developer_extension_suggestions: string[];
 }
 
@@ -235,6 +236,9 @@ export const getRunResults = (runId: string) =>
 export const listRuns = () => get<{ runs: WizardRunResponse[] }>("/v1/wizard/runs");
 
 export const getCapabilities = () => get<Record<string, unknown>>("/v1/capabilities");
+
+export const fetchArtifactJson = <T = Record<string, unknown>>(runId: string, filename: string) =>
+  get<T>(`/v1/wizard/runs/${runId}/artifacts/${filename}`);
 
 export const getStepHelp = (step: number) =>
   get<Record<string, string>>(`/v1/wizard/help/step/${step}`);

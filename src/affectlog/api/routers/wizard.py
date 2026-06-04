@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException
@@ -175,6 +176,29 @@ async def get_wizard_run_results(wizard_run_id: str) -> WizardRunResultsResponse
     if result is None:
         raise HTTPException(status_code=404, detail=f"Wizard run '{wizard_run_id}' not found.")
     return result
+
+
+@router.get(
+    "/runs/{wizard_run_id}/artifacts/{filename}",
+    summary="Download a single artifact from a completed wizard run",
+)
+async def download_wizard_run_artifact(wizard_run_id: str, filename: str) -> Any:
+    import re
+
+    from fastapi.responses import FileResponse
+
+    from affectlog.config import get_settings
+
+    if not re.fullmatch(r"[\w\-]+\.[\w]+", filename):
+        raise HTTPException(status_code=400, detail="Invalid filename.")
+    settings = get_settings()
+    run_dir = Path(settings.runs_dir) / wizard_run_id
+    artifact_path = run_dir / filename
+    if not artifact_path.exists():
+        raise HTTPException(
+            status_code=404, detail=f"Artifact '{filename}' not found for run '{wizard_run_id}'."
+        )
+    return FileResponse(path=str(artifact_path), filename=filename)
 
 
 @router.get(

@@ -10,7 +10,6 @@ from typing import Any
 
 from affectlog.config import get_settings
 from affectlog.core.ids import new_run_id
-from affectlog.wizard.output_contract import build_output_contract
 from affectlog.wizard.schemas import (
     OutputContractArtifact,
     WizardPlan,
@@ -152,7 +151,7 @@ def _run_tabular(wizard_run_id: str, plan: WizardPlan, input_path: Path, run_dir
     sop_path = run_dir / "SOP.md"
     export_sop(sop_text, sop_path)
 
-    _WIZARD_RUNS[wizard_run_id].update({
+    completed_state: dict[str, Any] = {
         "status": "completed",
         "current_stage": None,
         "artifacts": {
@@ -166,7 +165,17 @@ def _run_tabular(wizard_run_id: str, plan: WizardPlan, input_path: Path, run_dir
         "stages_completed": ["schema_profiling", "statistics", "compliance_export"],
         "rows_processed": row_count,
         "progress_pct": 100.0,
-    })
+    }
+    _WIZARD_RUNS[wizard_run_id].update(completed_state)
+
+    # Persist to disk so results survive a process restart
+    wizard_meta = {
+        "wizard_run_id": wizard_run_id,
+        "plan": plan.model_dump(),
+        "status": "completed",
+        "completed_at": datetime.datetime.utcnow().isoformat(),
+    }
+    (run_dir / "wizard_meta.json").write_text(json.dumps(wizard_meta, indent=2))
 
 
 def _run_background(wizard_run_id: str, plan: WizardPlan) -> None:
@@ -289,8 +298,32 @@ def start_run_background(wizard_run_id: str, plan: WizardPlan) -> None:
     t.start()
 
 
+def _load_run_from_disk(wizard_run_id: str) -> dict[str, Any] | None:
+    """Reconstruct a completed run from wizard_meta.json when not in memory (e.g. after restart)."""
+    run_dir = Path(get_settings().runs_dir) / wizard_run_id
+    meta_path = run_dir / "wizard_meta.json"
+    if not meta_path.exists():
+        return None
+    try:
+        meta = json.loads(meta_path.read_text())
+        return {
+            "wizard_run_id": wizard_run_id,
+            "status": meta.get("status", "completed"),
+            "plan": meta.get("plan", {}),
+            "current_stage": None,
+            "stages_completed": meta.get("stages_completed", []),
+            "rows_processed": None,
+            "warnings": [],
+            "errors": [],
+            "progress_pct": 100.0,
+        }
+    except Exception as exc:
+        log.warning("Could not reconstruct run %s from disk: %s", wizard_run_id, exc)
+        return None
+
+
 def get_run_status(wizard_run_id: str) -> WizardRunStatusResponse | None:
-    run = _WIZARD_RUNS.get(wizard_run_id)
+    run = _WIZARD_RUNS.get(wizard_run_id) or _load_run_from_disk(wizard_run_id)
     if not run:
         return None
     return WizardRunStatusResponse(
@@ -305,8 +338,41 @@ def get_run_status(wizard_run_id: str) -> WizardRunStatusResponse | None:
     )
 
 
+# Descriptions/format/privacy for known artifact filenames produced by the pipeline.
+_ARTIFACT_META: dict[str, tuple[str, str, str]] = {
+    "metrics.json": ("All computed metrics in structured JSON.", "json", "public"),
+    "metrics.csv": ("Flat CSV of key metric values.", "csv", "public"),
+    "dashboard_payload.json": ("Structured payload for dashboard visualisation.", "json", "public"),
+    "audit_manifest.json": ("Signed manifest of all inputs, parameters, and artifact hashes.", "json", "public"),
+    "SOP.md": ("Standard Operating Procedure document.", "markdown", "public"),
+    "SOP.html": ("SOP rendered as HTML.", "html", "public"),
+    "privacy_report.json": ("PII scan and privacy risk assessment.", "json", "restricted"),
+    "validation_report.json": ("Schema validation report.", "json", "public"),
+    "xapi_compatibility_report.json": ("xAPI compatibility check report.", "json", "public"),
+    "transform_report.json": ("Maskott CSV → xAPI transform summary.", "json", "public"),
+    "schema_profile.json": ("Full schema profile with column statistics.", "json", "public"),
+    "descriptive_stats.json": ("Descriptive statistics for all fields.", "json", "public"),
+    "temporal_stats.json": ("Temporal analysis: event density and session patterns.", "json", "public"),
+    "concentration_metrics.json": ("Concentration analysis: Gini, entity and resource dominance.", "json", "public"),
+    "coverage_metrics.json": ("Coverage@K metrics across recommendation depths.", "json", "public"),
+    "fairness_metrics.json": ("Fairness analysis results.", "json", "medium"),
+    "data_card.json": ("Dataset Data Card export.", "json", "public"),
+    "compliance_graph.jsonld": ("JSON-LD compliance and provenance graph.", "jsonld", "public"),
+    "eu_ai_act_annex_iv.json": ("EU AI Act Annex IV documentation.", "json", "public"),
+    "field_inventory.csv": ("GDPR field inventory export.", "csv", "restricted"),
+    "normalized.jsonl": ("Normalised xAPI-format event log.", "jsonl", "public"),
+    "carisma_metadata.json": ("CARiSMA metadata export.", "json", "public"),
+    "lola_metadata.json": ("LOLA metadata export.", "json", "public"),
+    "pdc_metadata.json": ("PDC metadata export.", "json", "public"),
+    "pii_report.json": ("PII field scan results.", "json", "restricted"),
+    "pseudonymisation_report.json": ("Pseudonymisation benchmark report.", "json", "public"),
+}
+
+_HIDDEN_ARTIFACTS = {"wizard_meta.json", "invalid_rows.jsonl"}
+
+
 def get_run_results(wizard_run_id: str) -> WizardRunResultsResponse | None:
-    run = _WIZARD_RUNS.get(wizard_run_id)
+    run = _WIZARD_RUNS.get(wizard_run_id) or _load_run_from_disk(wizard_run_id)
     if not run:
         return None
     if run.get("status") != "completed":
@@ -316,7 +382,6 @@ def get_run_results(wizard_run_id: str) -> WizardRunResultsResponse | None:
         )
 
     plan = WizardPlan(**run["plan"])
-    contract = build_output_contract(plan)
 
     analyzed = list(plan.selected_analyses)
     not_analyzed: list[str] = []
@@ -342,9 +407,33 @@ def get_run_results(wizard_run_id: str) -> WizardRunResultsResponse | None:
                     f"To enable {a.label}: upload ranked predictions and ground-truth interactions."
                 )
 
+    # Build artifact list from what actually exists on disk
+    run_dir = Path(get_settings().runs_dir) / wizard_run_id
+    artifacts: list[OutputContractArtifact] = []
+    if run_dir.exists():
+        for f in sorted(run_dir.iterdir()):
+            if not f.is_file() or f.name in _HIDDEN_ARTIFACTS:
+                continue
+            meta = _ARTIFACT_META.get(f.name)
+            if meta:
+                desc, fmt, privacy = meta
+            else:
+                ext = f.suffix.lstrip(".")
+                desc = f"Pipeline artifact ({f.name})."
+                fmt = ext or "bin"
+                privacy = "public"
+            artifacts.append(
+                OutputContractArtifact(
+                    filename=f.name,
+                    format=fmt,
+                    description=desc,
+                    privacy_level=privacy,
+                )
+            )
+
     key_findings = [
         f"Assessment completed for {len(analyzed)} selected analyses.",
-        f"{len(contract.expected_artifacts)} artifacts produced.",
+        f"{len(artifacts)} artifacts produced.",
     ]
     if run.get("warnings"):
         key_findings.append(
@@ -359,16 +448,6 @@ def get_run_results(wizard_run_id: str) -> WizardRunResultsResponse | None:
     if not_analyzed:
         next_actions.append("Review developer extension suggestions to unlock additional analyses.")
 
-    artifacts = [
-        OutputContractArtifact(
-            filename=a.filename,
-            format=a.format,
-            description=a.description,
-            privacy_level=a.privacy_level,
-        )
-        for a in contract.expected_artifacts
-    ]
-
     return WizardRunResultsResponse(
         wizard_run_id=wizard_run_id,
         status="completed",
@@ -377,5 +456,6 @@ def get_run_results(wizard_run_id: str) -> WizardRunResultsResponse | None:
         key_findings=key_findings,
         recommended_next_actions=next_actions,
         artifacts=artifacts,
+        selected_plots=plan.selected_plots,
         developer_extension_suggestions=list(set(developer_suggestions))[:5],
     )

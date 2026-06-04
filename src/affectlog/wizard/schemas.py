@@ -267,4 +267,5 @@ class WizardRunResultsResponse(BaseModel):
     key_findings: list[str] = Field(default_factory=list)
     recommended_next_actions: list[str] = Field(default_factory=list)
     artifacts: list[OutputContractArtifact] = Field(default_factory=list)
+    selected_plots: list[str] = Field(default_factory=list)
     developer_extension_suggestions: list[str] = Field(default_factory=list)
