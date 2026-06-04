@@ -28,6 +28,15 @@ interface DashboardPayload {
   total_events?: number;
   unique_actors?: number;
   unique_resources?: number;
+  temporal?: {
+    min_timestamp?: string;
+    max_timestamp?: string;
+    span_days?: number;
+    unique_days?: number;
+    top_10_days?: Array<[string, number]>;
+    hour_distribution?: Record<string, number>;
+  };
+  has_jsonld?: boolean;
 }
 
 interface StepResultsGuidanceProps {
@@ -235,6 +244,87 @@ const PLOT_RENDERERS: Record<string, PlotRenderer> = {
             <div className="h-2.5 rounded-full bg-indigo-500" style={{ width: `${pct}%` }} />
           </div>
           <span className="text-sm font-semibold text-white tabular-nums">{pct}%</span>
+        </div>
+      </div>
+    );
+  },
+
+  event_frequency_timeline: (p) => {
+    const hours = p.temporal?.hour_distribution;
+    const days = p.temporal?.top_10_days;
+    if (hours && Object.keys(hours).length > 0) {
+      const chartData = Object.entries(hours)
+        .map(([h, c]) => ({ name: `${h}h`, value: Number(c) }))
+        .sort((a, b) => parseInt(a.name) - parseInt(b.name));
+      return (
+        <div className="space-y-2">
+          <p className="text-[11px] font-medium text-slate-400">Event Frequency by Hour</p>
+          <ResponsiveContainer width="100%" height={140}>
+            <BarChart data={chartData} margin={{ top: 0, right: 4, left: -20, bottom: 0 }}>
+              <XAxis dataKey="name" tick={{ fill: "#64748b", fontSize: 10 }} interval={2} />
+              <YAxis tick={{ fill: "#64748b", fontSize: 10 }} />
+              <Tooltip content={<DarkTooltip />} />
+              <Bar dataKey="value" radius={[3, 3, 0, 0]}>
+                {chartData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      );
+    }
+    if (days && days.length > 0) {
+      const chartData = days.slice(0, 10).map(([d, c]) => ({ name: d.slice(5), value: c }));
+      return (
+        <div className="space-y-2">
+          <p className="text-[11px] font-medium text-slate-400">Top Active Days</p>
+          <ResponsiveContainer width="100%" height={140}>
+            <BarChart data={chartData} margin={{ top: 0, right: 4, left: -20, bottom: 32 }}>
+              <XAxis dataKey="name" tick={{ fill: "#64748b", fontSize: 10 }} angle={-35} textAnchor="end" interval={0} />
+              <YAxis tick={{ fill: "#64748b", fontSize: 10 }} />
+              <Tooltip content={<DarkTooltip />} />
+              <Bar dataKey="value" radius={[3, 3, 0, 0]}>
+                {chartData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      );
+    }
+    if (p.temporal?.span_days != null) {
+      return (
+        <div className="space-y-2">
+          <p className="text-[11px] font-medium text-slate-400">Temporal Summary</p>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { label: "Span (days)", value: String(p.temporal.span_days) },
+              { label: "Active days", value: String(p.temporal.unique_days ?? "—") },
+            ].map(({ label, value }) => (
+              <div key={label} className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-3 text-center">
+                <p className="text-lg font-semibold text-white tabular-nums">{value}</p>
+                <p className="mt-0.5 text-[10px] text-slate-500">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    return null;
+  },
+
+  jsonld_graph_preview: (p) => {
+    if (!p.has_jsonld) return null;
+    return (
+      <div className="space-y-2">
+        <p className="text-[11px] font-medium text-slate-400">JSON-LD Compliance Graph</p>
+        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3 flex items-start gap-2.5">
+          <CheckCircle size={13} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-xs font-medium text-slate-300">Compliance graph produced</p>
+            <p className="text-[11px] text-slate-500 mt-0.5">
+              EU AI Act Annex IV provenance and GDPR evidence encoded as JSON-LD.
+              Download <span className="font-mono">compliance_graph.jsonld</span> from artifacts below.
+            </p>
+          </div>
         </div>
       </div>
     );

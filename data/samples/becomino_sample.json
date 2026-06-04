@@ -1,41 +1,4320 @@
 {
   "statements": [
     {
-      "id": "sample-stmt-001",
-      "timestamp": "2024-03-15T09:30:00Z",
-      "stored": "2024-03-15T09:30:01Z",
+      "id": "stmt-becomino-0001",
+      "timestamp": "2024-03-05T15:43:00Z",
+      "stored": "2024-03-05T15:43:00Z",
       "actor": {
         "objectType": "Agent",
         "account": {
           "homePage": "urn:becomino:learner",
-          "name": "anon_learner_0001"
+          "name": "anon_learner_0004"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r12",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Data Science with Pandas"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0004-04",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 588
+        }
+      },
+      "result": {
+        "duration": "PT588S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0002",
+      "timestamp": "2024-03-17T14:35:00Z",
+      "stored": "2024-03-17T14:35:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0019"
         }
       },
       "verb": {
         "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
-        "display": {"en-US": "accessed"}
+        "display": {
+          "en-US": "accessed"
+        }
       },
       "object": {
-        "id": "urn:becomino:resource:r42",
+        "id": "urn:becomino:resource:r10",
         "objectType": "Activity",
         "definition": {
           "type": "DOCUMENT",
-          "name": {"en-US": "Introduction to Python"}
+          "name": {
+            "en-US": "Introduction to Python"
+          }
         }
       },
       "context": {
-        "registration": "session-abc-123",
+        "registration": "session-0019-16",
         "contextActivities": {
-          "grouping": [{"id": "urn:becomino:collection:c10"}],
-          "category": [{"id": "ACCESSED"}]
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
         },
         "extensions": {
           "isViewerAuthor": false,
-          "isViewerAnonymous": true
+          "isViewerAnonymous": true,
+          "durationRaw": 233
         }
       },
       "result": {
-        "duration": "PT45S"
+        "duration": "PT233S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0003",
+      "timestamp": "2024-03-28T08:51:00Z",
+      "stored": "2024-03-28T08:51:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0014"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r14",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Deep Learning Fundamentals"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0014-27",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 193
+        }
+      },
+      "result": {
+        "duration": "PT193S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0004",
+      "timestamp": "2024-03-11T10:24:00Z",
+      "stored": "2024-03-11T10:24:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0011"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0011-10",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 129
+        }
+      },
+      "result": {
+        "duration": "PT129S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0005",
+      "timestamp": "2024-03-18T10:59:00Z",
+      "stored": "2024-03-18T10:59:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0012"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0012-17",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 417
+        }
+      },
+      "result": {
+        "duration": "PT417S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0006",
+      "timestamp": "2024-03-12T14:45:00Z",
+      "stored": "2024-03-12T14:45:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0018"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r14",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Deep Learning Fundamentals"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0018-11",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 101
+        }
+      },
+      "result": {
+        "duration": "PT101S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0007",
+      "timestamp": "2024-03-28T10:17:00Z",
+      "stored": "2024-03-28T10:17:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0008"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r12",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Data Science with Pandas"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0008-27",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 494
+        }
+      },
+      "result": {
+        "duration": "PT494S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0008",
+      "timestamp": "2024-03-23T18:41:00Z",
+      "stored": "2024-03-23T18:41:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0006"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0006-22",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 103
+        }
+      },
+      "result": {
+        "duration": "PT103S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0009",
+      "timestamp": "2024-03-09T19:40:00Z",
+      "stored": "2024-03-09T19:40:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0006"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r30",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "AI Ethics Course"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0006-08",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 600
+        }
+      },
+      "result": {
+        "duration": "PT600S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0010",
+      "timestamp": "2024-03-02T16:25:00Z",
+      "stored": "2024-03-02T16:25:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0011"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0011-01",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 304
+        }
+      },
+      "result": {
+        "duration": "PT304S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0011",
+      "timestamp": "2024-03-11T11:31:00Z",
+      "stored": "2024-03-11T11:31:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0007"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r71",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Tableau for Analysts"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0007-10",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 435
+        }
+      },
+      "result": {
+        "duration": "PT435S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0012",
+      "timestamp": "2024-03-18T11:37:00Z",
+      "stored": "2024-03-18T11:37:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0005"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0005-17",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 468
+        }
+      },
+      "result": {
+        "duration": "PT468S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0013",
+      "timestamp": "2024-03-03T15:55:00Z",
+      "stored": "2024-03-03T15:55:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0013"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0013-02",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 142
+        }
+      },
+      "result": {
+        "duration": "PT142S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0014",
+      "timestamp": "2024-03-13T12:29:00Z",
+      "stored": "2024-03-13T12:29:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0006"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r51",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Data Privacy Principles"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0006-12",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 571
+        }
+      },
+      "result": {
+        "duration": "PT571S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0015",
+      "timestamp": "2024-03-04T15:34:00Z",
+      "stored": "2024-03-04T15:34:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0018"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r10",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Introduction to Python"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0018-03",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 303
+        }
+      },
+      "result": {
+        "duration": "PT303S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0016",
+      "timestamp": "2024-03-24T17:16:00Z",
+      "stored": "2024-03-24T17:16:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0004"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0004-23",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 542
+        }
+      },
+      "result": {
+        "duration": "PT542S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0017",
+      "timestamp": "2024-03-17T14:09:00Z",
+      "stored": "2024-03-17T14:09:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0017"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r40",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Natural Language Processing"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0017-16",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 412
+        }
+      },
+      "result": {
+        "duration": "PT412S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0018",
+      "timestamp": "2024-03-20T12:01:00Z",
+      "stored": "2024-03-20T12:01:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0018"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r61",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "API Design Patterns"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0018-19",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 144
+        }
+      },
+      "result": {
+        "duration": "PT144S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0019",
+      "timestamp": "2024-03-03T10:31:00Z",
+      "stored": "2024-03-03T10:31:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0010"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0010-02",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 100
+        }
+      },
+      "result": {
+        "duration": "PT100S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0020",
+      "timestamp": "2024-03-06T11:55:00Z",
+      "stored": "2024-03-06T11:55:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0005"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r13",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Statistics for AI"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0005-05",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 463
+        }
+      },
+      "result": {
+        "duration": "PT463S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0021",
+      "timestamp": "2024-03-13T19:41:00Z",
+      "stored": "2024-03-13T19:41:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0018"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r21",
+        "objectType": "Activity",
+        "definition": {
+          "type": "QUIZ",
+          "name": {
+            "en-US": "ML Quiz: Concepts"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0018-12",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 412
+        }
+      },
+      "result": {
+        "duration": "PT412S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0022",
+      "timestamp": "2024-03-11T08:35:00Z",
+      "stored": "2024-03-11T08:35:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0017"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0017-10",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 265
+        }
+      },
+      "result": {
+        "duration": "PT265S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0023",
+      "timestamp": "2024-03-29T09:21:00Z",
+      "stored": "2024-03-29T09:21:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0008"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r10",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Introduction to Python"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0008-28",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 102
+        }
+      },
+      "result": {
+        "duration": "PT102S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0024",
+      "timestamp": "2024-03-05T15:56:00Z",
+      "stored": "2024-03-05T15:56:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0008"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r13",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Statistics for AI"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0008-04",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 514
+        }
+      },
+      "result": {
+        "duration": "PT514S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0025",
+      "timestamp": "2024-03-14T12:26:00Z",
+      "stored": "2024-03-14T12:26:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0016"
+        }
+      },
+      "verb": {
+        "id": "http://id.tincanapi.com/verb/searched",
+        "display": {
+          "en-US": "searched"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r21",
+        "objectType": "Activity",
+        "definition": {
+          "type": "QUIZ",
+          "name": {
+            "en-US": "ML Quiz: Concepts"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0016-13",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "SEARCHED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 508
+        }
+      },
+      "result": {
+        "duration": "PT508S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0026",
+      "timestamp": "2024-03-04T11:12:00Z",
+      "stored": "2024-03-04T11:12:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0004"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r12",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Data Science with Pandas"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0004-03",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 579
+        }
+      },
+      "result": {
+        "duration": "PT579S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0027",
+      "timestamp": "2024-03-28T18:28:00Z",
+      "stored": "2024-03-28T18:28:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0005"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r12",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Data Science with Pandas"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0005-27",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 593
+        }
+      },
+      "result": {
+        "duration": "PT593S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0028",
+      "timestamp": "2024-03-03T18:54:00Z",
+      "stored": "2024-03-03T18:54:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0002"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r70",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "Data Visualisation"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0002-02",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 272
+        }
+      },
+      "result": {
+        "duration": "PT272S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0029",
+      "timestamp": "2024-03-29T09:24:00Z",
+      "stored": "2024-03-29T09:24:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0014"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0014-28",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 32
+        }
+      },
+      "result": {
+        "duration": "PT32S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0030",
+      "timestamp": "2024-03-23T18:50:00Z",
+      "stored": "2024-03-23T18:50:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0009"
+        }
+      },
+      "verb": {
+        "id": "http://id.tincanapi.com/verb/searched",
+        "display": {
+          "en-US": "searched"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r52",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "EU AI Act Overview"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0009-22",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "SEARCHED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 599
+        }
+      },
+      "result": {
+        "duration": "PT599S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0031",
+      "timestamp": "2024-03-19T15:03:00Z",
+      "stored": "2024-03-19T15:03:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0005"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0005-18",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 351
+        }
+      },
+      "result": {
+        "duration": "PT351S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0032",
+      "timestamp": "2024-03-17T10:32:00Z",
+      "stored": "2024-03-17T10:32:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0002"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r61",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "API Design Patterns"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0002-16",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 112
+        }
+      },
+      "result": {
+        "duration": "PT112S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0033",
+      "timestamp": "2024-03-29T14:37:00Z",
+      "stored": "2024-03-29T14:37:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0003"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r30",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "AI Ethics Course"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0003-28",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 70
+        }
+      },
+      "result": {
+        "duration": "PT70S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0034",
+      "timestamp": "2024-03-11T18:13:00Z",
+      "stored": "2024-03-11T18:13:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0003"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r14",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Deep Learning Fundamentals"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0003-10",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 351
+        }
+      },
+      "result": {
+        "duration": "PT351S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0035",
+      "timestamp": "2024-03-30T15:04:00Z",
+      "stored": "2024-03-30T15:04:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0009"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r12",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Data Science with Pandas"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0009-29",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 39
+        }
+      },
+      "result": {
+        "duration": "PT39S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0036",
+      "timestamp": "2024-03-17T11:59:00Z",
+      "stored": "2024-03-17T11:59:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0020"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r13",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Statistics for AI"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0020-16",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 387
+        }
+      },
+      "result": {
+        "duration": "PT387S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0037",
+      "timestamp": "2024-03-18T15:39:00Z",
+      "stored": "2024-03-18T15:39:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0008"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0008-17",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 571
+        }
+      },
+      "result": {
+        "duration": "PT571S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0038",
+      "timestamp": "2024-03-05T11:56:00Z",
+      "stored": "2024-03-05T11:56:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0018"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r10",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Introduction to Python"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0018-04",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 139
+        }
+      },
+      "result": {
+        "duration": "PT139S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0039",
+      "timestamp": "2024-03-11T11:40:00Z",
+      "stored": "2024-03-11T11:40:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0005"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r14",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Deep Learning Fundamentals"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0005-10",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 300
+        }
+      },
+      "result": {
+        "duration": "PT300S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0040",
+      "timestamp": "2024-03-27T11:00:00Z",
+      "stored": "2024-03-27T11:00:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0016"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r10",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Introduction to Python"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0016-26",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 371
+        }
+      },
+      "result": {
+        "duration": "PT371S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0041",
+      "timestamp": "2024-03-14T14:07:00Z",
+      "stored": "2024-03-14T14:07:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0009"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r13",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Statistics for AI"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0009-13",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 107
+        }
+      },
+      "result": {
+        "duration": "PT107S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0042",
+      "timestamp": "2024-03-05T13:02:00Z",
+      "stored": "2024-03-05T13:02:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0018"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r12",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Data Science with Pandas"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0018-04",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 345
+        }
+      },
+      "result": {
+        "duration": "PT345S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0043",
+      "timestamp": "2024-03-22T10:49:00Z",
+      "stored": "2024-03-22T10:49:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0002"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r21",
+        "objectType": "Activity",
+        "definition": {
+          "type": "QUIZ",
+          "name": {
+            "en-US": "ML Quiz: Concepts"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0002-21",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 446
+        }
+      },
+      "result": {
+        "duration": "PT446S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0044",
+      "timestamp": "2024-03-26T16:56:00Z",
+      "stored": "2024-03-26T16:56:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0005"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r30",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "AI Ethics Course"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0005-25",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 452
+        }
+      },
+      "result": {
+        "duration": "PT452S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0045",
+      "timestamp": "2024-03-14T16:55:00Z",
+      "stored": "2024-03-14T16:55:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0006"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r41",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Computer Vision Intro"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0006-13",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 284
+        }
+      },
+      "result": {
+        "duration": "PT284S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0046",
+      "timestamp": "2024-03-02T16:14:00Z",
+      "stored": "2024-03-02T16:14:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0006"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r13",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Statistics for AI"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0006-01",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 234
+        }
+      },
+      "result": {
+        "duration": "PT234S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0047",
+      "timestamp": "2024-03-22T11:21:00Z",
+      "stored": "2024-03-22T11:21:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0012"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0012-21",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 315
+        }
+      },
+      "result": {
+        "duration": "PT315S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0048",
+      "timestamp": "2024-03-27T13:01:00Z",
+      "stored": "2024-03-27T13:01:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0009"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r14",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Deep Learning Fundamentals"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0009-26",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 148
+        }
+      },
+      "result": {
+        "duration": "PT148S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0049",
+      "timestamp": "2024-03-14T12:50:00Z",
+      "stored": "2024-03-14T12:50:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0006"
+        }
+      },
+      "verb": {
+        "id": "http://id.tincanapi.com/verb/searched",
+        "display": {
+          "en-US": "searched"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r31",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "xAPI Basics Course"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0006-13",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "SEARCHED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 351
+        }
+      },
+      "result": {
+        "duration": "PT351S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0050",
+      "timestamp": "2024-03-19T11:02:00Z",
+      "stored": "2024-03-19T11:02:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0020"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r13",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Statistics for AI"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0020-18",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 476
+        }
+      },
+      "result": {
+        "duration": "PT476S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0051",
+      "timestamp": "2024-03-24T15:12:00Z",
+      "stored": "2024-03-24T15:12:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0017"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r70",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "Data Visualisation"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0017-23",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 402
+        }
+      },
+      "result": {
+        "duration": "PT402S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0052",
+      "timestamp": "2024-03-22T16:46:00Z",
+      "stored": "2024-03-22T16:46:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0003"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r41",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Computer Vision Intro"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0003-21",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 337
+        }
+      },
+      "result": {
+        "duration": "PT337S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0053",
+      "timestamp": "2024-03-10T13:12:00Z",
+      "stored": "2024-03-10T13:12:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0010"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r41",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Computer Vision Intro"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0010-09",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 460
+        }
+      },
+      "result": {
+        "duration": "PT460S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0054",
+      "timestamp": "2024-03-27T08:18:00Z",
+      "stored": "2024-03-27T08:18:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0006"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r40",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Natural Language Processing"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0006-26",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 245
+        }
+      },
+      "result": {
+        "duration": "PT245S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0055",
+      "timestamp": "2024-03-15T15:32:00Z",
+      "stored": "2024-03-15T15:32:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0019"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r41",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Computer Vision Intro"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0019-14",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 514
+        }
+      },
+      "result": {
+        "duration": "PT514S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0056",
+      "timestamp": "2024-03-27T18:15:00Z",
+      "stored": "2024-03-27T18:15:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0003"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r14",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Deep Learning Fundamentals"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0003-26",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 347
+        }
+      },
+      "result": {
+        "duration": "PT347S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0057",
+      "timestamp": "2024-03-16T14:49:00Z",
+      "stored": "2024-03-16T14:49:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0007"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r10",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Introduction to Python"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0007-15",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 104
+        }
+      },
+      "result": {
+        "duration": "PT104S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0058",
+      "timestamp": "2024-03-13T13:15:00Z",
+      "stored": "2024-03-13T13:15:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0014"
+        }
+      },
+      "verb": {
+        "id": "http://id.tincanapi.com/verb/searched",
+        "display": {
+          "en-US": "searched"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r71",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Tableau for Analysts"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0014-12",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "SEARCHED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 181
+        }
+      },
+      "result": {
+        "duration": "PT181S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0059",
+      "timestamp": "2024-03-17T13:35:00Z",
+      "stored": "2024-03-17T13:35:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0004"
+        }
+      },
+      "verb": {
+        "id": "http://id.tincanapi.com/verb/searched",
+        "display": {
+          "en-US": "searched"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r30",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "AI Ethics Course"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0004-16",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "SEARCHED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 285
+        }
+      },
+      "result": {
+        "duration": "PT285S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0060",
+      "timestamp": "2024-03-18T14:48:00Z",
+      "stored": "2024-03-18T14:48:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0015"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r13",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Statistics for AI"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0015-17",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 483
+        }
+      },
+      "result": {
+        "duration": "PT483S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0061",
+      "timestamp": "2024-03-06T15:30:00Z",
+      "stored": "2024-03-06T15:30:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0017"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r14",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Deep Learning Fundamentals"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0017-05",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 490
+        }
+      },
+      "result": {
+        "duration": "PT490S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0062",
+      "timestamp": "2024-03-17T13:15:00Z",
+      "stored": "2024-03-17T13:15:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0008"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r31",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "xAPI Basics Course"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0008-16",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 311
+        }
+      },
+      "result": {
+        "duration": "PT311S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0063",
+      "timestamp": "2024-03-11T17:05:00Z",
+      "stored": "2024-03-11T17:05:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0003"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r30",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "AI Ethics Course"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0003-10",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 171
+        }
+      },
+      "result": {
+        "duration": "PT171S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0064",
+      "timestamp": "2024-03-03T12:21:00Z",
+      "stored": "2024-03-03T12:21:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0008"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0008-02",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 585
+        }
+      },
+      "result": {
+        "duration": "PT585S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0065",
+      "timestamp": "2024-03-25T14:44:00Z",
+      "stored": "2024-03-25T14:44:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0014"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r13",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Statistics for AI"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0014-24",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 50
+        }
+      },
+      "result": {
+        "duration": "PT50S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0066",
+      "timestamp": "2024-03-13T16:53:00Z",
+      "stored": "2024-03-13T16:53:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0013"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r12",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Data Science with Pandas"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0013-12",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 459
+        }
+      },
+      "result": {
+        "duration": "PT459S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0067",
+      "timestamp": "2024-03-09T13:01:00Z",
+      "stored": "2024-03-09T13:01:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0018"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r30",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "AI Ethics Course"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0018-08",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 428
+        }
+      },
+      "result": {
+        "duration": "PT428S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0068",
+      "timestamp": "2024-03-20T13:58:00Z",
+      "stored": "2024-03-20T13:58:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0013"
+        }
+      },
+      "verb": {
+        "id": "http://id.tincanapi.com/verb/searched",
+        "display": {
+          "en-US": "searched"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r52",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "EU AI Act Overview"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0013-19",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "SEARCHED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 433
+        }
+      },
+      "result": {
+        "duration": "PT433S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0069",
+      "timestamp": "2024-03-05T17:11:00Z",
+      "stored": "2024-03-05T17:11:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0019"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r12",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Data Science with Pandas"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0019-04",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 81
+        }
+      },
+      "result": {
+        "duration": "PT81S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0070",
+      "timestamp": "2024-03-25T17:17:00Z",
+      "stored": "2024-03-25T17:17:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0013"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r13",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Statistics for AI"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0013-24",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c3"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 461
+        }
+      },
+      "result": {
+        "duration": "PT461S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0071",
+      "timestamp": "2024-03-08T14:49:00Z",
+      "stored": "2024-03-08T14:49:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0003"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r14",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Deep Learning Fundamentals"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0003-07",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c1"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 71
+        }
+      },
+      "result": {
+        "duration": "PT71S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0072",
+      "timestamp": "2024-03-08T10:42:00Z",
+      "stored": "2024-03-08T10:42:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0008"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r10",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Introduction to Python"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0008-07",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 147
+        }
+      },
+      "result": {
+        "duration": "PT147S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0073",
+      "timestamp": "2024-03-06T14:47:00Z",
+      "stored": "2024-03-06T14:47:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0007"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r12",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Data Science with Pandas"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0007-05",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 147
+        }
+      },
+      "result": {
+        "duration": "PT147S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0074",
+      "timestamp": "2024-03-19T15:24:00Z",
+      "stored": "2024-03-19T15:24:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0010"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r10",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Introduction to Python"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0010-18",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 436
+        }
+      },
+      "result": {
+        "duration": "PT436S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0075",
+      "timestamp": "2024-03-28T15:51:00Z",
+      "stored": "2024-03-28T15:51:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0003"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r30",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "AI Ethics Course"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0003-27",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c5"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 153
+        }
+      },
+      "result": {
+        "duration": "PT153S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0076",
+      "timestamp": "2024-03-03T13:21:00Z",
+      "stored": "2024-03-03T13:21:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0002"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r13",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Statistics for AI"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0002-02",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 42
+        }
+      },
+      "result": {
+        "duration": "PT42S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0077",
+      "timestamp": "2024-03-27T13:09:00Z",
+      "stored": "2024-03-27T13:09:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0016"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r12",
+        "objectType": "Activity",
+        "definition": {
+          "type": "VIDEO",
+          "name": {
+            "en-US": "Data Science with Pandas"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0016-26",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 475
+        }
+      },
+      "result": {
+        "duration": "PT475S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0078",
+      "timestamp": "2024-03-30T13:30:00Z",
+      "stored": "2024-03-30T13:30:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0017"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/opened",
+        "display": {
+          "en-US": "opened"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r31",
+        "objectType": "Activity",
+        "definition": {
+          "type": "COURSE",
+          "name": {
+            "en-US": "xAPI Basics Course"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0017-29",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "OPENED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 506
+        }
+      },
+      "result": {
+        "duration": "PT506S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0079",
+      "timestamp": "2024-03-03T12:28:00Z",
+      "stored": "2024-03-03T12:28:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0019"
+        }
+      },
+      "verb": {
+        "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+        "display": {
+          "en-US": "accessed"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r11",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "Machine Learning Basics"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0019-02",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c4"
+            }
+          ],
+          "category": [
+            {
+              "id": "ACCESSED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 279
+        }
+      },
+      "result": {
+        "duration": "PT279S"
+      },
+      "authority": {
+        "name": "Becomino/Inokufu"
+      }
+    },
+    {
+      "id": "stmt-becomino-0080",
+      "timestamp": "2024-03-16T16:11:00Z",
+      "stored": "2024-03-16T16:11:00Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "urn:becomino:learner",
+          "name": "anon_learner_0019"
+        }
+      },
+      "verb": {
+        "id": "http://id.tincanapi.com/verb/searched",
+        "display": {
+          "en-US": "searched"
+        }
+      },
+      "object": {
+        "id": "urn:becomino:resource:r50",
+        "objectType": "Activity",
+        "definition": {
+          "type": "DOCUMENT",
+          "name": {
+            "en-US": "GDPR for Developers"
+          }
+        }
+      },
+      "context": {
+        "registration": "session-0019-15",
+        "contextActivities": {
+          "grouping": [
+            {
+              "id": "urn:becomino:collection:c2"
+            }
+          ],
+          "category": [
+            {
+              "id": "SEARCHED"
+            }
+          ]
+        },
+        "extensions": {
+          "isViewerAuthor": false,
+          "isViewerAnonymous": true,
+          "durationRaw": 529
+        }
+      },
+      "result": {
+        "duration": "PT529S"
       },
       "authority": {
         "name": "Becomino/Inokufu"
@@ -45,6 +4324,7 @@
   "_meta": {
     "source": "Inokufu/Becomino",
     "schema_version": "becomino_json_v1",
-    "anonymized": true
+    "anonymized": true,
+    "statement_count": 80
   }
 }

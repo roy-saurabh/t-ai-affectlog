@@ -90,28 +90,28 @@ export default function Home() {
             icon={Database}
             title="Validate Dataset"
             desc="Check CSV schema against Maskott / xAPI spec"
-            to="/datasets"
+            to="/app/datasets"
             color="bg-sky-600"
           />
           <QuickAction
             icon={FlaskConical}
             title="Run Audit"
             desc="Full pipeline: profile → metrics → compliance"
-            to="/audit"
+            to="/app/audit"
             color="bg-indigo-600"
           />
           <QuickAction
             icon={ShieldCheck}
             title="Compliance"
             desc="EU AI Act Annex IV, GDPR, SOP, JSON-LD"
-            to="/compliance"
+            to="/app/compliance"
             color="bg-emerald-600"
           />
           <QuickAction
             icon={Cpu}
             title="Models"
             desc="Register adapters: sklearn, ONNX, PyTorch, TF"
-            to="/models"
+            to="/app/models"
             color="bg-violet-600"
           />
         </div>
@@ -121,7 +121,7 @@ export default function Home() {
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="section-title mb-0">Recent Audit Runs</h2>
-          <a href="/audit" className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+          <a href="/app/audit" className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
             Run new audit <ArrowRight size={12} />
           </a>
         </div>

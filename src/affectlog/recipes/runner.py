@@ -10,6 +10,7 @@ Stages:
 
 from __future__ import annotations
 
+import json
 import logging
 from pathlib import Path
 from typing import Any
@@ -123,9 +124,28 @@ def run_audit(
         s.meta["conversion_summary"] = summary
         tr_path = store.write_json("transform_report.json", summary)
         ctx.add_artifact("transform_report", tr_path)
+    elif ext == ".json":
+        # Convert JSON array/object (e.g. becomino {"statements": [...]}) → JSONL
+        normalized_path = run_dir / "normalized.jsonl"
+        with input_path.open(encoding="utf-8") as jf:
+            raw = json.load(jf)
+        statements = raw.get("statements", raw) if isinstance(raw, dict) else raw
+        count = 0
+        with normalized_path.open("w", encoding="utf-8") as out:
+            for stmt in statements:
+                out.write(json.dumps(stmt) + "\n")
+                count += 1
+        s.record_count_in = count
+        s.record_count_out = count
+        tr_path = store.write_json(
+            "transform_report.json",
+            {"source_format": recipe.name, "statements_extracted": count},
+        )
+        ctx.add_artifact("transform_report", tr_path)
+        s.meta["note"] = f"Extracted {count} statements from JSON to JSONL."
     else:
-        normalized_path = input_path  # Already normalized
-        s.meta["note"] = "Input already normalized; skipping CSV conversion."
+        normalized_path = input_path  # Already normalized (e.g. .jsonl)
+        s.meta["note"] = f"Input already normalized ({ext}); skipping conversion."
     ctx.add_artifact("normalized_jsonl", normalized_path)
     s.output_artifact = str(normalized_path)
     s.finish("ok")
@@ -293,7 +313,10 @@ def run_audit(
             "max_timestamp": temp_stats.get("max_timestamp"),
             "span_days": temp_stats.get("span_days"),
             "unique_days": temp_stats.get("unique_days"),
+            "top_10_days": temp_stats.get("top_10_days", []),
+            "hour_distribution": temp_stats.get("hour_distribution", {}),
         },
+        "has_jsonld": recipe.compliance.export_jsonld,
         "artifacts": ctx.artifacts,
     }
     dash_path = store.write_json("dashboard_payload.json", dashboard)
