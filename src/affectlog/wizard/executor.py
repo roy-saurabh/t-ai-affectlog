@@ -72,19 +72,27 @@ def _resolve_dataset_path(dataset_path: str, run_dir: Path) -> Path:
         suffix = Path(parsed.path).suffix or ".csv"
         dest = run_dir / f"input{suffix}"
 
-        # Connect directly to the pre-resolved IP — no DNS re-lookup at request time
+        # Connect directly to the pre-resolved IP — no DNS re-lookup at request time.
+        # HTTPConnection is constructed with ip_str (validated IP) to prevent SSRF.
+        # For HTTPS, TLS is established via wrap_socket with server_hostname=host for
+        # correct SNI / cert verification; the ready socket is then injected so
+        # http.client never performs its own DNS lookup or TLS setup.
         conn: http.client.HTTPConnection | None = None
         try:
             raw_sock = socket.create_connection((ip_str, port), timeout=60)
             if parsed.scheme == "https":
                 ctx = ssl.create_default_context()
                 tls_sock = ctx.wrap_socket(raw_sock, server_hostname=host)
-                conn = http.client.HTTPSConnection(host, port=port, timeout=60)
+                conn = http.client.HTTPConnection(ip_str, port=port, timeout=60)
                 conn.sock = tls_sock
             else:
-                conn = http.client.HTTPConnection(host, port=port, timeout=60)
+                conn = http.client.HTTPConnection(ip_str, port=port, timeout=60)
                 conn.sock = raw_sock
-            conn.request("GET", path_qs, headers={"User-Agent": "AffectLog-Executor/1.0"})
+            conn.request(
+                "GET",
+                path_qs,
+                headers={"Host": host, "User-Agent": "AffectLog-Executor/1.0"},
+            )
             resp = conn.getresponse()
             if resp.status != 200:
                 raise ValueError(f"Remote server returned HTTP {resp.status}.")

@@ -7,8 +7,6 @@ Never store plaintext passwords; pepper is mixed in before hashing.
 
 from __future__ import annotations
 
-import hmac
-
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError, VerifyMismatchError
 
@@ -23,12 +21,12 @@ _ph = PasswordHasher(
 )
 
 
-def _peppered(password: str) -> str | bytes:
+def _peppered(password: str) -> str:
     pepper = get_settings().password_pepper
     if not pepper:
         return password
-    # HMAC-SHA256 as pepper MAC — Argon2id at hash_password() is the actual password KDF
-    return hmac.digest(pepper.encode(), password.encode(), "sha256")
+    # Pepper is prepended as a server-side secret; Argon2id is the actual KDF.
+    return f"{pepper}:{password}"
 
 
 def hash_password(plain: str) -> str:

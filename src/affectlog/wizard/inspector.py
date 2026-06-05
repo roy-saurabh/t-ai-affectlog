@@ -8,7 +8,6 @@ import http.client
 import ipaddress
 import json
 import logging
-import os
 import socket
 import ssl
 import tempfile
@@ -40,27 +39,6 @@ _PRIVATE_NETWORKS: tuple[ipaddress.IPv4Network | ipaddress.IPv6Network, ...] = (
     ipaddress.ip_network("fe80::/10"),
 )
 
-
-_SAFE_URL_SUFFIXES = frozenset(
-    {
-        ".csv",
-        ".tsv",
-        ".json",
-        ".jsonl",
-        ".ndjson",
-        ".parquet",
-        ".pq",
-        ".pkl",
-        ".joblib",
-        ".onnx",
-        ".pt",
-        ".pth",
-        ".h5",
-        ".keras",
-        ".txt",
-        ".tmp",
-    }
-)
 
 
 def _is_url(s: str) -> bool:
@@ -106,20 +84,26 @@ def _fetch_url_to_tempfile(url: str) -> tuple[Path, int] | tuple[None, str]:
 
     conn: http.client.HTTPConnection | None = None
     try:
-        # Connect directly to the pre-resolved IP — no DNS re-lookup at request time
+        # Connect directly to the pre-resolved IP — no DNS re-lookup at request time.
+        # HTTPConnection is constructed with ip_str (validated IP, not user-supplied host)
+        # to prevent SSRF. For HTTPS the TLS handshake uses server_hostname=host for
+        # correct SNI / certificate verification; the socket is then injected so
+        # http.client never performs its own DNS lookup or TLS setup.
         raw_sock = socket.create_connection((ip_str, port), timeout=30)
         if parsed.scheme == "https":
             ctx = ssl.create_default_context()
-            # server_hostname ensures TLS certificate is verified for the original
-            # hostname (SNI), not the IP — required for correct certificate validation
             tls_sock = ctx.wrap_socket(raw_sock, server_hostname=host)
-            conn = http.client.HTTPSConnection(host, port=port, timeout=30)
+            conn = http.client.HTTPConnection(ip_str, port=port, timeout=30)
             conn.sock = tls_sock
         else:
-            conn = http.client.HTTPConnection(host, port=port, timeout=30)
+            conn = http.client.HTTPConnection(ip_str, port=port, timeout=30)
             conn.sock = raw_sock
 
-        conn.request("GET", path_qs, headers={"User-Agent": "AffectLog-Inspector/1.0"})
+        conn.request(
+            "GET",
+            path_qs,
+            headers={"Host": host, "User-Agent": "AffectLog-Inspector/1.0"},
+        )
         resp = conn.getresponse()
 
         # Do NOT follow redirects — redirect targets bypass the SSRF validation above
@@ -138,9 +122,7 @@ def _fetch_url_to_tempfile(url: str) -> tuple[Path, int] | tuple[None, str]:
         if len(data) > _URL_SIZE_LIMIT:
             return None, "Remote file exceeds 50 MB limit."
 
-        suffix_raw = Path(parsed.path).suffix.lower() or ".tmp"
-        suffix = suffix_raw if suffix_raw in _SAFE_URL_SUFFIXES else ".tmp"
-        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tf:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".tmp") as tf:
             tf.write(data)
             tf.flush()
             return Path(tf.name), len(data)
@@ -386,27 +368,27 @@ def inspect(req: InspectInputRequest) -> InspectInputResponse:
         suffix = Path(urlparse(path_str).path).suffix.lower() or path.suffix.lower()
     else:
         _s = get_settings()
-        _allowed = [
-            str(Path(_s.data_dir).resolve()) + os.sep,
-            str(Path(_s.runs_dir).resolve()) + os.sep,
-            str(Path(tempfile.gettempdir()).resolve()) + os.sep,
+        _allowed_bases = [
+            Path(_s.data_dir).resolve(),
+            Path(_s.runs_dir).resolve(),
+            Path(tempfile.gettempdir()).resolve(),
         ]
-        canon = os.path.realpath(path_str)
-        if not any(canon.startswith(a) for a in _allowed):
+        resolved = Path(path_str).resolve()
+        if not any(resolved.is_relative_to(base) for base in _allowed_bases):
             return InspectInputResponse(
                 is_supported=False,
                 unsupported_reason="Dataset path is outside the allowed directories.",
             )
-        path = Path(canon)
+        path = resolved
         if not path.exists():
             return InspectInputResponse(
                 is_supported=False,
-                unsupported_reason=f"File not found: {path_str}",
+                unsupported_reason="File not found.",
             )
         if not path.is_file():
             return InspectInputResponse(
                 is_supported=False,
-                unsupported_reason=f"Path is not a file: {path_str}",
+                unsupported_reason="Path is not a file.",
             )
         suffix = path.suffix.lower()
 

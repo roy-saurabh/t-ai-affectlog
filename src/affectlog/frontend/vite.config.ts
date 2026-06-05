@@ -6,14 +6,9 @@ export default defineConfig({
 
   server: {
     proxy: {
-      // Strip /api prefix before forwarding — mirrors nginx rewrite in production.
-      // /api/docs → localhost:8000/docs  |  /api/v1/* → localhost:8000/v1/*
-      "/api": {
-        target: "http://localhost:8000",
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
+      // Forward /api/* directly to FastAPI — routes include the /api prefix.
+      "/api": { target: "http://localhost:8000" },
       // FastAPI's swagger UI fetches /openapi.json relative to the browser origin.
-      // Proxy it so the spec is served correctly through the Vite dev server.
       "/openapi.json": { target: "http://localhost:8000" },
       // FastAPI OAuth2 redirect (used by swagger UI try-it auth flow)
       "/docs/oauth2-redirect": { target: "http://localhost:8000" },
