@@ -1,242 +1,261 @@
-# AffectLog Visual QA Checklist
+# AffectLog — Visual QA Checklist
+## Dark Pastel Premium UI/UX (v3)
 
 Pre-launch visual quality review. Each item must pass before shipping the UI.
 
 ---
 
-## 1. Typography Consistency
+## 1. TYPOGRAPHY
 
-- [ ] Inter Variable is loaded and applied globally (`font-sans` on `html`)
-- [ ] JetBrains Mono is used only for: API names, code snippets, schema names, metric tags, terminal output
-- [ ] Hero headlines use `text-display-xl` or `text-h1` with negative tracking (`-0.03em` or tighter)
-- [ ] Body text uses `text-body` (16px) or `text-body-lg` (18px) with `leading-relaxed`
-- [ ] Small labels use `text-caption` (12px) or `text-small` (14px)
-- [ ] No raw pixel font sizes (`style={{ fontSize: "37px" }}`) — use scale utilities or `clamp()`
-- [ ] `stat-label` utility applied to uppercase tracking labels
-- [ ] `metric-big` utility applied to large numeric values
-- [ ] All gradient text uses `gradient-text-trust` or `gradient-text-cyan` classes
-
----
-
-## 2. Spacing Consistency
-
-- [ ] Marketing section padding: `py-24 md:py-28 lg:py-32` (112–128px)
-- [ ] Container max-widths: `max-w-7xl` (wide), `max-w-4xl` (tight), `max-w-3xl` (editorial)
-- [ ] Section padding is `section-py` not ad-hoc values
-- [ ] 8px base grid respected (use Tailwind spacing scale, not arbitrary `px-[37px]`)
-- [ ] Card padding: `p-5` (standard), `p-6` (glass), `p-8` (feature cards)
-- [ ] No text block wider than `760px` (max-content) unless deliberate layout
+- [ ] Inter variable font loads correctly on all pages (check DevTools → Network → Fonts)
+- [ ] `font-feature-settings: "cv02","cv03","cv04","cv11"` applied globally
+- [ ] `font-optical-sizing: auto` applied to html element
+- [ ] `-webkit-font-smoothing: antialiased` applied globally
+- [ ] Hero headline renders at correct size (clamp between 2.6rem–4.25rem)
+- [ ] No text renders below 11px on mobile
+- [ ] Heading hierarchy is semantic (one H1 per page)
+- [ ] Line height is comfortable for all body copy (1.625+)
+- [ ] Letter spacing is correct on hero headings (−0.035em range)
+- [ ] Mono font (JetBrains Mono) used only for: API endpoints, schema names, metric labels, code snippets, audit IDs
 
 ---
 
-## 3. Color Consistency
+## 2. COLOR — DARK PASTEL SYSTEM
 
-- [ ] Dark backgrounds: `#050814` (darkest), `#080D1F` (raised), `#0C1328` (elevated)
-- [ ] No arbitrary hex colors that don't match the design token palette
-- [ ] Accent colors used semantically:
-  - Cyan `#22D3EE`: primary accent, data, xAPI
-  - Violet `#8B5CF6`: model/explainability
-  - Green `#10B981`: privacy, compliance, success
-  - Blue `#2563EB`: primary buttons
-  - Amber `#F59E0B`: warnings only
-  - Red `#EF4444`: errors and risk only
-- [ ] Border colors use `rgba(148,163,184,0.12–0.20)` not hardcoded `#374151`
-- [ ] No generic purple, blue, or pink not in the token palette
-
----
-
-## 4. Mobile Responsiveness
-
-- [ ] Hero copy stacks above visual on `< lg` breakpoints
-- [ ] Hero CTAs wrap to two rows on mobile (no overflow)
-- [ ] All marketing sections have appropriate mobile padding (`py-16 md:py-24`)
-- [ ] Card grids: 1 column on mobile, 2 on `sm`, 3–4 on `lg`+
-- [ ] Footer: accordion on mobile, grid on `md`+
-- [ ] Header: drawer navigation on `< lg`
-- [ ] No horizontal scroll on any viewport (test with DevTools device emulation)
-- [ ] CTA buttons: `full-width` or `flex-wrap` on mobile, not cut off
-- [ ] Tables convert to stacked cards or scroll gracefully on mobile
-- [ ] Diagrams and SVG visuals: `w-full` responsive, not fixed pixel widths
+- [ ] No raw saturated colors remain (`#22d3ee`, `#10b981`, `#8B5CF6`, `#2563EB`)
+- [ ] Primary CTA uses pastel gradient: `#93C5FD → #67E8F9 → #A7F3D0`
+- [ ] Primary CTA text is dark ink (`#08111F`), not white
+- [ ] Secondary CTA uses glass/outline style with pastel border
+- [ ] Ghost buttons use muted text color `#8391A8`
+- [ ] Focus ring is `rgba(103,232,249,0.70)` pastel cyan, 2px, 2px offset
+- [ ] Body background is `#070B1A` (not `#050814`)
+- [ ] Alternating sections use `#070B1A` / `#0B1224` — never pure black
+- [ ] Text hierarchy: `#F8FAFC` → `#D8E0EE` → `#AEBBD0` → `#8391A8` → `#6F7D96`
+- [ ] Badge colors match semantic mappings (privacy=green, data=blue, model=violet)
+- [ ] Charts use pastel series colors (cyan, violet, green, blue, pink)
 
 ---
 
-## 5. Header Behavior
+## 3. SPACING
 
-- [ ] Header is `fixed` on all marketing pages
-- [ ] Transparent over hero section (no background when `scrollY === 0`)
-- [ ] Glass/blur surface after scroll (`bg-bg-950/92 backdrop-blur-xl`)
-- [ ] Height: 72px desktop, 64px mobile
-- [ ] Logo is visible in both transparent and scrolled states
-- [ ] Mega menus open on hover/focus, close on mouse leave or Escape
-- [ ] Mobile drawer opens from right, full-screen overlay
-- [ ] Active page is visually highlighted in nav
-- [ ] Skip-to-content link present and functional (keyboard accessibility)
-- [ ] No layout shift when header transitions states
+- [ ] Marketing sections: minimum 7rem top/bottom padding (desktop: 9rem+)
+- [ ] Hero top padding accounts for 72px fixed header
+- [ ] Container max-width: 1440px for full-hd, 1280px for wide
+- [ ] Cards have 1.25rem–1.5rem internal padding (desktop), 1rem (mobile)
+- [ ] Console screens: 24px–32px gutters
+- [ ] No cramped elements within cards
 
 ---
 
-## 6. Footer Behavior
+## 4. HERO QUALITY
 
-- [ ] CTA band renders above the main footer columns
-- [ ] CTA band headline and buttons are legible and not cut off
-- [ ] EU funding attribution is present
-- [ ] All 6 footer columns render correctly on desktop
-- [ ] Mobile accordion: columns are collapsed by default, expand on tap
-- [ ] External links have `target="_blank" rel="noopener noreferrer"`
-- [ ] External links have `ExternalLink` icon (11px, opacity 30%)
-- [ ] Bottom bar license text is present
-- [ ] "Raw datasets never committed" disclaimer is present
-
----
-
-## 7. CTA Visibility and Quality
-
-- [ ] Every marketing page has at least 3 CTAs: hero, mid-page, final band
-- [ ] Hero CTA is a full `bg-gradient` button (not just a link)
-- [ ] CTA labels are specific: "Run Guided Assessment" not "Get Started"
-- [ ] Forbidden CTA labels: "Learn more", "Get started", "Click here", "Submit"
-- [ ] Hover state: button lifts `-translate-y-0.5` and shadow intensifies
-- [ ] Focus-visible ring on all interactive elements
-- [ ] Loading state on form submit buttons (`<Loader2 animate-spin />`)
-- [ ] CTABand component used for final section on every marketing page
+- [ ] Every marketing page has a unique, custom hero visual (SVG/React)
+- [ ] Hero visuals reference real AffectLog concepts (not generic icons)
+- [ ] Hero visuals have subtle animation (beam flow, node pulse, float)
+- [ ] `prefers-reduced-motion` disables all hero animations
+- [ ] Hero visual is visible on tablet (not hidden)
+- [ ] Hero visual is simplified (not hidden) on mobile
+- [ ] Hero eyebrow pill appears above headline
+- [ ] Hero subheadline width ≤ 680px (desktop)
+- [ ] Hero has three CTAs: primary, secondary, technical/tertiary
 
 ---
 
-## 8. Animation Restraint
+## 5. PAGE-SPECIFIC QUALITY
 
-- [ ] `prefers-reduced-motion` respected via CSS `@media (prefers-reduced-motion: reduce)`
-- [ ] No bouncing or repeating decorative animations visible at rest
-- [ ] Animated beams: `beamTravel` keyframe at `opacity: 0.4–0.9` (never fully opaque)
-- [ ] Glow orbs: `opacity: 0.3–0.5` (subtle, not intrusive)
-- [ ] Page scroll animations: `FadeUp` with `whileInView` and `viewport={{ once: true }}`
-- [ ] Transition durations: `150–250ms` for micro-interactions, `400–600ms` for reveals
-- [ ] No `infinite` animations that distract from reading content
-- [ ] Grid backgrounds: opacity `0.025–0.04` (barely visible texture)
-- [ ] No 3D CSS transforms or perspective effects
+### Homepage `/`
+- [ ] "Request Managed Access" primary CTA is visible in hero
+- [ ] "Deploy Community Edition" secondary CTA is visible
+- [ ] HeroDataSpaceVisual renders with animated beams
+- [ ] Trust badge strip appears below CTAs
+- [ ] Capability grid shows 12 items in 4-column layout
+- [ ] Edition split (Community vs Managed) shows two cards
+- [ ] Ecosystem section shows CARiSMA / LOLA / AffectLog
+- [ ] Final CTA band appears before footer
 
----
+### Security `/security`
+- [ ] SecurityShieldVisual renders
+- [ ] Privacy principles listed as cards
+- [ ] No mention of raw data export being allowed
 
-## 9. Accessibility
+### Dataset Audit `/dataset-audit`
+- [ ] xAPI event stream visual is present
+- [ ] "Run Dataset Audit" primary CTA is visible
 
-- [ ] All page landmarks: `<header>`, `<main id="main-content">`, `<footer>`, `<nav aria-label>`
-- [ ] Heading hierarchy: one `<h1>` per page, logical `h2–h4` nesting
-- [ ] All icons that are decorative: `aria-hidden="true"`
-- [ ] All icons that convey meaning: `aria-label` on parent or adjacent text
-- [ ] Color contrast: body text (#CBD5E1 on #080D1F) must pass WCAG AA (4.5:1 minimum)
-- [ ] Focus rings visible on all interactive elements
-- [ ] Form labels: every `<input>` has associated `<label htmlFor>`
-- [ ] Form error messages: `aria-describedby` linking error text to input
-- [ ] Checkbox/radio: proper `aria-required`, `aria-checked` where applicable
-- [ ] SVG visuals: `role="img"` and `aria-label` describing the diagram
-- [ ] Mobile menu: `aria-expanded`, `aria-controls`, `aria-label` on hamburger button
-- [ ] No text-in-image without DOM duplicate
+### Guided Assessment `/guided-assessment`
+- [ ] GuidedWizardScopeVisual renders
+- [ ] Scope matrix shows available/needs-input/out-of-scope categories
 
----
+### Compliance Exports `/compliance-exports`
+- [ ] ComplianceJsonLdGraphVisual renders
+- [ ] JSON-LD mentioned at least once
 
-## 10. Chart and Data Readability
-
-- [ ] All Recharts charts have proper `aria-label` or adjacent text description
-- [ ] Chart colors use the token palette (cyan, violet, emerald, amber, red)
-- [ ] Chart labels are legible at 14px minimum
-- [ ] Empty state is shown when no data is available (not blank space)
-- [ ] Loading skeleton shown while data is fetching
-- [ ] Metric cards show `—` for null/undefined values, never empty space
-- [ ] Gini bar fills animate on mount (`transition-all duration-700`)
+### Model Assessment `/model-assessment`
+- [ ] ModelExplanationGraphVisual renders
+- [ ] "Register a Model" or "View Model Adapters" CTA visible
 
 ---
 
-## 11. Empty / Loading / Error States
+## 6. CTA CLARITY
 
-- [ ] All async components show skeleton loader (`.skeleton` class)
-- [ ] Empty dataset list: shows CTA to upload or use synthetic sample
-- [ ] Empty audit runs list: shows wizard CTA
-- [ ] API error: shows error state with retry option (not blank page)
-- [ ] Form validation: inline errors appear on blur/submit
-- [ ] Form success: clear success confirmation (not just button going to disabled)
-
----
-
-## 12. Forbidden Content on Public Pages
-
-- [ ] No "D3.7", "D3.8", or any deliverable identifier visible
-- [ ] No "TRL" (Technology Readiness Level) references
-- [ ] No raw GitHub issue URLs in visible copy
-- [ ] No "lorem ipsum" or placeholder text
-- [ ] No "Coming soon" or "TODO" in rendered copy
-- [ ] No internal project jargon: "ALT-AI", "WP3", "Consortium"
-- [ ] No broken external links (verify key links work)
+- [ ] Every marketing page has ≥1 primary CTA in hero
+- [ ] Every marketing page has a mid-page CTA or CTA band
+- [ ] Every marketing page ends with a final CTA section
+- [ ] CTA labels are specific (not "Learn more" alone)
+- [ ] CTAs link to correct routes (`/request-access`, `/community`, `/guided-assessment`)
+- [ ] CTAs have accessible names (not just "→")
 
 ---
 
-## 13. Cross-Browser Checks
+## 7. RESPONSIVE BEHAVIOR (check at 1440 / 1280 / 1024 / 768 / 390 / 360px)
 
-- [ ] Chrome / Chromium latest
-- [ ] Firefox latest
-- [ ] Safari 16+ (macOS and iOS)
-- [ ] Edge latest
-- [ ] Mobile Safari (iOS 16+)
-- [ ] Chrome Android
-
-Key checks:
-- [ ] `backdrop-filter: blur()` fallback tested on Firefox
-- [ ] `-webkit-text-fill-color: transparent` gradient text works on Safari
-- [ ] CSS custom properties (`var(--bg-950)`) resolve correctly
-- [ ] Animations: no jank on 60fps scroll
-- [ ] Webfonts: Inter loads before FCP (no FOUT)
+- [ ] No horizontal overflow at any breakpoint
+- [ ] Hero copy and visual stack correctly on tablet/mobile
+- [ ] Navigation collapses to hamburger at <1024px
+- [ ] Mobile drawer opens from the right, full height
+- [ ] Mobile drawer has CTAs in footer
+- [ ] Mobile drawer closes on link click
+- [ ] Cards become single-column on mobile
+- [ ] CTA buttons become full-width or 2-column on mobile
+- [ ] Footer links are legible on mobile
+- [ ] Charts remain readable or show simplified mobile variant
 
 ---
 
-## 14. Performance (Local Baseline)
+## 8. MOBILE DRAWER
 
-- [ ] Homepage LCP < 2.5s on localhost (Chrome DevTools, throttled CPU 4x)
-- [ ] No layout shift (CLS = 0) on homepage hero section
-- [ ] SVG visuals are inline or small — no unoptimized raster images
-- [ ] Lazy-loaded pages via `React.lazy()` — confirmed in Network panel
-- [ ] No synchronous imports of heavy libraries in critical path
-- [ ] Framer Motion tree-shaken (only used components imported)
-- [ ] No `console.error` or `console.warn` in browser devtools
-- [ ] No TypeScript compile errors (`npm run typecheck` passes)
-
----
-
-## 15. Content Checklist
-
-- [ ] Home page: headline, subheadline, 3+ CTAs, trust bar, capability grid, workflow, ecosystem, developer section, final CTA
-- [ ] Community page: hero, included features, comparison table, contribution paths, final CTA
-- [ ] Managed Cloud page: hero, why managed, onboarding flow, final CTA
-- [ ] Pricing page: hero, 4 tier cards, comparison table, final CTA
-- [ ] Security page: hero, 6 security pillars, privacy-by-default, disclosure, final CTA
-- [ ] Developers page: hero, quickstart code, contribution types, good first issues, final CTA
-- [ ] Self-host page: hero, requirements, quick setup steps, security hardening, final CTA
-- [ ] Request Access page: 3-step form, deployment choice, org details, requirements, success state
-- [ ] Product page: hero, 7-layer stack, formats, guardrails, final CTA
-- [ ] Guided Assessment page: hero, 8 wizard steps, why guided, final CTA
-- [ ] Dataset Audit page: hero, xAPI workflow, metrics gallery, output artifacts, final CTA
-- [ ] Model Assessment page: hero, adapters, guardrails, final CTA
-- [ ] Compliance Exports page: hero, artifact stack, JSON-LD graph, limitations, final CTA
-- [ ] Ecosystem page: hero, lifecycle visual, 3 tools, PDC interop, final CTA
-- [ ] OpenAPI page: hero, API categories, auth, try locally, final CTA
-- [ ] Docs page: hero, 8 doc cards, 6 quickstart paths, final CTA
-- [ ] App dashboard: greeting, 4 metric cards, quick actions, recent runs, capability summary
+- [ ] Hamburger button visible and labeled
+- [ ] Drawer opens with spring animation
+- [ ] Drawer background is dark pastel (`#0B1224`)
+- [ ] All nav sections are collapsible within drawer
+- [ ] "Request Managed Access" CTA present in drawer footer
+- [ ] Close button labeled and functional
+- [ ] Body scroll locked while drawer is open
 
 ---
 
-## Running Checks
+## 9. CHART READABILITY
+
+- [ ] Dark chart backgrounds (no white chart panels)
+- [ ] Pastel series colors (cyan, violet, green, blue, pink) applied
+- [ ] Gridlines are subtle (opacity ~0.08–0.12)
+- [ ] Axis labels readable (color ≥ `#8391A8`)
+- [ ] Tooltips use dark glass style
+- [ ] Chart titles concise and precise
+- [ ] Lorenz curve (Gini) includes "What this means" explanation
+- [ ] Coverage@K includes K values and explanation
+- [ ] PII heatmap shows action taken (hash / redact / suppress)
+
+---
+
+## 10. FORM USABILITY
+
+- [ ] All inputs have visible labels (not placeholder-as-label)
+- [ ] Required vs optional clearly indicated
+- [ ] Focus ring visible on inputs (pastel cyan)
+- [ ] Error messages linked to fields via `aria-describedby`
+- [ ] Error text is specific and actionable
+- [ ] Long forms are multi-step, not a single scroll
+- [ ] Privacy note present on request access form
+- [ ] Success state shows clear next steps
+
+---
+
+## 11. EMPTY STATES
+
+- [ ] Dataset list empty state has upload/sample action
+- [ ] Audit run empty state has "Start Guided Assessment" action
+- [ ] Model list empty state has "Register a Model" action
+- [ ] Admin queue empty state is legible and informative
+- [ ] Empty states are not plain gray boxes
+
+---
+
+## 12. LOADING STATES
+
+- [ ] Skeleton cards use pastel shimmer animation (not white flash)
+- [ ] Long audit jobs show progress, not indefinite spinner
+- [ ] Heavy dashboard sections show skeletons before data
+- [ ] `prefers-reduced-motion` stops shimmer animations
+
+---
+
+## 13. ERROR STATES
+
+- [ ] Network error shows: what happened, why, how to fix
+- [ ] Validation errors are field-specific (not toast-only)
+- [ ] 404 page has "Go home" and docs links
+- [ ] Permission error shows clear explanation
+
+---
+
+## 14. ACCESSIBILITY
+
+- [ ] WCAG AA contrast for all text on dark backgrounds
+- [ ] Skip-to-content link present and functional
+- [ ] All images have alt text (or `aria-hidden` if decorative)
+- [ ] SVG hero visuals have `role="img"` and `aria-label`
+- [ ] Keyboard navigation works (Tab, Shift+Tab, Enter, Escape)
+- [ ] Focus ring visible in keyboard navigation mode
+- [ ] Form errors linked to fields via aria
+- [ ] `prefers-reduced-motion` respected globally
+- [ ] No color-only information (icons + text + color combined)
+- [ ] Buttons have accessible names
+
+---
+
+## 15. PERFORMANCE
+
+- [ ] LCP < 2.5s on homepage (local dev)
+- [ ] No layout shift (CLS ≈ 0)
+- [ ] No animation jank on mid-range hardware
+- [ ] Inter font preloaded or loaded via `@fontsource-variable/inter`
+- [ ] Heavy hero visuals lazy-loaded where possible
+- [ ] No unnecessary re-renders in animated visuals
+- [ ] `will-change: transform` only on actively animated elements
+
+---
+
+## 16. PUBLIC PAGE COMPLIANCE
+
+- [ ] No mention of `D3.7` on any public page
+- [ ] No mention of `TRL` on any public page
+- [ ] No unexplained acronyms without context (PDC, RBAC, xAPI defined at first use)
+- [ ] No broken links in navigation
+- [ ] No `TODO` or placeholder text visible in UI
+- [ ] No fake screenshots or stock imagery
+
+---
+
+## SIGN-OFF CRITERIA
+
+This visual QA pass is **complete** when:
+
+1. All checklist items above are marked ✓
+2. Screenshot tests pass for desktop and mobile (`npx playwright test tests/e2e/visual-screenshot.spec.ts`)
+3. No WCAG AA contrast failures detected
+4. No horizontal overflow found at any breakpoint
+5. All marketing pages have unique hero visuals
+6. No forbidden internal terms on public pages
+7. Focus rings visible in browser keyboard navigation
+8. Reduced motion mode disables all nonessential animations
+
+---
+
+## HOW TO RUN VISUAL TESTS
 
 ```bash
-# TypeScript typecheck
-cd src/affectlog/frontend && npm run typecheck
-
-# Build (catches import errors)
-npm run build
-
-# Lint
-npm run lint
-
-# Dev server for manual QA
+# Start the frontend
+cd src/affectlog/frontend
 npm run dev
+
+# In another terminal, run visual tests
+npx playwright test tests/e2e/visual-screenshot.spec.ts
+
+# Screenshots saved to:
+# test-results/screenshots/
 ```
 
 ---
 
-*Last updated: 2026-06-05. Update this checklist when new pages or components are added.*
+*Last updated: June 2026 | Dark Pastel UI/UX Pass v3*

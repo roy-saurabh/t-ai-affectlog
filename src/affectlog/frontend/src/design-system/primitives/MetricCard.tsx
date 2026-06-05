@@ -14,12 +14,12 @@ interface MetricCardProps {
 }
 
 const accentColors = {
-  cyan:   { text: "#22d3ee", bg: "rgba(34,211,238,0.10)",  border: "rgba(34,211,238,0.20)" },
-  violet: { text: "#a78bfa", bg: "rgba(139,92,246,0.10)",  border: "rgba(139,92,246,0.20)" },
-  green:  { text: "#34d399", bg: "rgba(16,185,129,0.10)",  border: "rgba(16,185,129,0.20)" },
-  blue:   { text: "#818cf8", bg: "rgba(37,99,235,0.10)",   border: "rgba(37,99,235,0.20)"  },
-  amber:  { text: "#fbbf24", bg: "rgba(245,158,11,0.10)",  border: "rgba(245,158,11,0.20)" },
-  red:    { text: "#f87171", bg: "rgba(239,68,68,0.10)",   border: "rgba(239,68,68,0.20)"  },
+  cyan:   { text: "#67E8F9", bg: "rgba(103,232,249,0.10)",  border: "rgba(103,232,249,0.20)" },
+  violet: { text: "#C4B5FD", bg: "rgba(196,181,253,0.10)",  border: "rgba(196,181,253,0.20)" },
+  green:  { text: "#86EFAC", bg: "rgba(134,239,172,0.10)",  border: "rgba(134,239,172,0.20)" },
+  blue:   { text: "#C4B5FD", bg: "rgba(147,197,253,0.10)",   border: "rgba(147,197,253,0.20)"  },
+  amber:  { text: "#FCD34D", bg: "rgba(245,158,11,0.10)",  border: "rgba(245,158,11,0.20)" },
+  red:    { text: "#FCA5A5", bg: "rgba(239,68,68,0.10)",   border: "rgba(239,68,68,0.20)"  },
 };
 
 export function MetricCard({
@@ -52,7 +52,7 @@ export function MetricCard({
       )}
       style={{
         background: "rgba(11,16,32,0.8)",
-        borderColor: "rgba(148,163,184,0.14)",
+        borderColor: "rgba(203,213,225,0.14)",
         boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
       }}
     >
@@ -103,7 +103,7 @@ interface MiniStatProps {
   accent?: string;
 }
 
-export function MiniStat({ label, value, accent = "#22d3ee" }: MiniStatProps) {
+export function MiniStat({ label, value, accent = "#67E8F9" }: MiniStatProps) {
   return (
     <div className="text-center">
       <div className="text-lg font-bold font-mono" style={{ color: accent }}>{value}</div>

@@ -29,7 +29,7 @@ function Hero() {
   return (
     <section
       className="relative min-h-[76vh] flex items-center overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #050814 0%, #080D1F 100%)" }}
+      style={{ background: "linear-gradient(180deg, #070B1A 0%, #0B1224 100%)" }}
     >
       <GridBackground />
       <GlowOrb color="cyan" size={500} x="80%" y="25%" opacity={0.4} />
@@ -40,7 +40,7 @@ function Hero() {
             <FadeUp delay={0.04}>
               <div
                 className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
-                style={{ color: "#22d3ee", background: "rgba(34,211,238,0.08)", border: "1px solid rgba(34,211,238,0.22)" }}
+                style={{ color: "#67E8F9", background: "rgba(103,232,249,0.08)", border: "1px solid rgba(103,232,249,0.22)" }}
               >
                 <Server size={11} />
                 Self-hosted deployment
@@ -67,7 +67,7 @@ function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
-                  style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 6px 20px rgba(34,211,238,0.28)" }}
+                  style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 6px 20px rgba(103,232,249,0.28)" }}
                 >
                   Start Self-hosting <ArrowRight size={17} />
                 </a>
@@ -86,15 +86,15 @@ function Hero() {
               label="docker-compose.yml stack"
               lines={[
                 { text: "services:", color: "#94a3b8" },
-                { text: "  api:       # FastAPI backend",     color: "#22d3ee" },
-                { text: "  worker:    # Celery async jobs",   color: "#a78bfa" },
-                { text: "  frontend:  # React 18 + Vite",     color: "#38bdf8" },
-                { text: "  postgres:  # PostgreSQL 15",       color: "#34d399" },
-                { text: "  redis:     # Job queue + cache",   color: "#fbbf24" },
+                { text: "  api:       # FastAPI backend",     color: "#67E8F9" },
+                { text: "  worker:    # Celery async jobs",   color: "#C4B5FD" },
+                { text: "  frontend:  # React 18 + Vite",     color: "#93C5FD" },
+                { text: "  postgres:  # PostgreSQL 15",       color: "#86EFAC" },
+                { text: "  redis:     # Job queue + cache",   color: "#FCD34D" },
                 { text: "  nginx:     # Reverse proxy",       color: "#94a3b8" },
                 { text: "", color: "#475569" },
                 { text: "# Single command startup:", color: "#475569" },
-                { text: "docker compose up -d", color: "#22d3ee" },
+                { text: "docker compose up -d", color: "#67E8F9" },
               ]}
             />
           </FadeUp>
@@ -105,19 +105,19 @@ function Hero() {
 }
 
 const REQUIREMENTS = [
-  { label: "Docker Engine 24+",       icon: Terminal, color: "#22d3ee" },
-  { label: "Docker Compose v2",       icon: Package,  color: "#22d3ee" },
-  { label: "4 GB RAM minimum",        icon: Server,   color: "#38bdf8" },
-  { label: "10 GB disk (data vol.)",  icon: Database, color: "#a78bfa" },
-  { label: "PostgreSQL (bundled)",    icon: Database, color: "#34d399" },
-  { label: "Redis (bundled)",         icon: GitBranch,color: "#fbbf24" },
+  { label: "Docker Engine 24+",       icon: Terminal, color: "#67E8F9" },
+  { label: "Docker Compose v2",       icon: Package,  color: "#67E8F9" },
+  { label: "4 GB RAM minimum",        icon: Server,   color: "#93C5FD" },
+  { label: "10 GB disk (data vol.)",  icon: Database, color: "#C4B5FD" },
+  { label: "PostgreSQL (bundled)",    icon: Database, color: "#86EFAC" },
+  { label: "Redis (bundled)",         icon: GitBranch,color: "#FCD34D" },
   { label: "SMTP (optional)",         icon: Lock,     color: "#64748b" },
-  { label: "Linux / macOS / WSL2",    icon: Terminal, color: "#22d3ee" },
+  { label: "Linux / macOS / WSL2",    icon: Terminal, color: "#67E8F9" },
 ];
 
 function Requirements() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-14 items-start">
           <FadeUp>
@@ -134,7 +134,7 @@ function Requirements() {
                   <div
                     key={req.label}
                     className="flex items-center gap-3 px-3.5 py-3 rounded-xl border"
-                    style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                    style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                   >
                     <Icon size={13} style={{ color: req.color }} className="flex-shrink-0" aria-hidden="true" />
                     <span className="text-sm text-slate-300">{req.label}</span>
@@ -148,11 +148,11 @@ function Requirements() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-5 tracking-tight">Quick setup</h2>
             <div className="space-y-4">
               {[
-                { step: 1, title: "Clone repository",       cmd: "git clone https://github.com/roy-saurabh/edge_affectlog", color: "#22d3ee" },
-                { step: 2, title: "Start services",         cmd: "docker compose up -d",                                     color: "#34d399" },
-                { step: 3, title: "Create admin account",   cmd: "make create-admin",                                        color: "#a78bfa" },
-                { step: 4, title: "Seed demo scenarios",    cmd: "make seed",                                                 color: "#38bdf8" },
-                { step: 5, title: "Open in browser",        cmd: "http://localhost:3000",                                     color: "#22d3ee" },
+                { step: 1, title: "Clone repository",       cmd: "git clone https://github.com/roy-saurabh/edge_affectlog", color: "#67E8F9" },
+                { step: 2, title: "Start services",         cmd: "docker compose up -d",                                     color: "#86EFAC" },
+                { step: 3, title: "Create admin account",   cmd: "make create-admin",                                        color: "#C4B5FD" },
+                { step: 4, title: "Seed demo scenarios",    cmd: "make seed",                                                 color: "#93C5FD" },
+                { step: 5, title: "Open in browser",        cmd: "http://localhost:3000",                                     color: "#67E8F9" },
               ].map((s) => (
                 <div key={s.step} className="flex items-start gap-3">
                   <div
@@ -193,7 +193,7 @@ function SecurityHardening() {
   ];
 
   return (
-    <section className="py-24 md:py-28" style={{ background: "#080D1F" }}>
+    <section className="py-24 md:py-28" style={{ background: "#0B1224" }}>
       <div className="max-w-4xl mx-auto px-5 md:px-8">
         <FadeUp>
           <div className="text-center mb-12">
@@ -205,22 +205,22 @@ function SecurityHardening() {
         <FadeUp delay={0.1}>
           <div
             className="rounded-2xl p-6 border"
-            style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(148,163,184,0.12)" }}
+            style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(203,213,225,0.12)" }}
           >
             <div className="grid sm:grid-cols-2 gap-3">
               {checks.map((item, i) => (
                 <div key={i} className="flex items-start gap-2.5 text-sm text-slate-300">
-                  <Shield size={13} className="text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <Shield size={13} className="text-[#86EFAC] mt-0.5 flex-shrink-0" />
                   {item}
                 </div>
               ))}
             </div>
-            <div className="mt-5 pt-5" style={{ borderTop: "1px solid rgba(148,163,184,0.08)" }}>
+            <div className="mt-5 pt-5" style={{ borderTop: "1px solid rgba(203,213,225,0.08)" }}>
               <a
                 href={`${GITHUB}/blob/main/SECURITY.md`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-cyan-400 transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#67E8F9] transition-colors"
               >
                 Full security policy <ExternalLink size={12} />
               </a>
@@ -234,7 +234,7 @@ function SecurityHardening() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 md:py-24" style={{ background: "#050814" }}>
+    <section className="py-20 md:py-24" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <CTABand
           headline="Ready to deploy?"
@@ -250,7 +250,7 @@ function FinalCTA() {
 
 export default function SelfHost() {
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
         <Hero />

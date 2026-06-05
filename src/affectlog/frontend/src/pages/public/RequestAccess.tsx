@@ -72,10 +72,10 @@ export default function RequestAccess() {
   const stepIndex = STEPS.findIndex((s) => s.id === step);
 
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
-        <section className="relative py-20 md:py-28 overflow-hidden" style={{ background: "#050814" }}>
+        <section className="relative py-20 md:py-28 overflow-hidden" style={{ background: "#070B1A" }}>
           <GridBackground opacity={0.6} />
           <GlowOrb color="violet" size={500} x="80%" y="20%" opacity={0.35} />
 
@@ -87,7 +87,7 @@ export default function RequestAccess() {
                 <FadeUp>
                   <div
                     className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
-                    style={{ color: "#a78bfa", background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.22)" }}
+                    style={{ color: "#C4B5FD", background: "rgba(196,181,253,0.08)", border: "1px solid rgba(196,181,253,0.22)" }}
                   >
                     <Cloud size={11} />
                     Managed Edition
@@ -113,9 +113,9 @@ export default function RequestAccess() {
                           <div
                             className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all"
                             style={{
-                              background: i < stepIndex ? "#22d3ee" : i === stepIndex ? "rgba(34,211,238,0.15)" : "rgba(148,163,184,0.10)",
-                              border: i === stepIndex ? "1px solid #22d3ee" : i < stepIndex ? "none" : "1px solid rgba(148,163,184,0.20)",
-                              color: i <= stepIndex ? "#22d3ee" : "#475569",
+                              background: i < stepIndex ? "#67E8F9" : i === stepIndex ? "rgba(103,232,249,0.15)" : "rgba(203,213,225,0.10)",
+                              border: i === stepIndex ? "1px solid #67E8F9" : i < stepIndex ? "none" : "1px solid rgba(203,213,225,0.20)",
+                              color: i <= stepIndex ? "#67E8F9" : "#475569",
                             }}
                           >
                             {i < stepIndex ? <CheckCircle2 size={12} /> : i + 1}
@@ -147,17 +147,17 @@ export default function RequestAccess() {
                   >
                     <div
                       className="rounded-2xl p-6 md:p-8 border mb-6"
-                      style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(148,163,184,0.14)" }}
+                      style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(203,213,225,0.14)" }}
                     >
                       <h2 className="text-lg font-bold text-white mb-2">Deployment preference</h2>
                       <p className="text-slate-500 text-sm mb-6">How would you like to run AffectLog?</p>
 
                       <div className="grid sm:grid-cols-2 gap-3">
                         {[
-                          { id: "managed",   icon: Cloud,   label: "Managed Cloud",       desc: "AffectLog operates everything",    color: "#a78bfa" },
-                          { id: "self-host", icon: Server,  label: "Community Edition",    desc: "Self-hosted open-source",          color: "#22d3ee" },
-                          { id: "private",   icon: Cloud,   label: "Private Tenant",       desc: "Dedicated managed instance",       color: "#38bdf8" },
-                          { id: "byoc",      icon: Server,  label: "BYOC / On-premise",    desc: "Your cloud, AffectLog support",    color: "#10b981" },
+                          { id: "managed",   icon: Cloud,   label: "Managed Cloud",       desc: "AffectLog operates everything",    color: "#C4B5FD" },
+                          { id: "self-host", icon: Server,  label: "Community Edition",    desc: "Self-hosted open-source",          color: "#67E8F9" },
+                          { id: "private",   icon: Cloud,   label: "Private Tenant",       desc: "Dedicated managed instance",       color: "#93C5FD" },
+                          { id: "byoc",      icon: Server,  label: "BYOC / On-premise",    desc: "Your cloud, AffectLog support",    color: "#86EFAC" },
                         ].map((opt) => {
                           const Icon = opt.icon;
                           const active = form.deployment === opt.id;
@@ -169,7 +169,7 @@ export default function RequestAccess() {
                               className="flex items-start gap-3 p-4 rounded-xl border text-left transition-all duration-200"
                               style={{
                                 background: active ? `${opt.color}10` : "rgba(255,255,255,0.025)",
-                                borderColor: active ? opt.color : "rgba(148,163,184,0.15)",
+                                borderColor: active ? opt.color : "rgba(203,213,225,0.15)",
                               }}
                               aria-pressed={active}
                             >
@@ -195,7 +195,7 @@ export default function RequestAccess() {
                         disabled={!form.deployment}
                         onClick={() => setStep("organization")}
                         className="inline-flex items-center gap-2 font-semibold text-white px-6 py-3 rounded-xl transition-all disabled:opacity-40"
-                        style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 4px 14px rgba(34,211,238,0.25)" }}
+                        style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 4px 14px rgba(103,232,249,0.25)" }}
                       >
                         Continue <ArrowRight size={15} />
                       </button>
@@ -214,7 +214,7 @@ export default function RequestAccess() {
                   >
                     <div
                       className="rounded-2xl p-6 md:p-8 border mb-6"
-                      style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(148,163,184,0.14)" }}
+                      style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(203,213,225,0.14)" }}
                     >
                       <h2 className="text-lg font-bold text-white mb-2">Organization details</h2>
                       <p className="text-slate-500 text-sm mb-6">Tell us about who you are and your role.</p>
@@ -280,7 +280,7 @@ export default function RequestAccess() {
                         disabled={!form.orgName || !form.role}
                         onClick={() => setStep("requirements")}
                         className="inline-flex items-center gap-2 font-semibold text-white px-6 py-3 rounded-xl transition-all disabled:opacity-40"
-                        style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 4px 14px rgba(34,211,238,0.25)" }}
+                        style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 4px 14px rgba(103,232,249,0.25)" }}
                       >
                         Continue <ArrowRight size={15} />
                       </button>
@@ -299,7 +299,7 @@ export default function RequestAccess() {
                   >
                     <div
                       className="rounded-2xl p-6 md:p-8 border mb-6"
-                      style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(148,163,184,0.14)" }}
+                      style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(203,213,225,0.14)" }}
                     >
                       <h2 className="text-lg font-bold text-white mb-2">Assessment requirements</h2>
                       <p className="text-slate-500 text-sm mb-6">Help us understand your scale and security needs.</p>
@@ -371,7 +371,7 @@ export default function RequestAccess() {
                               checked={form.consent}
                               onChange={(e) => update("consent", e.target.checked)}
                               className="mt-1 w-4 h-4 rounded"
-                              style={{ accentColor: "#22d3ee" }}
+                              style={{ accentColor: "#67E8F9" }}
                               aria-required="true"
                             />
                             <span className="text-sm text-slate-400">
@@ -395,7 +395,7 @@ export default function RequestAccess() {
                         type="submit"
                         disabled={!form.consent || loading}
                         className="inline-flex items-center gap-2 font-semibold text-white px-6 py-3 rounded-xl transition-all disabled:opacity-40"
-                        style={{ background: "linear-gradient(135deg, #7c3aed, #6d28d9)", boxShadow: "0 4px 14px rgba(139,92,246,0.25)" }}
+                        style={{ background: "linear-gradient(135deg, #C4B5FD 0%, #D8B4FE 100%)", boxShadow: "0 4px 14px rgba(196,181,253,0.25)" }}
                       >
                         {loading ? <><Loader2 size={15} className="animate-spin" /> Submitting…</> : <>Submit Request <ArrowRight size={15} /></>}
                       </button>
@@ -414,9 +414,9 @@ export default function RequestAccess() {
                   >
                     <div
                       className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
-                      style={{ background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.30)" }}
+                      style={{ background: "rgba(134,239,172,0.12)", border: "1px solid rgba(134,239,172,0.30)" }}
                     >
-                      <CheckCircle2 size={28} className="text-emerald-400" />
+                      <CheckCircle2 size={28} className="text-[#86EFAC]" />
                     </div>
                     <h2 className="text-2xl font-bold text-white mb-3 tracking-tight">Request submitted</h2>
                     <p className="text-slate-400 mb-8 leading-relaxed max-w-md mx-auto">
@@ -427,14 +427,14 @@ export default function RequestAccess() {
                       <Link
                         to="/"
                         className="inline-flex items-center gap-2 font-semibold text-white px-6 py-3 rounded-xl transition-all"
-                        style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)" }}
+                        style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)" }}
                       >
                         Return home
                       </Link>
                       <Link
                         to="/community"
                         className="inline-flex items-center gap-2 font-medium text-slate-300 px-6 py-3 rounded-xl border transition-all hover:bg-white/[0.05]"
-                        style={{ borderColor: "rgba(148,163,184,0.20)" }}
+                        style={{ borderColor: "rgba(203,213,225,0.20)" }}
                       >
                         <Server size={14} /> Try Community Edition
                       </Link>
@@ -448,10 +448,10 @@ export default function RequestAccess() {
               <FadeUp delay={0.15}>
                 <div
                   className="mt-8 p-4 rounded-xl border text-sm text-slate-500 text-center"
-                  style={{ background: "rgba(255,255,255,0.02)", borderColor: "rgba(148,163,184,0.10)" }}
+                  style={{ background: "rgba(255,255,255,0.02)", borderColor: "rgba(203,213,225,0.10)" }}
                 >
                   Prefer to self-host?{" "}
-                  <Link to="/community" className="text-cyan-400 hover:text-cyan-300">
+                  <Link to="/community" className="text-[#67E8F9] hover:text-cyan-300">
                     Community Edition is free and open-source
                   </Link>
                 </div>

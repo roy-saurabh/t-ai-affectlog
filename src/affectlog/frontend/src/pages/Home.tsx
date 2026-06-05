@@ -28,7 +28,7 @@ function QuickAction({
     <button
       onClick={() => nav(to)}
       className="text-left p-5 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 group w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40"
-      style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.12)" }}
+      style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.12)" }}
       onMouseEnter={(e) => {
         const el = e.currentTarget as HTMLButtonElement;
         el.style.borderColor = `${color}35`;
@@ -36,7 +36,7 @@ function QuickAction({
       }}
       onMouseLeave={(e) => {
         const el = e.currentTarget as HTMLButtonElement;
-        el.style.borderColor = "rgba(148,163,184,0.12)";
+        el.style.borderColor = "rgba(203,213,225,0.12)";
         el.style.background = "rgba(255,255,255,0.025)";
       }}
     >
@@ -62,12 +62,12 @@ function QuickAction({
 // ── Status badge ──────────────────────────────────────────────────────────
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, { label: string; bg: string; color: string }> = {
-    completed: { label: "completed", bg: "rgba(16,185,129,0.12)", color: "#34d399" },
-    running:   { label: "running",   bg: "rgba(34,211,238,0.12)", color: "#22d3ee" },
-    failed:    { label: "failed",    bg: "rgba(239,68,68,0.12)",  color: "#f87171" },
-    pending:   { label: "pending",   bg: "rgba(245,158,11,0.12)", color: "#fbbf24" },
+    completed: { label: "completed", bg: "rgba(134,239,172,0.12)", color: "#86EFAC" },
+    running:   { label: "running",   bg: "rgba(103,232,249,0.12)", color: "#67E8F9" },
+    failed:    { label: "failed",    bg: "rgba(239,68,68,0.12)",  color: "#FCA5A5" },
+    pending:   { label: "pending",   bg: "rgba(245,158,11,0.12)", color: "#FCD34D" },
   };
-  const s = map[status] ?? { label: status, bg: "rgba(148,163,184,0.10)", color: "#94a3b8" };
+  const s = map[status] ?? { label: status, bg: "rgba(203,213,225,0.10)", color: "#94a3b8" };
   return (
     <span
       className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full"
@@ -123,7 +123,7 @@ export default function AppDashboard() {
         <Link
           to="/app/wizard"
           className="hidden sm:inline-flex items-center gap-2 font-semibold text-white text-sm px-4 py-2.5 rounded-xl transition-all hover:-translate-y-0.5 flex-shrink-0"
-          style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 4px 14px rgba(34,211,238,0.25)" }}
+          style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 4px 14px rgba(103,232,249,0.25)" }}
         >
           <Wand2 size={15} /> New Assessment
         </Link>
@@ -182,28 +182,28 @@ export default function AppDashboard() {
             title="Guided Assessment"
             desc="Step-by-step wizard with guardrails and output contract."
             to="/app/wizard"
-            color="#22d3ee"
+            color="#67E8F9"
           />
           <QuickAction
             icon={Database}
             title="Dataset Audit"
             desc="Validate schema, scan PII, compute fairness metrics."
             to="/app/datasets"
-            color="#38bdf8"
+            color="#93C5FD"
           />
           <QuickAction
             icon={ShieldCheck}
             title="Compliance"
             desc="Export SOPs, JSON-LD graphs, and audit manifests."
             to="/app/compliance"
-            color="#10b981"
+            color="#86EFAC"
           />
           <QuickAction
             icon={Cpu}
             title="Model Assessment"
             desc="Register adapters, generate explanations and model cards."
             to="/app/models"
-            color="#a78bfa"
+            color="#C4B5FD"
           />
         </div>
       </div>
@@ -223,7 +223,7 @@ export default function AppDashboard() {
         </div>
 
         {loading ? (
-          <div className="rounded-2xl border" style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(148,163,184,0.12)" }}>
+          <div className="rounded-2xl border" style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(203,213,225,0.12)" }}>
             <div className="space-y-px p-2">
               {[0, 1, 2].map((i) => (
                 <div key={i} className="skeleton h-12 rounded-xl" />
@@ -233,7 +233,7 @@ export default function AppDashboard() {
         ) : runs.length === 0 ? (
           <div
             className="rounded-2xl p-10 text-center border border-dashed"
-            style={{ borderColor: "rgba(148,163,184,0.15)", background: "rgba(255,255,255,0.015)" }}
+            style={{ borderColor: "rgba(203,213,225,0.15)", background: "rgba(255,255,255,0.015)" }}
           >
             <TrendingUp
               size={28}
@@ -255,7 +255,7 @@ export default function AppDashboard() {
         ) : (
           <div
             className="rounded-2xl overflow-hidden border"
-            style={{ borderColor: "rgba(148,163,184,0.12)" }}
+            style={{ borderColor: "rgba(203,213,225,0.12)" }}
           >
             <table className="w-full text-sm" aria-label="Recent audit runs">
               <thead>
@@ -276,7 +276,7 @@ export default function AppDashboard() {
                   <tr
                     key={r.run_id}
                     className="border-t transition-colors hover:bg-white/[0.02]"
-                    style={{ borderColor: "rgba(148,163,184,0.07)" }}
+                    style={{ borderColor: "rgba(203,213,225,0.07)" }}
                   >
                     <td className="px-4 py-3">
                       <code className="text-cyan-400 text-xs font-mono">{r.run_id.slice(0, 16)}…</code>
@@ -316,12 +316,12 @@ export default function AppDashboard() {
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {[
-            { icon: Database,    label: "Dataset Audit",    to: "/app/datasets",   color: "#22d3ee" },
-            { icon: ShieldCheck, label: "Privacy Scan",     to: "/app/audit",      color: "#10b981" },
-            { icon: BarChart2,   label: "Fairness Metrics", to: "/app/audit",      color: "#a78bfa" },
-            { icon: Cpu,         label: "Model Adapters",   to: "/app/models",     color: "#38bdf8" },
-            { icon: FileText,    label: "Exports",          to: "/app/compliance", color: "#22d3ee" },
-            { icon: Package,     label: "Recipes",          to: "/app/wizard",     color: "#fbbf24" },
+            { icon: Database,    label: "Dataset Audit",    to: "/app/datasets",   color: "#67E8F9" },
+            { icon: ShieldCheck, label: "Privacy Scan",     to: "/app/audit",      color: "#86EFAC" },
+            { icon: BarChart2,   label: "Fairness Metrics", to: "/app/audit",      color: "#C4B5FD" },
+            { icon: Cpu,         label: "Model Adapters",   to: "/app/models",     color: "#93C5FD" },
+            { icon: FileText,    label: "Exports",          to: "/app/compliance", color: "#67E8F9" },
+            { icon: Package,     label: "Recipes",          to: "/app/wizard",     color: "#FCD34D" },
           ].map((cap) => {
             const Icon = cap.icon;
             return (
@@ -329,14 +329,14 @@ export default function AppDashboard() {
                 key={cap.label}
                 to={cap.to}
                 className="flex flex-col items-center gap-2.5 p-4 rounded-xl border text-center transition-all duration-200 hover:-translate-y-0.5 group"
-                style={{ background: "rgba(255,255,255,0.02)", borderColor: "rgba(148,163,184,0.10)" }}
+                style={{ background: "rgba(255,255,255,0.02)", borderColor: "rgba(203,213,225,0.10)" }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement;
                   el.style.borderColor = `${cap.color}30`;
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.borderColor = "rgba(148,163,184,0.10)";
+                  el.style.borderColor = "rgba(203,213,225,0.10)";
                 }}
               >
                 <div

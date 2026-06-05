@@ -25,9 +25,9 @@ export function ConsoleSidebar({ nav, open, onClose, variant = "app" }: ConsoleS
   const isAdmin =
     user?.is_superadmin || user?.roles.some((r) => ["Super Admin", "Admin"].includes(r));
 
-  const accentColor  = variant === "admin" ? "#a78bfa" : "#22d3ee";
-  const accentBg     = variant === "admin" ? "rgba(139,92,246,0.09)" : "rgba(34,211,238,0.09)";
-  const accentBorder = variant === "admin" ? "rgba(139,92,246,0.22)" : "rgba(34,211,238,0.22)";
+  const accentColor  = variant === "admin" ? "#C4B5FD" : "#67E8F9";
+  const accentBg     = variant === "admin" ? "rgba(196,181,253,0.09)" : "rgba(103,232,249,0.09)";
+  const accentBorder = variant === "admin" ? "rgba(196,181,253,0.22)" : "rgba(103,232,249,0.22)";
 
   return (
     <>
@@ -48,15 +48,15 @@ export function ConsoleSidebar({ nav, open, onClose, variant = "app" }: ConsoleS
           "lg:translate-x-0",
         )}
         style={{
-          background: "#0B1020",
-          borderColor: "rgba(148,163,184,0.10)",
+          background: "#0B1224",
+          borderColor: "rgba(203,213,225,0.10)",
         }}
         aria-label="Console navigation"
       >
         {/* Logo */}
         <div
           className="flex items-center gap-3 px-4 h-14 flex-shrink-0 border-b"
-          style={{ borderColor: "rgba(148,163,184,0.08)" }}
+          style={{ borderColor: "rgba(203,213,225,0.08)" }}
         >
           <Link
             to="/"
@@ -118,7 +118,7 @@ export function ConsoleSidebar({ nav, open, onClose, variant = "app" }: ConsoleS
               {badge !== undefined && (
                 <span
                   className="text-xs px-1.5 py-0.5 rounded-full font-medium flex-shrink-0"
-                  style={{ background: "rgba(239,68,68,0.15)", color: "#f87171" }}
+                  style={{ background: "rgba(239,68,68,0.15)", color: "#FCA5A5" }}
                 >
                   {badge}
                 </span>
@@ -130,7 +130,7 @@ export function ConsoleSidebar({ nav, open, onClose, variant = "app" }: ConsoleS
         {/* Footer */}
         <div
           className="px-2 py-3 border-t flex-shrink-0 space-y-0.5"
-          style={{ borderColor: "rgba(148,163,184,0.08)" }}
+          style={{ borderColor: "rgba(203,213,225,0.08)" }}
         >
           {isAdmin && variant !== "admin" && (
             <NavLink
@@ -161,7 +161,7 @@ export function ConsoleSidebar({ nav, open, onClose, variant = "app" }: ConsoleS
           {user && (
             <div
               className="flex items-center gap-2.5 px-3 py-2.5 mt-1 rounded-xl"
-              style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(148,163,184,0.09)" }}
+              style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(203,213,225,0.09)" }}
             >
               <div
                 className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold"

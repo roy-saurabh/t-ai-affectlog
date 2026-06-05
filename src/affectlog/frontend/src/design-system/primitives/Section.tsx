@@ -9,9 +9,9 @@ interface SectionProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const bgMap = {
-  dark:        { background: "#050814" },
+  dark:        { background: "#070B1A" },
   darker:      { background: "#030712" },
-  raised:      { background: "#080D1F" },
+  raised:      { background: "#0B1224" },
   transparent: {},
 } as const;
 

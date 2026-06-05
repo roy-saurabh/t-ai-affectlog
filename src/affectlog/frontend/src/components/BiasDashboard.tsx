@@ -14,8 +14,8 @@ const CHART_STYLE = {
 };
 
 const PIE_COLORS = [
-  "#6366f1", "#818cf8", "#a5b4fc", "#c7d2fe",
-  "#8b5cf6", "#a78bfa", "#7c3aed", "#4f46e5",
+  "#A7F3D0", "#C4B5FD", "#a5b4fc", "#c7d2fe",
+  "#8b5cf6", "#C4B5FD", "#7c3aed", "#4f46e5",
 ];
 
 function truncate(s: string, n = 22): string {
@@ -129,7 +129,7 @@ export default function BiasDashboard({ payload }: Props) {
                 <XAxis dataKey="name" tick={{ fill: "#94a3b8", fontSize: 11 }} />
                 <YAxis tick={{ fill: "#94a3b8", fontSize: 11 }} tickFormatter={(v) => v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v} />
                 <Tooltip contentStyle={CHART_STYLE} formatter={(v: number) => [v.toLocaleString(), "Events"]} />
-                <Bar dataKey="value" fill="#818cf8" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="value" fill="#C4B5FD" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -147,7 +147,7 @@ export default function BiasDashboard({ payload }: Props) {
               <XAxis type="number" tick={{ fill: "#94a3b8", fontSize: 11 }} tickFormatter={(v) => v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v} />
               <YAxis type="category" dataKey="name" tick={{ fill: "#94a3b8", fontSize: 10 }} width={140} />
               <Tooltip contentStyle={CHART_STYLE} formatter={(v: number) => [v.toLocaleString(), "Events"]} />
-              <Bar dataKey="count" fill="#6366f1" radius={[0, 3, 3, 0]} />
+              <Bar dataKey="count" fill="#A7F3D0" radius={[0, 3, 3, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -163,7 +163,7 @@ export default function BiasDashboard({ payload }: Props) {
               <XAxis dataKey="name" tick={{ fill: "#94a3b8", fontSize: 10 }} angle={-20} textAnchor="end" height={40} />
               <YAxis tick={{ fill: "#94a3b8", fontSize: 11 }} tickFormatter={(v) => v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v} />
               <Tooltip contentStyle={CHART_STYLE} formatter={(v: number) => [v.toLocaleString(), "Events"]} />
-              <Bar dataKey="value" fill="#a78bfa" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="value" fill="#C4B5FD" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

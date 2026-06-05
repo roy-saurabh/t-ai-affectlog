@@ -16,12 +16,12 @@ interface CodeBlockProps {
 
 const DEFAULT_COLORS: Record<string, string> = {
   "#":  "#475569",
-  git:  "#22d3ee",
-  docker: "#22d3ee",
-  make: "#a78bfa",
-  npm:  "#34d399",
-  pip:  "#34d399",
-  curl: "#fbbf24",
+  git:  "#67E8F9",
+  docker: "#67E8F9",
+  make: "#C4B5FD",
+  npm:  "#86EFAC",
+  pip:  "#86EFAC",
+  curl: "#FCD34D",
 };
 
 function autoColor(text: string): string {

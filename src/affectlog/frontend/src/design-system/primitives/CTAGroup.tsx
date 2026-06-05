@@ -28,17 +28,17 @@ const sizeMap = {
 
 function variantStyles(variant: CTAItem["variant"] = "outline"): React.CSSProperties {
   if (variant === "primary")
-    return { background: "#2563EB", color: "#fff", boxShadow: "0 4px 14px rgba(37,99,235,0.3)" };
+    return { background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", color: "#08111F", boxShadow: "0 4px 20px rgba(147,197,253,0.32)" };
   if (variant === "cyan")
-    return { background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", color: "#fff", boxShadow: "0 4px 14px rgba(34,211,238,0.25)" };
+    return { background: "linear-gradient(135deg, #67E8F9 0%, #93C5FD 100%)", color: "#08111F", boxShadow: "0 4px 20px rgba(103,232,249,0.28)" };
   if (variant === "violet")
-    return { background: "linear-gradient(135deg, #7c3aed, #6d28d9)", color: "#fff", boxShadow: "0 4px 14px rgba(139,92,246,0.25)" };
+    return { background: "linear-gradient(135deg, #C4B5FD 0%, #D8B4FE 100%)", color: "#08111F", boxShadow: "0 4px 20px rgba(196,181,253,0.28)" };
   if (variant === "outline")
-    return { background: "rgba(255,255,255,0.04)", borderColor: "rgba(148,163,184,0.22)", color: "#CBD5E1" };
+    return { background: "rgba(255,255,255,0.04)", borderColor: "rgba(203,213,225,0.22)", color: "#CBD5E1" };
   if (variant === "ghost")
     return { color: "#94a3b8" };
   if (variant === "github")
-    return { background: "rgba(255,255,255,0.06)", borderColor: "rgba(148,163,184,0.18)", color: "#CBD5E1" };
+    return { background: "rgba(255,255,255,0.06)", borderColor: "rgba(203,213,225,0.18)", color: "#CBD5E1" };
   return {};
 }
 
@@ -119,10 +119,11 @@ export function HeroCTA({ primary, secondary, tertiary, align = "left", classNam
     >
       <Link
         to={primary.to ?? "/"}
-        className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3 text-base transition-all duration-200 hover:-translate-y-0.5"
+        className="inline-flex items-center gap-2 font-semibold rounded-[14px] px-6 py-3 text-base transition-all duration-200 hover:-translate-y-0.5"
         style={{
-          background: "linear-gradient(135deg, #06b6d4, #0ea5e9)",
-          boxShadow: "0 4px 14px rgba(34,211,238,0.30)",
+          background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)",
+          boxShadow: "0 4px 20px rgba(147,197,253,0.32), 0 2px 8px rgba(147,197,253,0.20)",
+          color: "#08111F",
         }}
       >
         {primary.label} <ArrowRight size={16} />
@@ -132,7 +133,7 @@ export function HeroCTA({ primary, secondary, tertiary, align = "left", classNam
         <Link
           to={secondary.to ?? "/"}
           className="inline-flex items-center gap-2 font-semibold text-slate-200 rounded-xl px-6 py-3 text-base border transition-all duration-200 hover:bg-white/[0.06] hover:border-slate-400/40"
-          style={{ borderColor: "rgba(148,163,184,0.22)", background: "rgba(255,255,255,0.04)" }}
+          style={{ borderColor: "rgba(203,213,225,0.22)", background: "rgba(255,255,255,0.04)" }}
         >
           <Server size={16} className="text-slate-400" />
           {secondary.label}
@@ -167,8 +168,8 @@ export function CTABand({ headline, subline, primary, secondary, tertiary, class
       className={cn("relative overflow-hidden rounded-2xl md:rounded-3xl p-8 md:p-12 lg:p-16", className)}
       style={{
         background:
-          "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(5,8,20,0.9) 0%, #080D1F 60%), #080D1F",
-        border: "1px solid rgba(148,163,184,0.12)",
+          "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(5,8,20,0.9) 0%, #0B1224 60%), #0B1224",
+        border: "1px solid rgba(203,213,225,0.12)",
       }}
     >
       {/* Background grid */}
@@ -184,7 +185,7 @@ export function CTABand({ headline, subline, primary, secondary, tertiary, class
       {/* Glow */}
       <div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-64 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse, rgba(34,211,238,0.08) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse, rgba(103,232,249,0.08) 0%, transparent 70%)" }}
         aria-hidden="true"
       />
 
@@ -197,8 +198,8 @@ export function CTABand({ headline, subline, primary, secondary, tertiary, class
         <div className="flex flex-wrap justify-center gap-3">
           <Link
             to={primary.to ?? "/"}
-            className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3 transition-all duration-200 hover:-translate-y-0.5"
-            style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 4px 14px rgba(34,211,238,0.25)" }}
+            className="inline-flex items-center gap-2 font-semibold rounded-[14px] px-6 py-3 transition-all duration-200 hover:-translate-y-0.5"
+            style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 4px 20px rgba(147,197,253,0.32)", color: "#08111F" }}
           >
             {primary.label} <ArrowRight size={16} />
           </Link>
@@ -206,7 +207,7 @@ export function CTABand({ headline, subline, primary, secondary, tertiary, class
             <Link
               to={secondary.to ?? "/"}
               className="inline-flex items-center gap-2 font-semibold text-slate-200 rounded-xl px-6 py-3 border transition-all duration-200 hover:bg-white/[0.06]"
-              style={{ borderColor: "rgba(148,163,184,0.22)", background: "rgba(255,255,255,0.04)" }}
+              style={{ borderColor: "rgba(203,213,225,0.22)", background: "rgba(255,255,255,0.04)" }}
             >
               {secondary.label} <ArrowRight size={15} />
             </Link>

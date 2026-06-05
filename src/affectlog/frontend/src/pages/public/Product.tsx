@@ -23,20 +23,20 @@ function FadeUp({ children, delay = 0, className }: { children: React.ReactNode;
 }
 
 const LAYERS = [
-  { icon: Database,   label: "Data Layer",          desc: "CSV, JSON, Parquet, xAPI event traces. Schema validation and format detection.", color: "#22d3ee" },
-  { icon: ShieldCheck,label: "Privacy Layer",        desc: "GDPR PII scanning, quasi-identifier detection, actor pseudonymisation.",         color: "#10b981" },
-  { icon: Activity,   label: "Profiling Layer",      desc: "Completeness, sparsity, temporal density, format and range validation.",         color: "#a78bfa" },
-  { icon: BarChart2,  label: "Metrics Layer",        desc: "Gini, Coverage@K, dominance ratio, entropy, representation index.",              color: "#38bdf8" },
-  { icon: Eye,        label: "Explainability Layer", desc: "Feature importance, local/global explanations, model card generation.",          color: "#a78bfa" },
-  { icon: FileText,   label: "Compliance Layer",     desc: "AI Act Annex IV, GDPR Article 30, structured evidence records.",                 color: "#22d3ee" },
-  { icon: Share2,     label: "Export Layer",         desc: "SOPs, data cards, model cards, JSON-LD graphs, dashboard payloads.",             color: "#10b981" },
+  { icon: Database,   label: "Data Layer",          desc: "CSV, JSON, Parquet, xAPI event traces. Schema validation and format detection.", color: "#67E8F9" },
+  { icon: ShieldCheck,label: "Privacy Layer",        desc: "GDPR PII scanning, quasi-identifier detection, actor pseudonymisation.",         color: "#86EFAC" },
+  { icon: Activity,   label: "Profiling Layer",      desc: "Completeness, sparsity, temporal density, format and range validation.",         color: "#C4B5FD" },
+  { icon: BarChart2,  label: "Metrics Layer",        desc: "Gini, Coverage@K, dominance ratio, entropy, representation index.",              color: "#93C5FD" },
+  { icon: Eye,        label: "Explainability Layer", desc: "Feature importance, local/global explanations, model card generation.",          color: "#C4B5FD" },
+  { icon: FileText,   label: "Compliance Layer",     desc: "AI Act Annex IV, GDPR Article 30, structured evidence records.",                 color: "#67E8F9" },
+  { icon: Share2,     label: "Export Layer",         desc: "SOPs, data cards, model cards, JSON-LD graphs, dashboard payloads.",             color: "#86EFAC" },
 ];
 
 function Hero() {
   return (
     <section
       className="relative min-h-[76vh] flex items-center overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #050814 0%, #080D1F 100%)" }}
+      style={{ background: "linear-gradient(180deg, #070B1A 0%, #0B1224 100%)" }}
     >
       <GridBackground />
       <GlowOrb color="cyan" size={600} x="75%" y="30%" opacity={0.45} />
@@ -46,7 +46,7 @@ function Hero() {
           <FadeUp delay={0.04}>
             <div
               className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
-              style={{ color: "#22d3ee", background: "rgba(34,211,238,0.08)", border: "1px solid rgba(34,211,238,0.22)" }}
+              style={{ color: "#67E8F9", background: "rgba(103,232,249,0.08)", border: "1px solid rgba(103,232,249,0.22)" }}
             >
               Platform Overview
             </div>
@@ -71,14 +71,14 @@ function Hero() {
               <Link
                 to="/guided-assessment"
                 className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
-                style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 6px 20px rgba(34,211,238,0.28)" }}
+                style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 6px 20px rgba(103,232,249,0.28)" }}
               >
                 Launch Guided Assessment <ArrowRight size={17} />
               </Link>
               <Link
                 to="/dataset-audit"
                 className="inline-flex items-center gap-2 font-semibold text-slate-200 rounded-xl px-6 py-3.5 border transition-all hover:bg-white/[0.06]"
-                style={{ borderColor: "rgba(148,163,184,0.22)", background: "rgba(255,255,255,0.04)" }}
+                style={{ borderColor: "rgba(203,213,225,0.22)", background: "rgba(255,255,255,0.04)" }}
               >
                 Dataset Audit <ArrowRight size={15} />
               </Link>
@@ -92,7 +92,7 @@ function Hero() {
 
 function AssessmentStack() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
           <div className="text-center mb-14 max-w-3xl mx-auto">
@@ -112,7 +112,7 @@ function AssessmentStack() {
               <FadeUp key={layer.label} delay={i * 0.05}>
                 <div
                   className="flex items-start gap-5 p-5 rounded-2xl border transition-all duration-200 hover:-translate-y-px"
-                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                 >
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -150,7 +150,7 @@ function SupportedFormats() {
   };
 
   return (
-    <section className="py-24 md:py-28" style={{ background: "#080D1F" }}>
+    <section className="py-24 md:py-28" style={{ background: "#0B1224" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
           <div className="text-center mb-12">
@@ -162,14 +162,14 @@ function SupportedFormats() {
 
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { title: "Input Formats",    items: formats.input,    color: "#22d3ee" },
-            { title: "Model Adapters",   items: formats.adapters, color: "#a78bfa" },
-            { title: "Output Artifacts", items: formats.outputs,  color: "#10b981" },
+            { title: "Input Formats",    items: formats.input,    color: "#67E8F9" },
+            { title: "Model Adapters",   items: formats.adapters, color: "#C4B5FD" },
+            { title: "Output Artifacts", items: formats.outputs,  color: "#86EFAC" },
           ].map((col, i) => (
             <FadeUp key={col.title} delay={i * 0.08}>
               <div
                 className="rounded-2xl p-6 border h-full"
-                style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
               >
                 <h3 className="font-bold text-white mb-4" style={{ color: col.color }}>{col.title}</h3>
                 <ul className="space-y-2.5">
@@ -191,12 +191,12 @@ function SupportedFormats() {
 
 function Guardrails() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-4xl mx-auto px-5 md:px-8 text-center">
         <FadeUp>
           <div
             className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full mb-6"
-            style={{ color: "#fbbf24", background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.20)" }}
+            style={{ color: "#FCD34D", background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.20)" }}
           >
             <Lock size={11} />
             Guardrails and limitations
@@ -222,7 +222,7 @@ function Guardrails() {
                 className="flex items-start gap-2.5 text-sm text-slate-400 p-3 rounded-xl"
                 style={{ background: "rgba(245,158,11,0.05)", border: "1px solid rgba(245,158,11,0.12)" }}
               >
-                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" style={{ background: "#fbbf24" }} />
+                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" style={{ background: "#FCD34D" }} />
                 {item}
               </div>
             ))}
@@ -235,7 +235,7 @@ function Guardrails() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 md:py-24" style={{ background: "#080D1F" }}>
+    <section className="py-20 md:py-24" style={{ background: "#0B1224" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <CTABand
           headline="Explore the platform"
@@ -251,7 +251,7 @@ function FinalCTA() {
 
 export default function Product() {
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
         <Hero />

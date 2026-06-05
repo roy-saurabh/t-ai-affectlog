@@ -81,16 +81,16 @@ function MegaMenuItem({ item }: { item: (typeof NAV_MENUS)[0]["items"][0] }) {
     <>
       <div
         className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-        style={{ background: "rgba(34,211,238,0.08)" }}
+        style={{ background: "rgba(103,232,249,0.09)" }}
       >
-        <Icon size={14} className="text-cyan-400" />
+        <Icon size={14} style={{ color: "#67E8F9" }} />
       </div>
       <div>
-        <div className="text-sm font-medium text-slate-200 group-hover:text-white transition-colors flex items-center gap-1">
+        <div className="text-sm font-medium text-[#D8E0EE] group-hover:text-[#F8FAFC] transition-colors flex items-center gap-1">
           {item.label}
           {isExternal && item.href && <ExternalLink size={10} className="opacity-40" />}
         </div>
-        <div className="text-xs text-slate-500 mt-0.5 leading-tight">{item.desc}</div>
+        <div className="text-xs text-[#6F7D96] mt-0.5 leading-tight">{item.desc}</div>
       </div>
     </>
   );
@@ -128,9 +128,9 @@ function MegaMenu({ menu, open }: { menu: (typeof NAV_MENUS)[0]; open: boolean }
           <div
             className="rounded-2xl border p-2 shadow-card-xl overflow-hidden"
             style={{
-              background: "rgba(8,13,31,0.97)",
+              background: "rgba(7,11,26,0.97)",
               backdropFilter: "blur(24px)",
-              borderColor: "rgba(148,163,184,0.14)",
+              borderColor: "rgba(203,213,225,0.14)",
             }}
           >
             <div className="space-y-0.5">
@@ -259,9 +259,9 @@ export function PublicHeader() {
         style={
           scrolled
             ? {
-                background: "rgba(5,8,20,0.92)",
-                borderColor: "rgba(148,163,184,0.10)",
-                boxShadow: "0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.35)",
+                background: "rgba(7,11,26,0.94)",
+                borderColor: "rgba(203,213,225,0.10)",
+                boxShadow: "0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.40)",
               }
             : undefined
         }
@@ -324,7 +324,7 @@ export function PublicHeader() {
               href="https://github.com/roy-saurabh/edge_affectlog"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-slate-200 transition-colors px-2 py-1.5 rounded-lg hover:bg-white/[0.04]"
+              className="flex items-center gap-1.5 text-sm text-[#8391A8] hover:text-[#D8E0EE] transition-colors px-2 py-1.5 rounded-lg hover:bg-white/[0.04]"
               aria-label="AffectLog on GitHub"
             >
               <Github size={15} />
@@ -333,30 +333,32 @@ export function PublicHeader() {
 
             <div
               className="w-px h-5"
-              style={{ background: "rgba(148,163,184,0.15)" }}
+              style={{ background: "rgba(203,213,225,0.15)" }}
               aria-hidden="true"
             />
 
             <Link
               to="/login"
-              className="text-sm font-medium text-slate-400 hover:text-slate-200 transition-colors px-3 py-2 rounded-xl hover:bg-white/[0.04]"
+              className="text-sm font-medium text-[#8391A8] hover:text-[#D8E0EE] transition-colors px-3 py-2 rounded-xl hover:bg-white/[0.04]"
             >
               Sign in
             </Link>
 
             <Link
               to="/self-host"
-              className="text-sm font-medium text-slate-300 hover:text-white transition-all px-4 py-2 rounded-xl border border-white/[0.12] hover:border-white/[0.22] hover:bg-white/[0.05]"
+              className="text-sm font-medium text-[#D8E0EE] hover:text-[#F8FAFC] transition-all px-4 py-2 rounded-xl border hover:bg-white/[0.05]"
+              style={{ borderColor: "rgba(203,213,225,0.18)" }}
             >
               Self-host
             </Link>
 
             <Link
               to="/request-access"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-white px-4 py-2 rounded-xl transition-all duration-200 hover:-translate-y-px"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-200 hover:-translate-y-px"
               style={{
-                background: "linear-gradient(135deg, #06b6d4, #0ea5e9)",
-                boxShadow: "0 4px 14px rgba(34,211,238,0.25)",
+                background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)",
+                boxShadow: "0 4px 16px rgba(147,197,253,0.30)",
+                color: "#08111F",
               }}
             >
               Request Access
@@ -382,7 +384,7 @@ export function PublicHeader() {
             <Link
               to="/request-access"
               className="text-xs font-semibold text-white px-3.5 py-2 rounded-xl hidden xs:flex items-center gap-1"
-              style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)" }}
+              style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)" }}
             >
               Get Access
             </Link>
@@ -421,12 +423,12 @@ export function PublicHeader() {
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               aria-label="Mobile navigation"
-              style={{ background: "#080D1F" }}
+              style={{ background: "#0B1224" }}
             >
               {/* Drawer header */}
               <div
                 className="flex items-center justify-between px-5 h-16 flex-shrink-0 border-b"
-                style={{ borderColor: "rgba(148,163,184,0.10)" }}
+                style={{ borderColor: "rgba(203,213,225,0.10)" }}
               >
                 <Link to="/" onClick={() => setMenuOpen(false)}>
                   <img src="/img/affectlog360_logo_dark.svg" alt="AffectLog" className="h-7 object-contain" />
@@ -450,12 +452,12 @@ export function PublicHeader() {
               {/* CTA footer */}
               <div
                 className="px-4 py-5 flex flex-col gap-3 border-t flex-shrink-0"
-                style={{ borderColor: "rgba(148,163,184,0.10)" }}
+                style={{ borderColor: "rgba(203,213,225,0.10)" }}
               >
                 <Link
                   to="/request-access"
                   className="flex items-center justify-center gap-2 font-semibold text-white py-3 rounded-xl text-sm transition-all"
-                  style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 4px 14px rgba(34,211,238,0.25)" }}
+                  style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 4px 16px rgba(147,197,253,0.30)", color: "#08111F" }}
                   onClick={() => setMenuOpen(false)}
                 >
                   Request Managed Access <ArrowRight size={14} />
@@ -464,7 +466,7 @@ export function PublicHeader() {
                   <Link
                     to="/self-host"
                     className="flex items-center justify-center gap-1.5 font-medium text-slate-200 py-2.5 rounded-xl text-sm border"
-                    style={{ borderColor: "rgba(148,163,184,0.20)", background: "rgba(255,255,255,0.04)" }}
+                    style={{ borderColor: "rgba(203,213,225,0.20)", background: "rgba(255,255,255,0.04)" }}
                     onClick={() => setMenuOpen(false)}
                   >
                     <Server size={13} /> Self-host
@@ -472,7 +474,7 @@ export function PublicHeader() {
                   <Link
                     to="/login"
                     className="flex items-center justify-center font-medium text-slate-300 py-2.5 rounded-xl text-sm border"
-                    style={{ borderColor: "rgba(148,163,184,0.14)", background: "rgba(255,255,255,0.03)" }}
+                    style={{ borderColor: "rgba(203,213,225,0.14)", background: "rgba(255,255,255,0.03)" }}
                     onClick={() => setMenuOpen(false)}
                   >
                     Sign in

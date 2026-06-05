@@ -29,7 +29,7 @@ const QUICKSTART_PATHS = [
   {
     icon: Activity,
     title: "Auditor",
-    color: "#22d3ee",
+    color: "#67E8F9",
     steps: [
       "Start with Dataset Audit",
       "Run PII and privacy scan",
@@ -42,7 +42,7 @@ const QUICKSTART_PATHS = [
   {
     icon: Shield,
     title: "Data Steward",
-    color: "#10b981",
+    color: "#86EFAC",
     steps: [
       "Review field inventory",
       "Check PII and quasi-identifiers",
@@ -55,7 +55,7 @@ const QUICKSTART_PATHS = [
   {
     icon: Cpu,
     title: "Model Developer",
-    color: "#a78bfa",
+    color: "#C4B5FD",
     steps: [
       "Register model adapter",
       "Check dataset-model interface",
@@ -68,7 +68,7 @@ const QUICKSTART_PATHS = [
   {
     icon: Server,
     title: "Admin / Operator",
-    color: "#38bdf8",
+    color: "#93C5FD",
     steps: [
       "Deploy with Docker Compose",
       "Bootstrap admin account",
@@ -81,7 +81,7 @@ const QUICKSTART_PATHS = [
   {
     icon: Code2,
     title: "Developer / Contributor",
-    color: "#6366f1",
+    color: "#A7F3D0",
     steps: [
       "Clone and run locally",
       "Run existing tests",
@@ -94,7 +94,7 @@ const QUICKSTART_PATHS = [
   {
     icon: BookMarked,
     title: "Managed Operator",
-    color: "#fbbf24",
+    color: "#FCD34D",
     steps: [
       "Request managed access",
       "Tenant provisioned by AffectLog",
@@ -107,21 +107,21 @@ const QUICKSTART_PATHS = [
 ];
 
 const DOC_CARDS = [
-  { icon: BookOpen,   title: "Product Guide",         desc: "Platform overview, assessment stack, and workflow documentation.",     href: `${DOCS}/design-document.md`,      color: "#22d3ee" },
-  { icon: Code2,      title: "API Reference",          desc: "Interactive OpenAPI docs, endpoint contracts, and authentication.",     href: "/api/docs",                       color: "#38bdf8" },
-  { icon: Wrench,     title: "Self-host Guide",        desc: "Docker Compose, admin bootstrap, SMTP setup, security hardening.",     to: "/self-host",                        color: "#a78bfa" },
-  { icon: BookMarked, title: "Assessment Recipes",     desc: "YAML pipeline specs, supported formats, and contribution guide.",      href: `${DOCS}/assessment-recipes.md`,   color: "#10b981" },
-  { icon: Shield,     title: "Security Architecture",  desc: "RBAC model, pseudonymisation, audit log, and disclosure policy.",      to: "/security",                         color: "#10b981" },
-  { icon: Server,     title: "SaaS Architecture",      desc: "Multi-tenant model, tenant isolation, and managed operations.",        href: `${DOCS}/saas-architecture.md`,    color: "#6366f1" },
-  { icon: Activity,   title: "Interoperability",       desc: "CARiSMA, LOLA, PDC metadata bridges, JSON-LD output schemas.",         href: `${DOCS}/carisma-lola-interoperability.md`, color: "#fbbf24" },
-  { icon: Cpu,        title: "Model Adapters",         desc: "Adapter interface, supported frameworks, contribution instructions.",   href: `${DOCS}/model-adapters.md`,       color: "#a78bfa" },
+  { icon: BookOpen,   title: "Product Guide",         desc: "Platform overview, assessment stack, and workflow documentation.",     href: `${DOCS}/design-document.md`,      color: "#67E8F9" },
+  { icon: Code2,      title: "API Reference",          desc: "Interactive OpenAPI docs, endpoint contracts, and authentication.",     href: "/api/docs",                       color: "#93C5FD" },
+  { icon: Wrench,     title: "Self-host Guide",        desc: "Docker Compose, admin bootstrap, SMTP setup, security hardening.",     to: "/self-host",                        color: "#C4B5FD" },
+  { icon: BookMarked, title: "Assessment Recipes",     desc: "YAML pipeline specs, supported formats, and contribution guide.",      href: `${DOCS}/assessment-recipes.md`,   color: "#86EFAC" },
+  { icon: Shield,     title: "Security Architecture",  desc: "RBAC model, pseudonymisation, audit log, and disclosure policy.",      to: "/security",                         color: "#86EFAC" },
+  { icon: Server,     title: "SaaS Architecture",      desc: "Multi-tenant model, tenant isolation, and managed operations.",        href: `${DOCS}/saas-architecture.md`,    color: "#A7F3D0" },
+  { icon: Activity,   title: "Interoperability",       desc: "CARiSMA, LOLA, PDC metadata bridges, JSON-LD output schemas.",         href: `${DOCS}/carisma-lola-interoperability.md`, color: "#FCD34D" },
+  { icon: Cpu,        title: "Model Adapters",         desc: "Adapter interface, supported frameworks, contribution instructions.",   href: `${DOCS}/model-adapters.md`,       color: "#C4B5FD" },
 ];
 
 function Hero() {
   return (
     <section
       className="relative min-h-[68vh] flex items-center overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #050814 0%, #080D1F 100%)" }}
+      style={{ background: "linear-gradient(180deg, #070B1A 0%, #0B1224 100%)" }}
     >
       <GridBackground />
       <GlowOrb color="cyan" size={500} x="80%" y="25%" opacity={0.35} />
@@ -131,7 +131,7 @@ function Hero() {
           <FadeUp delay={0.04}>
             <div
               className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
-              style={{ color: "#22d3ee", background: "rgba(34,211,238,0.08)", border: "1px solid rgba(34,211,238,0.22)" }}
+              style={{ color: "#67E8F9", background: "rgba(103,232,249,0.08)", border: "1px solid rgba(103,232,249,0.22)" }}
             >
               <BookOpen size={11} />
               Documentation
@@ -158,14 +158,14 @@ function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
-                style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 6px 20px rgba(34,211,238,0.28)" }}
+                style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 6px 20px rgba(103,232,249,0.28)" }}
               >
                 Read API Docs <ExternalLink size={15} />
               </a>
               <Link
                 to="/self-host"
                 className="inline-flex items-center gap-2 font-semibold text-slate-200 rounded-xl px-6 py-3.5 border transition-all hover:bg-white/[0.06]"
-                style={{ borderColor: "rgba(148,163,184,0.22)", background: "rgba(255,255,255,0.04)" }}
+                style={{ borderColor: "rgba(203,213,225,0.22)", background: "rgba(255,255,255,0.04)" }}
               >
                 Start Self-hosting <ArrowRight size={15} />
               </Link>
@@ -179,7 +179,7 @@ function Hero() {
 
 function DocCards() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
           <div className="text-center mb-12">
@@ -198,7 +198,7 @@ function DocCards() {
                   <Link
                     to={card.to}
                     className="block rounded-2xl p-5 border h-full transition-all duration-200 hover:-translate-y-0.5 group"
-                    style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                    style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                   >
                     <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-4" style={{ background: `${card.color}14` }}>
                       <Icon size={15} style={{ color: card.color }} />
@@ -212,7 +212,7 @@ function DocCards() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block rounded-2xl p-5 border h-full transition-all duration-200 hover:-translate-y-0.5 group"
-                    style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                    style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                   >
                     <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-4" style={{ background: `${card.color}14` }}>
                       <Icon size={15} style={{ color: card.color }} />
@@ -235,7 +235,7 @@ function DocCards() {
 
 function QuickstartPaths() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#080D1F" }}>
+    <section className="py-24 md:py-28" style={{ background: "#0B1224" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
           <div className="text-center mb-14 max-w-3xl mx-auto">
@@ -255,7 +255,7 @@ function QuickstartPaths() {
               <FadeUp key={path.title} delay={i * 0.05}>
                 <div
                   className="rounded-2xl p-6 border h-full flex flex-col"
-                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                 >
                   <div className="flex items-center gap-3 mb-5">
                     <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: `${path.color}14` }}>
@@ -299,7 +299,7 @@ function QuickstartPaths() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 md:py-24" style={{ background: "#050814" }}>
+    <section className="py-20 md:py-24" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <CTABand
           headline="Can't find what you need?"
@@ -315,7 +315,7 @@ function FinalCTA() {
 
 export default function DocsPage() {
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
         <Hero />

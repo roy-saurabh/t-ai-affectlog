@@ -15,7 +15,7 @@ interface AnimatedBeamProps {
 export function AnimatedBeam({
   from,
   to,
-  color = "#22d3ee",
+  color = "#67E8F9",
   duration = 2,
   delay = 0,
   width = 1.5,
@@ -60,7 +60,7 @@ export function DataNode({
   y,
   label,
   sublabel,
-  color = "#22d3ee",
+  color = "#67E8F9",
   size = 32,
   pulse = false,
 }: DataNodeProps) {
@@ -121,7 +121,7 @@ interface DataFlowLineProps {
 
 export function DataFlowLine({
   points,
-  color = "#22d3ee",
+  color = "#67E8F9",
   speed = 1.8,
   delay = 0,
 }: DataFlowLineProps) {

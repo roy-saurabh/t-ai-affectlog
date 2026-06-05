@@ -24,7 +24,7 @@ export function ConsoleShell({
   return (
     <div
       className="flex min-h-screen"
-      style={{ background: "#080D1F", color: "#F8FAFC" }}
+      style={{ background: "#0B1224", color: "#F8FAFC" }}
     >
       <ConsoleSidebar
         nav={nav}

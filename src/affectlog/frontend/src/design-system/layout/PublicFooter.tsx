@@ -91,7 +91,7 @@ function FooterLink({ link }: { link: { label: string; to?: string; href?: strin
 function FooterAccordion({ col }: { col: (typeof FOOTER_COLS)[0] }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b" style={{ borderColor: "rgba(148,163,184,0.10)" }}>
+    <div className="border-b" style={{ borderColor: "rgba(203,213,225,0.10)" }}>
       <button
         className="flex items-center justify-between w-full py-3.5 text-left text-sm font-semibold text-slate-400 uppercase tracking-widest"
         onClick={() => setOpen((v) => !v)}
@@ -131,13 +131,13 @@ function AnimateWrapper({ open, children }: { open: boolean; children: React.Rea
 export function PublicFooter() {
   return (
     <footer
-      style={{ background: "#050814", borderTop: "1px solid rgba(148,163,184,0.09)" }}
+      style={{ background: "#070B1A", borderTop: "1px solid rgba(203,213,225,0.09)" }}
       aria-label="Site footer"
     >
       {/* ── CTA Band ───────────────────────────────────────────── */}
       <div
         className="relative overflow-hidden"
-        style={{ background: "#080D1F", borderBottom: "1px solid rgba(148,163,184,0.09)" }}
+        style={{ background: "#0B1224", borderBottom: "1px solid rgba(203,213,225,0.09)" }}
       >
         {/* Grid */}
         <div
@@ -152,7 +152,7 @@ export function PublicFooter() {
         {/* Glow */}
         <div
           className="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-40 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse, rgba(34,211,238,0.07) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(ellipse, rgba(103,232,249,0.07) 0%, transparent 70%)" }}
           aria-hidden="true"
         />
 
@@ -170,8 +170,8 @@ export function PublicFooter() {
               to="/request-access"
               className="inline-flex items-center gap-2 font-semibold text-white px-6 py-3 rounded-xl transition-all duration-200 hover:-translate-y-px"
               style={{
-                background: "linear-gradient(135deg, #06b6d4, #0ea5e9)",
-                boxShadow: "0 4px 14px rgba(34,211,238,0.25)",
+                background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)",
+                boxShadow: "0 4px 14px rgba(103,232,249,0.25)",
               }}
             >
               Request Managed Access <ArrowRight size={15} />
@@ -179,7 +179,7 @@ export function PublicFooter() {
             <Link
               to="/self-host"
               className="inline-flex items-center gap-2 font-semibold text-slate-200 px-6 py-3 rounded-xl border transition-all duration-200 hover:bg-white/[0.06] hover:border-slate-400/40"
-              style={{ borderColor: "rgba(148,163,184,0.22)", background: "rgba(255,255,255,0.04)" }}
+              style={{ borderColor: "rgba(203,213,225,0.22)", background: "rgba(255,255,255,0.04)" }}
             >
               <Server size={15} /> Deploy Community Edition
             </Link>
@@ -202,7 +202,7 @@ export function PublicFooter() {
             <Link to="/" className="inline-flex items-center gap-2.5 mb-3 group" aria-label="AffectLog">
               <div
                 className="w-7 h-7 rounded-lg flex items-center justify-center"
-                style={{ background: "linear-gradient(135deg, #22d3ee, #0ea5e9)" }}
+                style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)" }}
               >
                 <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                   <circle cx="8" cy="8" r="3" fill="white" opacity="0.9" />
@@ -294,7 +294,7 @@ export function PublicFooter() {
         {/* Bottom bar */}
         <div
           className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-600"
-          style={{ borderTop: "1px solid rgba(148,163,184,0.07)" }}
+          style={{ borderTop: "1px solid rgba(203,213,225,0.07)" }}
         >
           <p>
             AffectLog Community Edition is released under the{" "}

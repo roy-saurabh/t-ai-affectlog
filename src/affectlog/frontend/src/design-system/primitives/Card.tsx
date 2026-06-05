@@ -18,10 +18,10 @@ const paddingMap = {
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = "default", padding = "md", hover = false, glow = "none", children, style, ...props }, ref) => {
     const glowStyles: Record<string, string> = {
-      cyan:   "0 0 32px rgba(34,211,238,0.12), 0 0 64px rgba(34,211,238,0.05)",
-      violet: "0 0 32px rgba(139,92,246,0.12), 0 0 64px rgba(139,92,246,0.05)",
-      green:  "0 0 32px rgba(16,185,129,0.12), 0 0 64px rgba(16,185,129,0.05)",
-      blue:   "0 0 32px rgba(37,99,235,0.15),  0 0 64px rgba(37,99,235,0.07)",
+      cyan:   "0 0 32px rgba(103,232,249,0.12), 0 0 64px rgba(103,232,249,0.05)",
+      violet: "0 0 32px rgba(196,181,253,0.12), 0 0 64px rgba(196,181,253,0.05)",
+      green:  "0 0 32px rgba(134,239,172,0.12), 0 0 64px rgba(134,239,172,0.05)",
+      blue:   "0 0 32px rgba(147,197,253,0.15),  0 0 64px rgba(147,197,253,0.07)",
       none:   "",
     };
 
@@ -52,15 +52,15 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const variantStyles: React.CSSProperties = {};
     if (variant === "glass") {
       variantStyles.background = "rgba(255,255,255,0.035)";
-      variantStyles.borderColor = "rgba(148,163,184,0.12)";
+      variantStyles.borderColor = "rgba(203,213,225,0.12)";
     }
     if (variant === "elevated") {
       variantStyles.background = "rgba(11,16,32,0.85)";
-      variantStyles.borderColor = "rgba(148,163,184,0.14)";
+      variantStyles.borderColor = "rgba(203,213,225,0.14)";
       variantStyles.boxShadow = "0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3)";
     }
     if (variant === "outline") {
-      variantStyles.borderColor = "rgba(148,163,184,0.18)";
+      variantStyles.borderColor = "rgba(203,213,225,0.18)";
     }
 
     return (

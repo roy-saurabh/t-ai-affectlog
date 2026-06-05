@@ -23,21 +23,21 @@ function FadeUp({ children, delay = 0, className }: { children: React.ReactNode;
 }
 
 const WIZARD_STEPS = [
-  { step: 1, title: "Input source",     desc: "Upload or connect a dataset. Format auto-detected.", color: "#22d3ee", icon: Database },
-  { step: 2, title: "Format detection", desc: "Schema inference, field type detection, Becomino matching.", color: "#38bdf8", icon: Database },
-  { step: 3, title: "Schema mapping",   desc: "Map fields to xAPI schema. Flag missing or ambiguous fields.", color: "#a78bfa", icon: ShieldCheck },
-  { step: 4, title: "Privacy review",   desc: "PII scan results, risk flags, pseudonymisation decisions.", color: "#10b981", icon: Lock },
-  { step: 5, title: "Analysis scope",   desc: "Guardrails determine which analyses are valid for this dataset.", color: "#22d3ee", icon: BarChart2 },
-  { step: 6, title: "Plot selection",   desc: "Select from available visualizations for valid analyses only.", color: "#38bdf8", icon: BarChart2 },
-  { step: 7, title: "Output contract",  desc: "Review the exact artifacts and metrics that will be generated.", color: "#a78bfa", icon: FileText },
-  { step: 8, title: "Run & review",     desc: "Async audit run. Results, findings, and artifact stack.", color: "#10b981", icon: Wand2 },
+  { step: 1, title: "Input source",     desc: "Upload or connect a dataset. Format auto-detected.", color: "#67E8F9", icon: Database },
+  { step: 2, title: "Format detection", desc: "Schema inference, field type detection, Becomino matching.", color: "#93C5FD", icon: Database },
+  { step: 3, title: "Schema mapping",   desc: "Map fields to xAPI schema. Flag missing or ambiguous fields.", color: "#C4B5FD", icon: ShieldCheck },
+  { step: 4, title: "Privacy review",   desc: "PII scan results, risk flags, pseudonymisation decisions.", color: "#86EFAC", icon: Lock },
+  { step: 5, title: "Analysis scope",   desc: "Guardrails determine which analyses are valid for this dataset.", color: "#67E8F9", icon: BarChart2 },
+  { step: 6, title: "Plot selection",   desc: "Select from available visualizations for valid analyses only.", color: "#93C5FD", icon: BarChart2 },
+  { step: 7, title: "Output contract",  desc: "Review the exact artifacts and metrics that will be generated.", color: "#C4B5FD", icon: FileText },
+  { step: 8, title: "Run & review",     desc: "Async audit run. Results, findings, and artifact stack.", color: "#86EFAC", icon: Wand2 },
 ];
 
 function Hero() {
   return (
     <section
       className="relative min-h-[76vh] flex items-center overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #050814 0%, #080D1F 100%)" }}
+      style={{ background: "linear-gradient(180deg, #070B1A 0%, #0B1224 100%)" }}
     >
       <GridBackground />
       <GlowOrb color="cyan" size={600} x="80%" y="25%" opacity={0.4} />
@@ -47,7 +47,7 @@ function Hero() {
           <FadeUp delay={0.04}>
             <div
               className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
-              style={{ color: "#22d3ee", background: "rgba(34,211,238,0.08)", border: "1px solid rgba(34,211,238,0.22)" }}
+              style={{ color: "#67E8F9", background: "rgba(103,232,249,0.08)", border: "1px solid rgba(103,232,249,0.22)" }}
             >
               <Wand2 size={11} />
               Guided Assessment Wizard
@@ -72,7 +72,7 @@ function Hero() {
               <Link
                 to="/login"
                 className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
-                style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 6px 20px rgba(34,211,238,0.28)" }}
+                style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 6px 20px rgba(103,232,249,0.28)" }}
               >
                 Start Guided Assessment <ArrowRight size={17} />
               </Link>
@@ -92,7 +92,7 @@ function Hero() {
 
 function WizardSteps() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
           <div className="text-center mb-14 max-w-3xl mx-auto">
@@ -112,7 +112,7 @@ function WizardSteps() {
               <FadeUp key={s.step} delay={i * 0.04}>
                 <div
                   className="rounded-2xl p-5 border h-full transition-all duration-200 hover:-translate-y-0.5"
-                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                 >
                   <div className="flex items-center gap-2.5 mb-4">
                     <div
@@ -136,14 +136,14 @@ function WizardSteps() {
 
 function WhyGuided() {
   const reasons = [
-    { icon: AlertTriangle, color: "#fbbf24", title: "Guardrails by default", desc: "The wizard blocks analyses that require fields not present in the uploaded dataset." },
-    { icon: Lock,          color: "#10b981", title: "Privacy review step",   desc: "PII scan results and pseudonymisation decisions are reviewed before analysis proceeds." },
-    { icon: FileText,      color: "#22d3ee", title: "Output contract",       desc: "You see exactly what artifacts will be generated before the run starts." },
-    { icon: Cpu,           color: "#a78bfa", title: "Contextual help",       desc: "Every step includes explanations of what is being analyzed and why it matters." },
+    { icon: AlertTriangle, color: "#FCD34D", title: "Guardrails by default", desc: "The wizard blocks analyses that require fields not present in the uploaded dataset." },
+    { icon: Lock,          color: "#86EFAC", title: "Privacy review step",   desc: "PII scan results and pseudonymisation decisions are reviewed before analysis proceeds." },
+    { icon: FileText,      color: "#67E8F9", title: "Output contract",       desc: "You see exactly what artifacts will be generated before the run starts." },
+    { icon: Cpu,           color: "#C4B5FD", title: "Contextual help",       desc: "Every step includes explanations of what is being analyzed and why it matters." },
   ];
 
   return (
-    <section className="py-24 md:py-28" style={{ background: "#080D1F" }}>
+    <section className="py-24 md:py-28" style={{ background: "#0B1224" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
           <div className="text-center mb-12 max-w-3xl mx-auto">
@@ -163,7 +163,7 @@ function WhyGuided() {
               <FadeUp key={r.title} delay={i * 0.06}>
                 <div
                   className="rounded-2xl p-6 border h-full"
-                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                 >
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: `${r.color}14` }}>
                     <Icon size={16} style={{ color: r.color }} aria-hidden="true" />
@@ -182,7 +182,7 @@ function WhyGuided() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 md:py-24" style={{ background: "#050814" }}>
+    <section className="py-20 md:py-24" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <CTABand
           headline="Run your first guided assessment"
@@ -198,7 +198,7 @@ function FinalCTA() {
 
 export default function GuidedAssessment() {
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
         <Hero />

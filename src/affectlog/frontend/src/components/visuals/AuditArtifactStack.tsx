@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 import { FileText, Shield, Database, Share2, BarChart2, Code2 } from "lucide-react";
 
 const ARTIFACTS = [
-  { icon: FileText, label: "SOP Report",      ext: ".pdf",     color: "#22d3ee", desc: "Standard Operating Procedure" },
-  { icon: Database, label: "Data Card",        ext: ".json",    color: "#38bdf8", desc: "Dataset documentation" },
-  { icon: Shield,   label: "Privacy Report",  ext: ".jsonld",  color: "#34d399", desc: "PII scan results" },
-  { icon: BarChart2,label: "Metric Bundle",   ext: ".json",    color: "#a78bfa", desc: "Gini, Coverage@K, Sparsity" },
-  { icon: Code2,    label: "JSON-LD Graph",   ext: ".jsonld",  color: "#22d3ee", desc: "Compliance evidence graph" },
+  { icon: FileText, label: "SOP Report",      ext: ".pdf",     color: "#67E8F9", desc: "Standard Operating Procedure" },
+  { icon: Database, label: "Data Card",        ext: ".json",    color: "#93C5FD", desc: "Dataset documentation" },
+  { icon: Shield,   label: "Privacy Report",  ext: ".jsonld",  color: "#86EFAC", desc: "PII scan results" },
+  { icon: BarChart2,label: "Metric Bundle",   ext: ".json",    color: "#C4B5FD", desc: "Gini, Coverage@K, Sparsity" },
+  { icon: Code2,    label: "JSON-LD Graph",   ext: ".jsonld",  color: "#67E8F9", desc: "Compliance evidence graph" },
   { icon: Share2,   label: "Dashboard Export",ext: ".json",    color: "#94a3b8", desc: "Publishable payload" },
 ];
 

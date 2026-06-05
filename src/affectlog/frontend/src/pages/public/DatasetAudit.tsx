@@ -23,21 +23,21 @@ function FadeUp({ children, delay = 0, className }: { children: React.ReactNode;
 }
 
 const METRICS = [
-  { label: "Gini coefficient",        desc: "Measures distribution inequality across actors or activities.",     color: "#22d3ee" },
-  { label: "Coverage@K",              desc: "Share of actors accounting for the top K% of activity volume.",    color: "#38bdf8" },
-  { label: "Sparsity",                desc: "Proportion of expected field values that are absent.",             color: "#a78bfa" },
-  { label: "Entropy",                 desc: "Diversity of activity types in the xAPI event stream.",            color: "#10b981" },
-  { label: "Dominance ratio",         desc: "Ratio of activity volume: top actor vs. median actor.",           color: "#22d3ee" },
-  { label: "Temporal density",        desc: "Event frequency distribution over time.",                          color: "#38bdf8" },
-  { label: "Representation index",    desc: "Composite score for dataset completeness and diversity.",          color: "#a78bfa" },
-  { label: "Long-tail share",         desc: "Proportion of actors with very low activity counts.",              color: "#fbbf24" },
+  { label: "Gini coefficient",        desc: "Measures distribution inequality across actors or activities.",     color: "#67E8F9" },
+  { label: "Coverage@K",              desc: "Share of actors accounting for the top K% of activity volume.",    color: "#93C5FD" },
+  { label: "Sparsity",                desc: "Proportion of expected field values that are absent.",             color: "#C4B5FD" },
+  { label: "Entropy",                 desc: "Diversity of activity types in the xAPI event stream.",            color: "#86EFAC" },
+  { label: "Dominance ratio",         desc: "Ratio of activity volume: top actor vs. median actor.",           color: "#67E8F9" },
+  { label: "Temporal density",        desc: "Event frequency distribution over time.",                          color: "#93C5FD" },
+  { label: "Representation index",    desc: "Composite score for dataset completeness and diversity.",          color: "#C4B5FD" },
+  { label: "Long-tail share",         desc: "Proportion of actors with very low activity counts.",              color: "#FCD34D" },
 ];
 
 function Hero() {
   return (
     <section
       className="relative min-h-[76vh] flex items-center overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #050814 0%, #080D1F 100%)" }}
+      style={{ background: "linear-gradient(180deg, #070B1A 0%, #0B1224 100%)" }}
     >
       <GridBackground />
       <GlowOrb color="cyan" size={600} x="80%" y="25%" opacity={0.4} />
@@ -47,7 +47,7 @@ function Hero() {
           <FadeUp delay={0.04}>
             <div
               className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
-              style={{ color: "#22d3ee", background: "rgba(34,211,238,0.08)", border: "1px solid rgba(34,211,238,0.22)" }}
+              style={{ color: "#67E8F9", background: "rgba(103,232,249,0.08)", border: "1px solid rgba(103,232,249,0.22)" }}
             >
               <Database size={11} />
               Dataset Audit
@@ -72,7 +72,7 @@ function Hero() {
               <Link
                 to="/login"
                 className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
-                style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 6px 20px rgba(34,211,238,0.28)" }}
+                style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 6px 20px rgba(103,232,249,0.28)" }}
               >
                 Run Dataset Audit <ArrowRight size={17} />
               </Link>
@@ -92,16 +92,16 @@ function Hero() {
 
 function AuditWorkflow() {
   const steps = [
-    { icon: Database,    title: "Upload or connect",   desc: "CSV, JSON, Parquet, or xAPI stream. No raw data retained.", color: "#22d3ee" },
-    { icon: Eye,         title: "Schema validation",   desc: "Field detection, type inference, completeness audit.",       color: "#38bdf8" },
-    { icon: Fingerprint, title: "PII scan",            desc: "GDPR field mapping, regex patterns, quasi-identifier flags.", color: "#10b981" },
-    { icon: Activity,    title: "xAPI normalization",  desc: "Verb canonicalization, actor pseudonymisation.",             color: "#a78bfa" },
-    { icon: BarChart2,   title: "Metrics computation", desc: "Gini, Coverage@K, sparsity, entropy, dominance.",           color: "#22d3ee" },
-    { icon: FileText,    title: "Artifact generation", desc: "Data card, SOP, field inventory, JSON-LD graph.",            color: "#10b981" },
+    { icon: Database,    title: "Upload or connect",   desc: "CSV, JSON, Parquet, or xAPI stream. No raw data retained.", color: "#67E8F9" },
+    { icon: Eye,         title: "Schema validation",   desc: "Field detection, type inference, completeness audit.",       color: "#93C5FD" },
+    { icon: Fingerprint, title: "PII scan",            desc: "GDPR field mapping, regex patterns, quasi-identifier flags.", color: "#86EFAC" },
+    { icon: Activity,    title: "xAPI normalization",  desc: "Verb canonicalization, actor pseudonymisation.",             color: "#C4B5FD" },
+    { icon: BarChart2,   title: "Metrics computation", desc: "Gini, Coverage@K, sparsity, entropy, dominance.",           color: "#67E8F9" },
+    { icon: FileText,    title: "Artifact generation", desc: "Data card, SOP, field inventory, JSON-LD graph.",            color: "#86EFAC" },
   ];
 
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
           <div className="text-center mb-12 max-w-3xl mx-auto">
@@ -117,7 +117,7 @@ function AuditWorkflow() {
               <FadeUp key={s.title} delay={i * 0.05}>
                 <div
                   className="flex items-start gap-4 p-5 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5"
-                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                 >
                   <div
                     className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-sm font-bold"
@@ -144,7 +144,7 @@ function AuditWorkflow() {
 
 function MetricsGallery() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#080D1F" }}>
+    <section className="py-24 md:py-28" style={{ background: "#0B1224" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
           <div className="text-center mb-12 max-w-3xl mx-auto">
@@ -158,7 +158,7 @@ function MetricsGallery() {
             <FadeUp key={m.label} delay={i * 0.04}>
               <div
                 className="rounded-2xl p-5 border h-full"
-                style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
               >
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-2 h-2 rounded-full" style={{ background: m.color }} />
@@ -176,7 +176,7 @@ function MetricsGallery() {
 
 function OutputArtifacts() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-4xl mx-auto px-5 md:px-8">
         <FadeUp>
           <div className="text-center mb-12">
@@ -188,17 +188,17 @@ function OutputArtifacts() {
         <FadeUp delay={0.1}>
           <div className="grid sm:grid-cols-2 gap-4">
             {[
-              { label: "Standard Operating Procedure (SOP)", desc: "Audit narrative with findings, risk flags, and recommendations.", color: "#22d3ee" },
-              { label: "Dataset Data Card",                   desc: "JSON-LD structured dataset metadata for interoperability.",       color: "#10b981" },
-              { label: "Field Inventory",                     desc: "Schema, types, sparsity, and PII status for every field.",       color: "#a78bfa" },
-              { label: "Privacy Report",                      desc: "PII findings, pseudonymisation decisions, residual risks.",      color: "#38bdf8" },
-              { label: "Metrics Dashboard Payload",           desc: "JSON output for visualization in the assessment console.",       color: "#22d3ee" },
-              { label: "JSON-LD Compliance Graph",            desc: "Machine-readable evidence graph for downstream tools.",          color: "#10b981" },
+              { label: "Standard Operating Procedure (SOP)", desc: "Audit narrative with findings, risk flags, and recommendations.", color: "#67E8F9" },
+              { label: "Dataset Data Card",                   desc: "JSON-LD structured dataset metadata for interoperability.",       color: "#86EFAC" },
+              { label: "Field Inventory",                     desc: "Schema, types, sparsity, and PII status for every field.",       color: "#C4B5FD" },
+              { label: "Privacy Report",                      desc: "PII findings, pseudonymisation decisions, residual risks.",      color: "#93C5FD" },
+              { label: "Metrics Dashboard Payload",           desc: "JSON output for visualization in the assessment console.",       color: "#67E8F9" },
+              { label: "JSON-LD Compliance Graph",            desc: "Machine-readable evidence graph for downstream tools.",          color: "#86EFAC" },
             ].map((item) => (
               <div
                 key={item.label}
                 className="flex items-start gap-3 p-4 rounded-xl border"
-                style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
               >
                 <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5" style={{ background: item.color }} />
                 <div>
@@ -216,7 +216,7 @@ function OutputArtifacts() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 md:py-24" style={{ background: "#080D1F" }}>
+    <section className="py-20 md:py-24" style={{ background: "#0B1224" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <CTABand
           headline="Profile your first educational dataset"
@@ -232,7 +232,7 @@ function FinalCTA() {
 
 export default function DatasetAuditPage() {
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
         <Hero />

@@ -2,20 +2,20 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const STAGES = [
-  { id: "csv",    label: "CSV / JSON / Parquet", color: "#22d3ee",  x: 40,  y: 50 },
-  { id: "ingest", label: "Ingest & Validate",    color: "#38bdf8",  x: 160, y: 50 },
-  { id: "pii",    label: "PII Scan",             color: "#34d399",  x: 280, y: 50 },
-  { id: "xapi",   label: "xAPI Normalize",       color: "#a78bfa",  x: 400, y: 50 },
-  { id: "audit",  label: "Dataset Audit",        color: "#38bdf8",  x: 520, y: 50 },
-  { id: "model",  label: "Model Assessment",     color: "#a78bfa",  x: 640, y: 50 },
-  { id: "export", label: "SOP + JSON-LD",        color: "#34d399",  x: 760, y: 50 },
+  { id: "csv",    label: "CSV / JSON / Parquet", color: "#67E8F9",  x: 40,  y: 50 },
+  { id: "ingest", label: "Ingest & Validate",    color: "#93C5FD",  x: 160, y: 50 },
+  { id: "pii",    label: "PII Scan",             color: "#86EFAC",  x: 280, y: 50 },
+  { id: "xapi",   label: "xAPI Normalize",       color: "#C4B5FD",  x: 400, y: 50 },
+  { id: "audit",  label: "Dataset Audit",        color: "#93C5FD",  x: 520, y: 50 },
+  { id: "model",  label: "Model Assessment",     color: "#C4B5FD",  x: 640, y: 50 },
+  { id: "export", label: "SOP + JSON-LD",        color: "#86EFAC",  x: 760, y: 50 },
 ];
 
 const OVERLAY_CARDS = [
-  { label: "1M+ rows",    sub: "CSV processing",   x: 60,  y: 130, color: "#22d3ee" },
-  { label: "PII scan",    sub: "GDPR-aware",        x: 240, y: 130, color: "#34d399" },
-  { label: "Gini / C@K", sub: "Fairness metrics",  x: 420, y: 130, color: "#a78bfa" },
-  { label: "JSON-LD",     sub: "Audit artifacts",   x: 640, y: 130, color: "#34d399" },
+  { label: "1M+ rows",    sub: "CSV processing",   x: 60,  y: 130, color: "#67E8F9" },
+  { label: "PII scan",    sub: "GDPR-aware",        x: 240, y: 130, color: "#86EFAC" },
+  { label: "Gini / C@K", sub: "Fairness metrics",  x: 420, y: 130, color: "#C4B5FD" },
+  { label: "JSON-LD",     sub: "Audit artifacts",   x: 640, y: 130, color: "#86EFAC" },
 ];
 
 function FlowArrow({ x1, y1, x2, y2, color, delay }: {

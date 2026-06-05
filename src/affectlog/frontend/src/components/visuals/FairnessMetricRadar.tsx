@@ -39,8 +39,8 @@ export function FairnessMetricRadar() {
           <Radar
             name="Score"
             dataKey="score"
-            stroke="#a78bfa"
-            fill="#a78bfa"
+            stroke="#C4B5FD"
+            fill="#C4B5FD"
             fillOpacity={0.15}
             strokeWidth={1.5}
           />
@@ -52,7 +52,7 @@ export function FairnessMetricRadar() {
           <div key={d.metric} className="text-center">
             <div
               className="text-xs font-semibold"
-              style={{ color: d.score > 0.65 ? "#34d399" : d.score > 0.5 ? "#fbbf24" : "#f87171" }}
+              style={{ color: d.score > 0.65 ? "#86EFAC" : d.score > 0.5 ? "#FCD34D" : "#FCA5A5" }}
             >
               {(d.score * 100).toFixed(0)}%
             </div>

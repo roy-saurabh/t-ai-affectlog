@@ -1,13 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const CENTER = { x: 210, y: 140, label: "AffectLog", color: "#22d3ee" };
+const CENTER = { x: 210, y: 140, label: "AffectLog", color: "#67E8F9" };
 
 const PEERS = [
-  { id: "pdc",      label: "PDC",              sub: "Consent & Policy",     x: 60,  y: 40,  color: "#a78bfa" },
-  { id: "carisma",  label: "CARiSMA",          sub: "Risk & Compliance",    x: 360, y: 40,  color: "#38bdf8" },
-  { id: "lola",     label: "LOLA",             sub: "Scenario Evaluation",  x: 360, y: 230, color: "#34d399" },
-  { id: "registry", label: "Model Registry",   sub: "External adapters",    x: 60,  y: 230, color: "#fbbf24" },
+  { id: "pdc",      label: "PDC",              sub: "Consent & Policy",     x: 60,  y: 40,  color: "#C4B5FD" },
+  { id: "carisma",  label: "CARiSMA",          sub: "Risk & Compliance",    x: 360, y: 40,  color: "#93C5FD" },
+  { id: "lola",     label: "LOLA",             sub: "Scenario Evaluation",  x: 360, y: 230, color: "#86EFAC" },
+  { id: "registry", label: "Model Registry",   sub: "External adapters",    x: 60,  y: 230, color: "#FCD34D" },
   { id: "export",   label: "Dashboard Export", sub: "JSON-LD / Artifact",   x: 210, y: 270, color: "#94a3b8" },
 ];
 
@@ -25,8 +25,8 @@ export function ConnectorInteroperabilityMap() {
       <svg viewBox="0 0 420 300" className="w-full h-full">
         <defs>
           <radialGradient id="cim-center" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="#22d3ee" stopOpacity="0" />
+            <stop offset="0%" stopColor="#67E8F9" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#67E8F9" stopOpacity="0" />
           </radialGradient>
           {PEERS.map((p) => (
             <radialGradient key={p.id} id={`cim-${p.id}`} cx="50%" cy="50%" r="50%">
@@ -67,14 +67,14 @@ export function ConnectorInteroperabilityMap() {
         <circle cx={CENTER.x} cy={CENTER.y} r={38} fill="url(#cim-center)" />
         <motion.circle
           cx={CENTER.x} cy={CENTER.y} r={30}
-          fill="rgba(34,211,238,0.1)"
-          stroke="#22d3ee"
+          fill="rgba(103,232,249,0.1)"
+          stroke="#67E8F9"
           strokeWidth="1.5"
           animate={{ r: [28, 34], opacity: [0.6, 0] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut" }}
         />
-        <circle cx={CENTER.x} cy={CENTER.y} r={28} fill="rgba(34,211,238,0.1)" stroke="#22d3ee" strokeWidth="2" />
-        <text x={CENTER.x} y={CENTER.y + 1} textAnchor="middle" dominantBaseline="middle" fill="#22d3ee" fontSize="8" fontWeight="700" fontFamily="var(--font-sans, sans-serif)">AffectLog</text>
+        <circle cx={CENTER.x} cy={CENTER.y} r={28} fill="rgba(103,232,249,0.1)" stroke="#67E8F9" strokeWidth="2" />
+        <text x={CENTER.x} y={CENTER.y + 1} textAnchor="middle" dominantBaseline="middle" fill="#67E8F9" fontSize="8" fontWeight="700" fontFamily="var(--font-sans, sans-serif)">AffectLog</text>
         <text x={CENTER.x} y={CENTER.y + 13} textAnchor="middle" fill="#64748b" fontSize="5.5" fontFamily="var(--font-sans, sans-serif)">Assessment Core</text>
 
         {/* Peer nodes */}

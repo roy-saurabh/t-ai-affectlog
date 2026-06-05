@@ -1,13 +1,13 @@
 import React from "react";
 
 const NODES = [
-  { id: "dataset",   label: "Dataset",           x: 200, y: 60,  color: "#22d3ee", r: 22 },
-  { id: "field",     label: "DataField",          x: 80,  y: 160, color: "#38bdf8", r: 18 },
-  { id: "proc",      label: "Processing\nActivity",x: 200,y: 210, color: "#a78bfa", r: 20, center: true },
-  { id: "control",   label: "Control",            x: 360, y: 140, color: "#34d399", r: 18 },
-  { id: "metric",    label: "Metric",             x: 340, y: 230, color: "#34d399", r: 16 },
-  { id: "risk",      label: "RiskFinding",        x: 130, y: 290, color: "#f87171", r: 18 },
-  { id: "artifact",  label: "Artifact",           x: 300, y: 310, color: "#fbbf24", r: 20 },
+  { id: "dataset",   label: "Dataset",           x: 200, y: 60,  color: "#67E8F9", r: 22 },
+  { id: "field",     label: "DataField",          x: 80,  y: 160, color: "#93C5FD", r: 18 },
+  { id: "proc",      label: "Processing\nActivity",x: 200,y: 210, color: "#C4B5FD", r: 20, center: true },
+  { id: "control",   label: "Control",            x: 360, y: 140, color: "#86EFAC", r: 18 },
+  { id: "metric",    label: "Metric",             x: 340, y: 230, color: "#86EFAC", r: 16 },
+  { id: "risk",      label: "RiskFinding",        x: 130, y: 290, color: "#FCA5A5", r: 18 },
+  { id: "artifact",  label: "Artifact",           x: 300, y: 310, color: "#FCD34D", r: 20 },
 ];
 
 const EDGES = [
@@ -51,7 +51,7 @@ export function ComplianceGraphVisual() {
               key={i}
               x1={from.x} y1={from.y}
               x2={to.x}   y2={to.y}
-              stroke="rgba(148,163,184,0.25)"
+              stroke="rgba(203,213,225,0.25)"
               strokeWidth="1"
               strokeDasharray="100"
               strokeDashoffset="100"
@@ -112,9 +112,9 @@ export function ComplianceGraphVisual() {
 
         {/* ── JSON-LD badge ──────────────────────────────────────── */}
         <rect x={340} y={20} width={64} height={22} rx={11}
-          fill="rgba(34,211,238,0.10)" stroke="rgba(34,211,238,0.30)" strokeWidth={0.8}
+          fill="rgba(103,232,249,0.10)" stroke="rgba(103,232,249,0.30)" strokeWidth={0.8}
         />
-        <text x={372} y={35} textAnchor="middle" fill="#22d3ee" fontSize="9" fontFamily="var(--font-mono)" fontWeight="600">
+        <text x={372} y={35} textAnchor="middle" fill="#67E8F9" fontSize="9" fontFamily="var(--font-mono)" fontWeight="600">
           JSON-LD
         </text>
       </svg>

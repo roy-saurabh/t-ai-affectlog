@@ -11,7 +11,7 @@ export function MarketingPageShell({ children, darkBg = true }: MarketingPageShe
   return (
     <div
       id="page-root"
-      style={{ background: darkBg ? "#050814" : "#ffffff", color: darkBg ? "#F8FAFC" : "#0F172A", minHeight: "100vh" }}
+      style={{ background: darkBg ? "#070B1A" : "#ffffff", color: darkBg ? "#F8FAFC" : "#0F172A", minHeight: "100vh" }}
     >
       <PublicHeader />
       <main id="main-content">{children}</main>

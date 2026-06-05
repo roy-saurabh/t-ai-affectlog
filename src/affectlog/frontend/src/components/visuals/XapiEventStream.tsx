@@ -10,14 +10,14 @@ const EVENTS = [
 ];
 
 const STAGES_LABEL = ["Schema validate", "Verb normalize", "Pseudonymise", "Profile"];
-const STAGE_COLORS = ["#38bdf8", "#22d3ee", "#34d399", "#a78bfa"];
+const STAGE_COLORS = ["#93C5FD", "#67E8F9", "#86EFAC", "#C4B5FD"];
 
 const VERB_COLORS: Record<string, string> = {
-  completed:   "#34d399",
-  attempted:   "#fbbf24",
-  progressed:  "#38bdf8",
-  answered:    "#a78bfa",
-  experienced: "#22d3ee",
+  completed:   "#86EFAC",
+  attempted:   "#FCD34D",
+  progressed:  "#93C5FD",
+  answered:    "#C4B5FD",
+  experienced: "#67E8F9",
 };
 
 export function XapiEventStream() {

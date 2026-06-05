@@ -1,10 +1,10 @@
 import React from "react";
 
 const STAGES = [
-  { id: "design",    label: "Design-time",      tool: "CARiSMA",   color: "#38bdf8", x: 80 },
-  { id: "eval",      label: "Evaluation",        tool: "LOLA",      color: "#a78bfa", x: 240 },
-  { id: "operation", label: "Operation-time",    tool: "AffectLog", color: "#22d3ee", x: 400, highlight: true },
-  { id: "evidence",  label: "Audit Evidence",    tool: "Artifacts", color: "#34d399", x: 560 },
+  { id: "design",    label: "Design-time",      tool: "CARiSMA",   color: "#93C5FD", x: 80 },
+  { id: "eval",      label: "Evaluation",        tool: "LOLA",      color: "#C4B5FD", x: 240 },
+  { id: "operation", label: "Operation-time",    tool: "AffectLog", color: "#67E8F9", x: 400, highlight: true },
+  { id: "evidence",  label: "Audit Evidence",    tool: "Artifacts", color: "#86EFAC", x: 560 },
 ];
 
 const ARROWS = [
@@ -37,7 +37,7 @@ export function EcosystemLifecycleVisual() {
           <line
             key={i}
             x1={a.x1} y1={a.y1} x2={a.x2} y2={a.y2}
-            stroke="rgba(148,163,184,0.35)"
+            stroke="rgba(203,213,225,0.35)"
             strokeWidth="1.5"
             strokeDasharray="60"
             strokeDashoffset="60"

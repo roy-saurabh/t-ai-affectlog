@@ -52,14 +52,14 @@ function Spinner() {
   return (
     <div
       className="flex-1 flex items-center justify-center min-h-screen"
-      style={{ background: "#050814" }}
+      style={{ background: "#070B1A" }}
     >
       <div className="flex flex-col items-center gap-3">
         <div
           className="w-8 h-8 rounded-xl"
           style={{
-            background: "rgba(34,211,238,0.15)",
-            border: "1px solid rgba(34,211,238,0.30)",
+            background: "rgba(103,232,249,0.15)",
+            border: "1px solid rgba(103,232,249,0.30)",
             animation: "pulseGlow 1.5s ease-in-out infinite",
           }}
         />
@@ -119,7 +119,7 @@ function AdminSystem() {
       {health ? (
         <pre
           className="rounded-2xl p-4 text-xs overflow-auto text-slate-300"
-          style={{ background: "rgba(11,16,32,0.8)", border: "1px solid rgba(148,163,184,0.12)" }}
+          style={{ background: "rgba(11,16,32,0.8)", border: "1px solid rgba(203,213,225,0.12)" }}
         >
           {JSON.stringify(health, null, 2)}
         </pre>

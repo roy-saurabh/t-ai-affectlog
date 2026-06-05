@@ -25,7 +25,7 @@ const TIERS = [
     icon: Server,
     price: "Free",
     priceNote: "Open source · MIT License",
-    color: "#22d3ee",
+    color: "#67E8F9",
     cta: { label: "Deploy Community Edition", to: "/community" },
     features: [
       "Full dataset audit pipeline",
@@ -52,7 +52,7 @@ const TIERS = [
     icon: Cloud,
     price: "Contact",
     priceNote: "Hosted by AffectLog",
-    color: "#a78bfa",
+    color: "#C4B5FD",
     highlight: true,
     cta: { label: "Request Managed Access", to: "/request-access" },
     features: [
@@ -74,7 +74,7 @@ const TIERS = [
     icon: Building2,
     price: "Configure",
     priceNote: "Dedicated deployment",
-    color: "#38bdf8",
+    color: "#93C5FD",
     cta: { label: "Talk to AffectLog", to: "/request-access" },
     features: [
       "All Managed Cloud features",
@@ -90,7 +90,7 @@ const TIERS = [
     icon: Globe,
     price: "Configure",
     priceNote: "Bring-your-own-cloud",
-    color: "#10b981",
+    color: "#86EFAC",
     cta: { label: "Talk to AffectLog", to: "/request-access" },
     features: [
       "Community Edition core",
@@ -107,7 +107,7 @@ function Hero() {
   return (
     <section
       className="relative py-24 md:py-32 overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #050814 0%, #080D1F 100%)" }}
+      style={{ background: "linear-gradient(180deg, #070B1A 0%, #0B1224 100%)" }}
     >
       <GridBackground />
       <GlowOrb color="violet" size={600} x="75%" y="30%" opacity={0.35} />
@@ -116,7 +116,7 @@ function Hero() {
         <FadeUp>
           <div
             className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
-            style={{ color: "#a78bfa", background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.22)" }}
+            style={{ color: "#C4B5FD", background: "rgba(196,181,253,0.08)", border: "1px solid rgba(196,181,253,0.22)" }}
           >
             Pricing & Editions
           </div>
@@ -138,7 +138,7 @@ function Hero() {
 
 function PricingTiers() {
   return (
-    <section className="py-12 md:py-16" style={{ background: "#080D1F" }}>
+    <section className="py-12 md:py-16" style={{ background: "#0B1224" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-5">
           {TIERS.map((tier, i) => {
@@ -149,7 +149,7 @@ function PricingTiers() {
                   className="rounded-2xl p-6 h-full flex flex-col border relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5"
                   style={{
                     background: tier.highlight ? `${tier.color}05` : "rgba(255,255,255,0.025)",
-                    borderColor: tier.highlight ? `${tier.color}30` : "rgba(148,163,184,0.10)",
+                    borderColor: tier.highlight ? `${tier.color}30` : "rgba(203,213,225,0.10)",
                   }}
                 >
                   {tier.badge && (
@@ -195,10 +195,10 @@ function PricingTiers() {
                     className="inline-flex items-center justify-center gap-2 font-semibold text-white rounded-xl px-4 py-2.5 text-sm transition-all border"
                     style={{
                       background: tier.highlight
-                        ? `linear-gradient(135deg, #7c3aed, #6d28d9)`
+                        ? `linear-gradient(135deg, #C4B5FD 0%, #D8B4FE 100%)`
                         : "rgba(255,255,255,0.04)",
                       borderColor: tier.highlight ? "transparent" : `${tier.color}35`,
-                      boxShadow: tier.highlight ? "0 4px 14px rgba(139,92,246,0.25)" : "none",
+                      boxShadow: tier.highlight ? "0 4px 14px rgba(196,181,253,0.25)" : "none",
                     }}
                   >
                     {tier.cta.label} <ArrowRight size={13} />
@@ -249,10 +249,10 @@ function FeatureComparison() {
   ];
 
   const headers = ["Community", "Managed Cloud", "Private Tenant", "BYOC / On-prem"];
-  const colors  = ["#22d3ee",  "#a78bfa",       "#38bdf8",        "#10b981"];
+  const colors  = ["#67E8F9",  "#C4B5FD",       "#93C5FD",        "#86EFAC"];
 
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-5xl mx-auto px-5 md:px-8">
         <FadeUp>
           <div className="text-center mb-12">
@@ -262,7 +262,7 @@ function FeatureComparison() {
         </FadeUp>
 
         <FadeUp delay={0.1}>
-          <div className="rounded-2xl overflow-hidden border" style={{ borderColor: "rgba(148,163,184,0.12)" }}>
+          <div className="rounded-2xl overflow-hidden border" style={{ borderColor: "rgba(203,213,225,0.12)" }}>
             {/* Header */}
             <div className="grid grid-cols-5 px-5 py-3" style={{ background: "rgba(11,16,32,0.8)" }}>
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Feature</div>
@@ -277,7 +277,7 @@ function FeatureComparison() {
               <div key={cat.name}>
                 <div
                   className="px-5 py-2 text-xs font-bold uppercase tracking-widest text-slate-500"
-                  style={{ background: "rgba(255,255,255,0.02)", borderTop: "1px solid rgba(148,163,184,0.07)" }}
+                  style={{ background: "rgba(255,255,255,0.02)", borderTop: "1px solid rgba(203,213,225,0.07)" }}
                 >
                   {cat.name}
                 </div>
@@ -286,7 +286,7 @@ function FeatureComparison() {
                     key={row.label}
                     className="grid grid-cols-5 px-5 py-3 text-sm border-t"
                     style={{
-                      borderColor: "rgba(148,163,184,0.07)",
+                      borderColor: "rgba(203,213,225,0.07)",
                       background: ri % 2 === 0 ? "rgba(255,255,255,0.01)" : "transparent",
                     }}
                   >
@@ -311,7 +311,7 @@ function FeatureComparison() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 md:py-24" style={{ background: "#080D1F" }}>
+    <section className="py-20 md:py-24" style={{ background: "#0B1224" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <CTABand
           headline="Choose your deployment model"
@@ -327,7 +327,7 @@ function FinalCTA() {
 
 export default function PricingPage() {
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
         <Hero />

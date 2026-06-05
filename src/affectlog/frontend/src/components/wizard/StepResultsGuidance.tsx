@@ -44,7 +44,7 @@ interface StepResultsGuidanceProps {
   runId: string;
 }
 
-const CHART_COLORS = ["#6366f1", "#8b5cf6", "#a78bfa", "#c4b5fd", "#818cf8", "#4f46e5"];
+const CHART_COLORS = ["#A7F3D0", "#8b5cf6", "#C4B5FD", "#c4b5fd", "#C4B5FD", "#4f46e5"];
 
 function dictToBarData(d: Record<string, number>, maxItems = 12) {
   return Object.entries(d)
@@ -189,7 +189,7 @@ const PLOT_RENDERERS: Record<string, PlotRenderer> = {
             <XAxis dataKey="k" tick={{ fill: "#64748b", fontSize: 10 }} label={{ value: "K", position: "insideBottomRight", offset: -4, fill: "#64748b", fontSize: 10 }} />
             <YAxis tickFormatter={(v: number) => `${(v * 100).toFixed(0)}%`} tick={{ fill: "#64748b", fontSize: 10 }} />
             <Tooltip content={<CoverageTooltip />} />
-            <Line type="monotone" dataKey="coverage" stroke="#6366f1" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="coverage" stroke="#A7F3D0" strokeWidth={2} dot={false} />
           </LineChart>
         </ResponsiveContainer>
       </div>

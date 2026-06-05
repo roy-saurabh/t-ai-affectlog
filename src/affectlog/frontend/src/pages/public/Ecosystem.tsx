@@ -24,7 +24,7 @@ const TOOLS = [
   {
     name: "CARiSMA",
     phase: "Design-time",
-    color: "#38bdf8",
+    color: "#93C5FD",
     icon: Network,
     role: "AI risk & compliance analysis at design time",
     desc: "CARiSMA annotates model artefacts with compliance markers before deployment. It performs model-level security, risk, and regulatory compliance analysis, producing structured evidence that downstream tools — including AffectLog — can reference.",
@@ -35,7 +35,7 @@ const TOOLS = [
   {
     name: "LOLA",
     phase: "Evaluation scenario",
-    color: "#a78bfa",
+    color: "#C4B5FD",
     icon: BarChart2,
     role: "Scenario-based algorithm evaluation",
     desc: "LOLA provides scenario-based evaluation using educational datasets. It bridges the gap between design-time compliance constraints and operation-time behavioral evidence, linking evaluation scenarios to assessment workflows.",
@@ -46,7 +46,7 @@ const TOOLS = [
   {
     name: "AffectLog",
     phase: "Operation-time",
-    color: "#22d3ee",
+    color: "#67E8F9",
     icon: Activity,
     role: "Dataset & model assessment at operation time",
     desc: "AffectLog handles operation-time assessment: profiling real datasets, evaluating model behaviour in its training data context, generating privacy reports, fairness metrics, and audit-ready structured evidence for regulatory review.",
@@ -62,7 +62,7 @@ function Hero() {
   return (
     <section
       className="relative min-h-[72vh] flex items-center overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #050814 0%, #080D1F 100%)" }}
+      style={{ background: "linear-gradient(180deg, #070B1A 0%, #0B1224 100%)" }}
     >
       <GridBackground />
       <GlowOrb color="cyan" size={600} x="75%" y="25%" opacity={0.4} />
@@ -73,7 +73,7 @@ function Hero() {
           <FadeUp delay={0.04}>
             <div
               className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
-              style={{ color: "#22d3ee", background: "rgba(34,211,238,0.08)", border: "1px solid rgba(34,211,238,0.22)" }}
+              style={{ color: "#67E8F9", background: "rgba(103,232,249,0.08)", border: "1px solid rgba(103,232,249,0.22)" }}
             >
               <Network size={11} />
               Prometheus-X Building Block BB04
@@ -101,7 +101,7 @@ function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
-                style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 6px 20px rgba(34,211,238,0.28)" }}
+                style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 6px 20px rgba(103,232,249,0.28)" }}
               >
                 BB04 Technical Docs <ExternalLink size={15} />
               </a>
@@ -121,7 +121,7 @@ function Hero() {
 
 function LifecycleSection() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
           <div className="text-center mb-12 max-w-3xl mx-auto">
@@ -137,7 +137,7 @@ function LifecycleSection() {
         <FadeUp delay={0.1}>
           <div
             className="rounded-2xl p-6 md:p-8 border mb-12"
-            style={{ background: "rgba(11,16,32,0.7)", borderColor: "rgba(148,163,184,0.12)" }}
+            style={{ background: "rgba(11,16,32,0.7)", borderColor: "rgba(203,213,225,0.12)" }}
           >
             <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-5">AI System Lifecycle</p>
             <EcosystemLifecycleVisual />
@@ -153,7 +153,7 @@ function LifecycleSection() {
                   className="rounded-2xl p-7 h-full border transition-all duration-200 hover:-translate-y-0.5"
                   style={{
                     background: tool.highlight ? `${tool.color}07` : "rgba(255,255,255,0.025)",
-                    borderColor: tool.highlight ? `${tool.color}30` : "rgba(148,163,184,0.10)",
+                    borderColor: tool.highlight ? `${tool.color}30` : "rgba(203,213,225,0.10)",
                   }}
                 >
                   <div className="flex items-start justify-between mb-5">
@@ -214,7 +214,7 @@ function LifecycleSection() {
 
 function PDCInteroperability() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#080D1F" }}>
+    <section className="py-24 md:py-28" style={{ background: "#0B1224" }}>
       <div className="max-w-4xl mx-auto px-5 md:px-8 text-center">
         <FadeUp>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-5 tracking-tight">
@@ -227,14 +227,14 @@ function PDCInteroperability() {
           </p>
           <div className="grid sm:grid-cols-3 gap-4 text-left">
             {[
-              { label: "JSON-LD compliance graphs",  desc: "Machine-readable compliance evidence",      color: "#22d3ee" },
-              { label: "Dataset data cards",         desc: "Standardized dataset metadata format",      color: "#a78bfa" },
-              { label: "Model cards",                desc: "Model behavioral documentation",            color: "#38bdf8" },
+              { label: "JSON-LD compliance graphs",  desc: "Machine-readable compliance evidence",      color: "#67E8F9" },
+              { label: "Dataset data cards",         desc: "Standardized dataset metadata format",      color: "#C4B5FD" },
+              { label: "Model cards",                desc: "Model behavioral documentation",            color: "#93C5FD" },
             ].map((item) => (
               <div
                 key={item.label}
                 className="rounded-xl p-4 border"
-                style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
               >
                 <div className="w-1.5 h-1.5 rounded-full mb-3" style={{ background: item.color }} />
                 <h3 className="font-semibold text-slate-200 text-sm mb-1">{item.label}</h3>
@@ -250,7 +250,7 @@ function PDCInteroperability() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 md:py-24" style={{ background: "#050814" }}>
+    <section className="py-20 md:py-24" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <CTABand
           headline="Explore AffectLog's role in the ecosystem"
@@ -266,7 +266,7 @@ function FinalCTA() {
 
 export default function EcosystemPage() {
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
         <Hero />

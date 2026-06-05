@@ -49,13 +49,13 @@ export default function CoverageChart({ coverageAtK }: Props) {
             formatter={(v: number) => [`${v.toFixed(1)}%`, "Coverage"]}
             labelFormatter={(k) => `Top-${k} resources`}
           />
-          <ReferenceLine y={50} stroke="#6366f1" strokeDasharray="4 4" label={{ value: "50%", fill: "#818cf8", fontSize: 10 }} />
+          <ReferenceLine y={50} stroke="#A7F3D0" strokeDasharray="4 4" label={{ value: "50%", fill: "#C4B5FD", fontSize: 10 }} />
           <Line
             type="monotone"
             dataKey="coverage"
-            stroke="#6366f1"
+            stroke="#A7F3D0"
             strokeWidth={2}
-            dot={{ fill: "#818cf8", r: 4, strokeWidth: 0 }}
+            dot={{ fill: "#C4B5FD", r: 4, strokeWidth: 0 }}
             activeDot={{ r: 6, fill: "#a5b4fc" }}
           />
         </LineChart>

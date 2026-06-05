@@ -2,20 +2,20 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const NODES = [
-  { id: "affectlog", label: "AffectLog",    role: "Assessment",          x: 200, y: 140, color: "#22d3ee",  r: 22, highlight: true },
-  { id: "pdc",       label: "PDC",          role: "Policy & Consent",    x: 340, y: 60,  color: "#a78bfa",  r: 16 },
-  { id: "carisma",   label: "CARiSMA",      role: "Design-time Risk",    x: 80,  y: 60,  color: "#38bdf8",  r: 16 },
-  { id: "lola",      label: "LOLA",         role: "Scenario Evaluation", x: 60,  y: 220, color: "#34d399",  r: 16 },
+  { id: "affectlog", label: "AffectLog",    role: "Assessment",          x: 200, y: 140, color: "#67E8F9",  r: 22, highlight: true },
+  { id: "pdc",       label: "PDC",          role: "Policy & Consent",    x: 340, y: 60,  color: "#C4B5FD",  r: 16 },
+  { id: "carisma",   label: "CARiSMA",      role: "Design-time Risk",    x: 80,  y: 60,  color: "#93C5FD",  r: 16 },
+  { id: "lola",      label: "LOLA",         role: "Scenario Evaluation", x: 60,  y: 220, color: "#86EFAC",  r: 16 },
   { id: "provider",  label: "Data Provider",role: "Dataset Source",      x: 340, y: 220, color: "#94a3b8",  r: 14 },
-  { id: "auditor",   label: "Auditor",      role: "Evidence Consumer",   x: 200, y: 280, color: "#fbbf24",  r: 14 },
+  { id: "auditor",   label: "Auditor",      role: "Evidence Consumer",   x: 200, y: 280, color: "#FCD34D",  r: 14 },
 ];
 
 const EDGES = [
-  { from: "affectlog", to: "pdc",      label: "consent check",     color: "#a78bfa" },
-  { from: "affectlog", to: "carisma",  label: "metadata bridge",   color: "#38bdf8" },
-  { from: "affectlog", to: "lola",     label: "eval interop",      color: "#34d399" },
-  { from: "affectlog", to: "provider", label: "dataset ingest",    color: "#22d3ee" },
-  { from: "affectlog", to: "auditor",  label: "artifact export",   color: "#fbbf24" },
+  { from: "affectlog", to: "pdc",      label: "consent check",     color: "#C4B5FD" },
+  { from: "affectlog", to: "carisma",  label: "metadata bridge",   color: "#93C5FD" },
+  { from: "affectlog", to: "lola",     label: "eval interop",      color: "#86EFAC" },
+  { from: "affectlog", to: "provider", label: "dataset ingest",    color: "#67E8F9" },
+  { from: "affectlog", to: "auditor",  label: "artifact export",   color: "#FCD34D" },
 ];
 
 function getNode(id: string) {
@@ -107,7 +107,7 @@ export function DataSpaceConstellation() {
             {/* Main circle */}
             <circle
               cx={n.x} cy={n.y} r={n.r}
-              fill={n.highlight ? `rgba(34,211,238,0.15)` : `rgba(255,255,255,0.05)`}
+              fill={n.highlight ? `rgba(103,232,249,0.15)` : `rgba(255,255,255,0.05)`}
               stroke={n.color}
               strokeWidth={n.highlight ? 2 : 1}
               strokeOpacity={n.highlight ? 0.8 : 0.5}

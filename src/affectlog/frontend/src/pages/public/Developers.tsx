@@ -30,7 +30,7 @@ function Hero() {
   return (
     <section
       className="relative min-h-[80vh] flex items-center overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #050814 0%, #080D1F 100%)" }}
+      style={{ background: "linear-gradient(180deg, #070B1A 0%, #0B1224 100%)" }}
     >
       <GridBackground />
       <GlowOrb color="cyan" size={600} x="75%" y="30%" opacity={0.45} />
@@ -42,7 +42,7 @@ function Hero() {
             <FadeUp delay={0.04}>
               <div
                 className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
-                style={{ color: "#22d3ee", background: "rgba(34,211,238,0.08)", border: "1px solid rgba(34,211,238,0.22)" }}
+                style={{ color: "#67E8F9", background: "rgba(103,232,249,0.08)", border: "1px solid rgba(103,232,249,0.22)" }}
               >
                 <Github size={11} />
                 Open Source · Developer Hub
@@ -72,7 +72,7 @@ function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
-                  style={{ background: "linear-gradient(135deg, #06b6d4, #0ea5e9)", boxShadow: "0 6px 20px rgba(34,211,238,0.28)" }}
+                  style={{ background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)", boxShadow: "0 6px 20px rgba(103,232,249,0.28)" }}
                 >
                   <Github size={16} /> Contribute on GitHub
                 </a>
@@ -81,7 +81,7 @@ function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 font-semibold text-slate-200 rounded-xl px-6 py-3.5 border transition-all hover:bg-white/[0.06]"
-                  style={{ borderColor: "rgba(148,163,184,0.22)", background: "rgba(255,255,255,0.04)" }}
+                  style={{ borderColor: "rgba(203,213,225,0.22)", background: "rgba(255,255,255,0.04)" }}
                 >
                   Contributor Guide <ExternalLink size={14} />
                 </a>
@@ -94,14 +94,14 @@ function Hero() {
             <CodeBlock
               label="Developer quickstart"
               lines={[
-                { text: "git clone https://github.com/roy-saurabh/edge_affectlog", color: "#22d3ee" },
-                { text: "cd edge_affectlog && docker compose up", color: "#34d399" },
+                { text: "git clone https://github.com/roy-saurabh/edge_affectlog", color: "#67E8F9" },
+                { text: "cd edge_affectlog && docker compose up", color: "#86EFAC" },
                 { text: "# Run backend tests", color: "#475569" },
-                { text: "make test", color: "#a78bfa" },
+                { text: "make test", color: "#C4B5FD" },
                 { text: "# Generate 1M-row synthetic dataset", color: "#475569" },
-                { text: "make synthetic-1m", color: "#22d3ee" },
+                { text: "make synthetic-1m", color: "#67E8F9" },
                 { text: "# Seed demo scenarios", color: "#475569" },
-                { text: "make seed", color: "#34d399" },
+                { text: "make seed", color: "#86EFAC" },
                 { text: "# Open API docs", color: "#475569" },
                 { text: "# http://localhost:8000/api/docs", color: "#64748b" },
               ]}
@@ -114,19 +114,19 @@ function Hero() {
 }
 
 const CONTRIBUTION_TYPES = [
-  { icon: Package,     label: "Dataset Recipes",     desc: "YAML-defined assessment pipeline specs for new dataset formats or domains.",     color: "#22d3ee" },
-  { icon: Cpu,         label: "Model Adapters",      desc: "Plug in new ML frameworks, model APIs, or local model serving endpoints.",        color: "#a78bfa" },
-  { icon: BarChart2,   label: "Metrics & Analysis",  desc: "Fairness, quality, concentration, or explainability measurement implementations.", color: "#38bdf8" },
-  { icon: Share2,      label: "Connector Bridges",   desc: "PDC consent flows, CARiSMA/LOLA metadata bridges, external model registries.",   color: "#10b981" },
-  { icon: Eye,         label: "Visualizations",      desc: "Chart types, interactive displays, or improved metric visualizations.",           color: "#22d3ee" },
-  { icon: FileText,    label: "Synthetic Fixtures",  desc: "Test datasets, schema examples, and scenario seeds for CI and onboarding.",       color: "#fbbf24" },
-  { icon: ShieldCheck, label: "Security Review",     desc: "Code path audits, dependency scanning, or policy enforcement verification.",      color: "#f87171" },
-  { icon: Code2,       label: "OpenAPI Validation",  desc: "Verify endpoint contracts, schema correctness, and response model coverage.",     color: "#6366f1" },
+  { icon: Package,     label: "Dataset Recipes",     desc: "YAML-defined assessment pipeline specs for new dataset formats or domains.",     color: "#67E8F9" },
+  { icon: Cpu,         label: "Model Adapters",      desc: "Plug in new ML frameworks, model APIs, or local model serving endpoints.",        color: "#C4B5FD" },
+  { icon: BarChart2,   label: "Metrics & Analysis",  desc: "Fairness, quality, concentration, or explainability measurement implementations.", color: "#93C5FD" },
+  { icon: Share2,      label: "Connector Bridges",   desc: "PDC consent flows, CARiSMA/LOLA metadata bridges, external model registries.",   color: "#86EFAC" },
+  { icon: Eye,         label: "Visualizations",      desc: "Chart types, interactive displays, or improved metric visualizations.",           color: "#67E8F9" },
+  { icon: FileText,    label: "Synthetic Fixtures",  desc: "Test datasets, schema examples, and scenario seeds for CI and onboarding.",       color: "#FCD34D" },
+  { icon: ShieldCheck, label: "Security Review",     desc: "Code path audits, dependency scanning, or policy enforcement verification.",      color: "#FCA5A5" },
+  { icon: Code2,       label: "OpenAPI Validation",  desc: "Verify endpoint contracts, schema correctness, and response model coverage.",     color: "#A7F3D0" },
 ];
 
 function ContributionTypes() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
           <div className="text-center mb-14 max-w-3xl mx-auto">
@@ -150,7 +150,7 @@ function ContributionTypes() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block rounded-xl p-5 border transition-all duration-200 group hover:-translate-y-0.5"
-                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                   onMouseEnter={(e) => {
                     const el = e.currentTarget as HTMLAnchorElement;
                     el.style.borderColor = `${c.color}35`;
@@ -158,7 +158,7 @@ function ContributionTypes() {
                   }}
                   onMouseLeave={(e) => {
                     const el = e.currentTarget as HTMLAnchorElement;
-                    el.style.borderColor = "rgba(148,163,184,0.10)";
+                    el.style.borderColor = "rgba(203,213,225,0.10)";
                     el.style.background  = "rgba(255,255,255,0.025)";
                   }}
                 >
@@ -177,23 +177,23 @@ function ContributionTypes() {
 
 function ArchitectureGuide() {
   const rules = [
-    { label: "No raw data in any output",       color: "#10b981" },
-    { label: "Pseudonymise all actor IDs",      color: "#10b981" },
-    { label: "Guardrails block invalid analysis",color: "#22d3ee" },
-    { label: "Recipes are YAML-only, no secrets",color: "#22d3ee" },
-    { label: "All tests run without real datasets",color: "#a78bfa" },
-    { label: "OpenAPI spec updated with endpoints",color: "#38bdf8" },
-    { label: "No TRL or D-numbered references",  color: "#fbbf24" },
+    { label: "No raw data in any output",       color: "#86EFAC" },
+    { label: "Pseudonymise all actor IDs",      color: "#86EFAC" },
+    { label: "Guardrails block invalid analysis",color: "#67E8F9" },
+    { label: "Recipes are YAML-only, no secrets",color: "#67E8F9" },
+    { label: "All tests run without real datasets",color: "#C4B5FD" },
+    { label: "OpenAPI spec updated with endpoints",color: "#93C5FD" },
+    { label: "No TRL or D-numbered references",  color: "#FCD34D" },
   ];
 
   return (
-    <section className="py-24 md:py-28" style={{ background: "#080D1F" }}>
+    <section className="py-24 md:py-28" style={{ background: "#0B1224" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-14 items-start">
           <FadeUp>
             <div
               className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full mb-6"
-              style={{ color: "#22d3ee", background: "rgba(34,211,238,0.08)", border: "1px solid rgba(34,211,238,0.20)" }}
+              style={{ color: "#67E8F9", background: "rgba(103,232,249,0.08)", border: "1px solid rgba(103,232,249,0.20)" }}
             >
               Code quality rules
             </div>
@@ -219,15 +219,15 @@ function ArchitectureGuide() {
           <FadeUp delay={0.15}>
             <div
               className="rounded-2xl p-6 border space-y-5"
-              style={{ background: "rgba(11,16,32,0.7)", borderColor: "rgba(148,163,184,0.12)" }}
+              style={{ background: "rgba(11,16,32,0.7)", borderColor: "rgba(203,213,225,0.12)" }}
             >
               <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Good first issues</p>
               {[
-                { label: "Add a sparsity plot type",          tag: "visualization", color: "#22d3ee" },
-                { label: "Write a generic CSV recipe",        tag: "recipe",        color: "#a78bfa" },
-                { label: "Add Hugging Face model adapter",    tag: "adapter",       color: "#38bdf8" },
-                { label: "Improve PII field detection rules", tag: "privacy",       color: "#10b981" },
-                { label: "Document interoperability JSON-LD", tag: "docs",          color: "#fbbf24" },
+                { label: "Add a sparsity plot type",          tag: "visualization", color: "#67E8F9" },
+                { label: "Write a generic CSV recipe",        tag: "recipe",        color: "#C4B5FD" },
+                { label: "Add Hugging Face model adapter",    tag: "adapter",       color: "#93C5FD" },
+                { label: "Improve PII field detection rules", tag: "privacy",       color: "#86EFAC" },
+                { label: "Document interoperability JSON-LD", tag: "docs",          color: "#FCD34D" },
               ].map((issue) => (
                 <div key={issue.label} className="flex items-center justify-between gap-3">
                   <span className="text-sm text-slate-300">{issue.label}</span>
@@ -243,7 +243,7 @@ function ArchitectureGuide() {
                 href={`${GITHUB}/issues?q=is%3Aopen+label%3A%22good+first+issue%22`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-cyan-400 transition-colors mt-2"
+                className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#67E8F9] transition-colors mt-2"
               >
                 View all good first issues <ExternalLink size={12} />
               </a>
@@ -257,7 +257,7 @@ function ArchitectureGuide() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 md:py-24" style={{ background: "#050814" }}>
+    <section className="py-20 md:py-24" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <CTABand
           headline="Build assessment infrastructure with us"
@@ -273,7 +273,7 @@ function FinalCTA() {
 
 export default function DevelopersPage() {
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
         <Hero />

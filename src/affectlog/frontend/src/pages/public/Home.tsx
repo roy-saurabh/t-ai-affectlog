@@ -44,13 +44,13 @@ function FadeUp({
 
 // ── TRUST BAR ITEMS ────────────────────────────────────────────────────────
 const TRUST_ITEMS = [
-  { icon: Server,      label: "Open-source Core",       color: "#22d3ee" },
-  { icon: ShieldCheck, label: "Privacy-by-default",      color: "#10b981" },
-  { icon: Code2,       label: "OpenAPI-first",           color: "#38bdf8" },
-  { icon: Activity,    label: "xAPI-ready",              color: "#a78bfa" },
-  { icon: FileText,    label: "JSON-LD Outputs",         color: "#22d3ee" },
-  { icon: Cloud,       label: "Managed by AffectLog",    color: "#6366f1" },
-  { icon: Globe,       label: "Prometheus-X BB04",       color: "#fbbf24" },
+  { icon: Server,      label: "Open-source Core",       color: "#67E8F9" },
+  { icon: ShieldCheck, label: "Privacy-by-default",      color: "#86EFAC" },
+  { icon: Code2,       label: "OpenAPI-first",           color: "#93C5FD" },
+  { icon: Activity,    label: "xAPI-ready",              color: "#C4B5FD" },
+  { icon: FileText,    label: "JSON-LD Outputs",         color: "#5EEAD4" },
+  { icon: Cloud,       label: "Managed by AffectLog",    color: "#D8B4FE" },
+  { icon: Globe,       label: "Prometheus-X BB04",       color: "#FCD34D" },
 ];
 
 // ── HERO ───────────────────────────────────────────────────────────────────
@@ -60,12 +60,13 @@ function Hero() {
       className="relative min-h-[92vh] flex items-center overflow-hidden"
       style={{
         background:
-          "radial-gradient(circle at 30% 20%, rgba(34,211,238,.22), transparent 28%), radial-gradient(circle at 80% 8%, rgba(139,92,246,.18), transparent 30%), linear-gradient(180deg, #050814 0%, #080D1F 55%, #0B1020 100%)",
+          "radial-gradient(circle at 20% 18%, rgba(103,232,249,0.24), transparent 28%), radial-gradient(circle at 80% 10%, rgba(196,181,253,0.20), transparent 28%), radial-gradient(circle at 52% 80%, rgba(134,239,172,0.12), transparent 32%), linear-gradient(160deg, #030712 0%, #070B1A 45%, #0B1224 100%)",
       }}
     >
       <GridBackground />
-      <GlowOrb color="cyan" size={700} x="15%" y="40%" opacity={0.6} />
-      <GlowOrb color="violet" size={500} x="85%" y="20%" opacity={0.5} />
+      <GlowOrb color="cyan" size={680} x="14%" y="40%" opacity={0.55} />
+      <GlowOrb color="violet" size={520} x="84%" y="18%" opacity={0.50} />
+      <GlowOrb color="green" size={420} x="52%" y="85%" opacity={0.35} />
 
       <div className="relative max-w-[1400px] mx-auto px-5 md:px-8 lg:px-10 py-20 md:py-28 w-full">
         <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
@@ -76,25 +77,25 @@ function Hero() {
               <div
                 className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
                 style={{
-                  color: "#22d3ee",
-                  background: "rgba(34,211,238,0.08)",
-                  border: "1px solid rgba(34,211,238,0.22)",
+                  color: "#67E8F9",
+                  background: "rgba(103,232,249,0.09)",
+                  border: "1px solid rgba(103,232,249,0.24)",
                 }}
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" aria-hidden="true" />
-                Prometheus-X Building Block BB04 · EDGE-Skills
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#67E8F9" }} aria-hidden="true" />
+                Open-source core · AffectLog-managed option · Data-space ready
               </div>
             </FadeUp>
 
             <FadeUp delay={0.1}>
               <h1
-                className="font-bold text-white mb-6 leading-[1.06] tracking-tight"
-                style={{ fontSize: "clamp(2.8rem, 5.5vw, 4.5rem)", letterSpacing: "-0.035em" }}
+                className="font-bold text-[#F8FAFC] mb-6 leading-[1.07]"
+                style={{ fontSize: "clamp(2.6rem, 5vw, 4.25rem)", letterSpacing: "-0.035em" }}
               >
                 Trustworthy AI assessment{" "}
                 <span
                   style={{
-                    background: "linear-gradient(135deg, #22d3ee, #a78bfa)",
+                    background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 45%, #C4B5FD 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -106,7 +107,7 @@ function Hero() {
             </FadeUp>
 
             <FadeUp delay={0.17}>
-              <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed max-w-[560px]">
+              <p className="text-lg md:text-xl mb-8 leading-relaxed max-w-[560px]" style={{ color: "#AEBBD0" }}>
                 Inspect datasets, evaluate model behaviour, detect privacy and representation
                 risks, and generate audit-ready evidence through open, privacy-preserving workflows.
               </p>
@@ -116,30 +117,36 @@ function Hero() {
               <div className="flex flex-wrap gap-3 mb-10">
                 <Link
                   to="/request-access"
-                  className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3.5 text-base transition-all duration-200 hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 font-semibold rounded-[14px] px-6 py-3.5 text-base transition-all duration-200 hover:-translate-y-0.5"
                   style={{
-                    background: "linear-gradient(135deg, #06b6d4, #0ea5e9)",
-                    boxShadow: "0 6px 20px rgba(34,211,238,0.28)",
+                    background: "linear-gradient(135deg, #93C5FD 0%, #67E8F9 60%, #A7F3D0 100%)",
+                    boxShadow: "0 5px 22px rgba(147,197,253,0.32), 0 2px 8px rgba(147,197,253,0.20)",
+                    color: "#08111F",
                   }}
                 >
                   Request Managed Access <ArrowRight size={17} />
                 </Link>
                 <Link
                   to="/community"
-                  className="inline-flex items-center gap-2 font-semibold text-slate-200 rounded-xl px-6 py-3.5 text-base border transition-all duration-200 hover:bg-white/[0.06] hover:border-slate-400/40"
+                  className="inline-flex items-center gap-2 font-semibold rounded-[14px] px-6 py-3.5 text-base border transition-all duration-200 hover:bg-white/[0.05]"
                   style={{
-                    borderColor: "rgba(148,163,184,0.22)",
-                    background: "rgba(255,255,255,0.04)",
+                    borderColor: "rgba(203,213,225,0.22)",
+                    background: "rgba(15,23,42,0.56)",
+                    color: "#D8E0EE",
+                    backdropFilter: "blur(12px)",
                   }}
                 >
-                  <Server size={16} className="text-slate-400" />
-                  Self-host Community Edition
+                  <Server size={16} style={{ color: "#8391A8" }} />
+                  Deploy Community Edition
                 </Link>
                 <Link
                   to="/product"
-                  className="inline-flex items-center gap-1.5 text-slate-400 hover:text-cyan-400 px-3 py-3.5 text-sm transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-3.5 text-sm transition-colors"
+                  style={{ color: "#8391A8" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#67E8F9")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#8391A8")}
                 >
-                  Explore product <ArrowRight size={13} />
+                  Explore the Platform <ArrowRight size={13} />
                 </Link>
               </div>
             </FadeUp>
@@ -152,10 +159,11 @@ function Hero() {
                   return (
                     <span
                       key={item.label}
-                      className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 px-3 py-1.5 rounded-full border"
+                      className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border"
                       style={{
-                        borderColor: "rgba(148,163,184,0.14)",
-                        background: "rgba(255,255,255,0.03)",
+                        color: "#8391A8",
+                        borderColor: "rgba(203,213,225,0.14)",
+                        background: "rgba(15,23,42,0.40)",
                       }}
                       role="listitem"
                     >
@@ -174,7 +182,7 @@ function Hero() {
               className="rounded-2xl p-5 border"
               style={{
                 background: "rgba(11,16,32,0.7)",
-                borderColor: "rgba(148,163,184,0.13)",
+                borderColor: "rgba(203,213,225,0.13)",
                 backdropFilter: "blur(10px)",
               }}
             >
@@ -188,9 +196,9 @@ function Hero() {
                 <span
                   className="text-xs font-medium px-2.5 py-1 rounded-full"
                   style={{
-                    background: "rgba(34,211,238,0.10)",
-                    color: "#22d3ee",
-                    border: "1px solid rgba(34,211,238,0.22)",
+                    background: "rgba(103,232,249,0.10)",
+                    color: "#67E8F9",
+                    border: "1px solid rgba(103,232,249,0.22)",
                   }}
                 >
                   live demo
@@ -207,7 +215,7 @@ function Hero() {
                   { v: "JSON-LD", l: "artifacts" },
                 ].map((m) => (
                   <div key={m.l} className="text-center">
-                    <div className="text-sm font-bold font-mono text-cyan-400">{m.v}</div>
+                    <div className="text-sm font-bold font-mono text-pastel-cyan">{m.v}</div>
                     <div className="text-xs text-slate-600">{m.l}</div>
                   </div>
                 ))}
@@ -226,8 +234,8 @@ function TrustBar() {
     <section
       className="py-6 border-y overflow-hidden"
       style={{
-        background: "#080D1F",
-        borderColor: "rgba(148,163,184,0.08)",
+        background: "#0B1224",
+        borderColor: "rgba(203,213,225,0.08)",
       }}
     >
       <div className="max-w-7xl mx-auto px-5 md:px-8">
@@ -243,7 +251,7 @@ function TrustBar() {
                 {i < TRUST_ITEMS.length - 1 && (
                   <span
                     className="hidden sm:block w-px h-4"
-                    style={{ background: "rgba(148,163,184,0.15)" }}
+                    style={{ background: "rgba(203,213,225,0.15)" }}
                     aria-hidden="true"
                   />
                 )}
@@ -259,17 +267,17 @@ function TrustBar() {
 // ── PROBLEM STATEMENT ──────────────────────────────────────────────────────
 function ProblemSection() {
   const points = [
-    { icon: Database,     title: "Dataset quality is invisible without structured profiling", color: "#22d3ee" },
-    { icon: Fingerprint,  title: "Privacy risks survive when identifiers are undetected",    color: "#10b981" },
-    { icon: Network,      title: "Representation gaps compound when bias is unmeasured",     color: "#a78bfa" },
-    { icon: FileText,     title: "Audit evidence must be machine-readable for real utility", color: "#38bdf8" },
-    { icon: Share2,       title: "Interoperability fails without structured metadata",        color: "#6366f1" },
+    { icon: Database,     title: "Dataset quality is invisible without structured profiling", color: "#67E8F9" },
+    { icon: Fingerprint,  title: "Privacy risks survive when identifiers are undetected",    color: "#86EFAC" },
+    { icon: Network,      title: "Representation gaps compound when bias is unmeasured",     color: "#C4B5FD" },
+    { icon: FileText,     title: "Audit evidence must be machine-readable for real utility", color: "#93C5FD" },
+    { icon: Share2,       title: "Interoperability fails without structured metadata",        color: "#A7F3D0" },
   ];
 
   return (
     <section
       className="py-24 md:py-28 lg:py-32"
-      style={{ background: "#050814" }}
+      style={{ background: "#070B1A" }}
     >
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -277,9 +285,9 @@ function ProblemSection() {
             <div
               className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full mb-6"
               style={{
-                color: "#a78bfa",
-                background: "rgba(139,92,246,0.08)",
-                border: "1px solid rgba(139,92,246,0.20)",
+                color: "#C4B5FD",
+                background: "rgba(196,181,253,0.10)",
+                border: "1px solid rgba(196,181,253,0.24)",
               }}
             >
               The assessment gap
@@ -307,7 +315,7 @@ function ProblemSection() {
                     className="flex items-start gap-4 p-4 rounded-2xl border transition-all duration-200 hover:border-opacity-40"
                     style={{
                       background: "rgba(255,255,255,0.025)",
-                      borderColor: "rgba(148,163,184,0.10)",
+                      borderColor: "rgba(203,213,225,0.10)",
                     }}
                   >
                     <div
@@ -330,25 +338,25 @@ function ProblemSection() {
 
 // ── CAPABILITY GRID ────────────────────────────────────────────────────────
 const CAPS = [
-  { icon: Database,     title: "Dataset Structure",       desc: "Ingest CSV, JSON, Parquet. Validate schema. Detect field types and completeness.",     color: "#22d3ee" },
-  { icon: ShieldCheck,  title: "PII & Quasi-Identifiers", desc: "GDPR-aware scanning. Regex and NLP-based detection. Automatic pseudonymisation.",     color: "#10b981" },
-  { icon: BarChart2,    title: "Fairness Metrics",        desc: "Gini coefficient, Coverage@K, dominance ratio, representation index, entropy.",        color: "#a78bfa" },
-  { icon: FlaskConical, title: "xAPI Event Semantics",    desc: "Verb canonicalization, activity type mapping, Becomino template inference.",           color: "#22d3ee" },
-  { icon: Eye,          title: "Sparsity & Missingness",  desc: "Field-level sparsity heatmap. Temporal density and event gap analysis.",               color: "#38bdf8" },
-  { icon: Cpu,          title: "Model Explainability",    desc: "Feature importance, prediction explanations, model card generation, comparison.",       color: "#a78bfa" },
-  { icon: Lock,         title: "Privacy-by-default",      desc: "No raw dataset stored. Metadata-only outputs. Pseudonymised field inventory.",         color: "#10b981" },
-  { icon: FileText,     title: "Audit Artifacts",         desc: "SOP report, Data Card, JSON-LD compliance graph, dashboard export payload.",           color: "#22d3ee" },
-  { icon: Share2,       title: "Connector-ready",         desc: "OpenAPI service. PDC, CARiSMA, LOLA interoperability. Data-space protocol ready.",     color: "#38bdf8" },
-  { icon: Layers,       title: "Assessment Recipes",      desc: "YAML-defined reusable pipeline specs. Inokufu, Maskott, generic templates.",           color: "#a78bfa" },
-  { icon: Network,      title: "Concentration Analysis",  desc: "Long-tail activity patterns. Temporal concentration. Dominance curves.",               color: "#22d3ee" },
-  { icon: ClipboardList,title: "Compliance Metadata",     desc: "AI Act Annex IV fields, GDPR Article 30, JSON-LD structured evidence graph.",         color: "#10b981" },
+  { icon: Database,     title: "Dataset Structure",       desc: "Ingest CSV, JSON, Parquet. Validate schema. Detect field types and completeness.",     color: "#67E8F9" },
+  { icon: ShieldCheck,  title: "PII & Quasi-Identifiers", desc: "GDPR-aware scanning. Regex and NLP-based detection. Automatic pseudonymisation.",     color: "#86EFAC" },
+  { icon: BarChart2,    title: "Fairness Metrics",        desc: "Gini coefficient, Coverage@K, dominance ratio, representation index, entropy.",        color: "#C4B5FD" },
+  { icon: FlaskConical, title: "xAPI Event Semantics",    desc: "Verb canonicalization, activity type mapping, Becomino template inference.",           color: "#5EEAD4" },
+  { icon: Eye,          title: "Sparsity & Missingness",  desc: "Field-level sparsity heatmap. Temporal density and event gap analysis.",               color: "#93C5FD" },
+  { icon: Cpu,          title: "Model Explainability",    desc: "Feature importance, prediction explanations, model card generation, comparison.",       color: "#D8B4FE" },
+  { icon: Lock,         title: "Privacy-by-default",      desc: "No raw dataset stored. Metadata-only outputs. Pseudonymised field inventory.",         color: "#86EFAC" },
+  { icon: FileText,     title: "Audit Artifacts",         desc: "SOP report, Data Card, JSON-LD compliance graph, dashboard export payload.",           color: "#67E8F9" },
+  { icon: Share2,       title: "Connector-ready",         desc: "OpenAPI service. PDC, CARiSMA, LOLA interoperability. Data-space protocol ready.",     color: "#93C5FD" },
+  { icon: Layers,       title: "Assessment Recipes",      desc: "YAML-defined reusable pipeline specs. Inokufu, Maskott, generic templates.",           color: "#C4B5FD" },
+  { icon: Network,      title: "Concentration Analysis",  desc: "Long-tail activity patterns. Temporal concentration. Dominance curves.",               color: "#5EEAD4" },
+  { icon: ClipboardList,title: "Compliance Metadata",     desc: "AI Act Annex IV fields, GDPR Article 30, JSON-LD structured evidence graph.",         color: "#A7F3D0" },
 ];
 
 function CapabilityGrid() {
   return (
     <section
       className="py-24 md:py-28 lg:py-32"
-      style={{ background: "#080D1F" }}
+      style={{ background: "#0B1224" }}
     >
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
@@ -374,7 +382,7 @@ function CapabilityGrid() {
                   className="rounded-xl p-5 h-full transition-all duration-200 border cursor-default group"
                   style={{
                     background: "rgba(255,255,255,0.025)",
-                    borderColor: "rgba(148,163,184,0.10)",
+                    borderColor: "rgba(203,213,225,0.10)",
                   }}
                   onMouseEnter={(e) => {
                     const el = e.currentTarget as HTMLDivElement;
@@ -384,7 +392,7 @@ function CapabilityGrid() {
                   }}
                   onMouseLeave={(e) => {
                     const el = e.currentTarget as HTMLDivElement;
-                    el.style.borderColor = "rgba(148,163,184,0.10)";
+                    el.style.borderColor = "rgba(203,213,225,0.10)";
                     el.style.background  = "rgba(255,255,255,0.025)";
                     el.style.transform   = "translateY(0)";
                   }}
@@ -407,7 +415,7 @@ function CapabilityGrid() {
           <div className="text-center mt-10">
             <Link
               to="/product"
-              className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-cyan-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-pastel-cyan transition-colors"
             >
               View full platform capabilities <ArrowRight size={13} />
             </Link>
@@ -431,13 +439,13 @@ const WORKFLOW_STEPS = [
   { step: "Export metadata only",        detail: "Privacy-preserving dashboard payload. No raw records in any export." },
 ];
 
-const STEP_COLORS = ["#22d3ee","#38bdf8","#10b981","#a78bfa","#22d3ee","#38bdf8","#a78bfa","#10b981","#22d3ee"];
+const STEP_COLORS = ["#67E8F9","#93C5FD","#86EFAC","#C4B5FD","#5EEAD4","#93C5FD","#D8B4FE","#86EFAC","#67E8F9"];
 
 function WorkflowSection() {
   return (
     <section
       className="py-24 md:py-28 lg:py-32"
-      style={{ background: "#050814" }}
+      style={{ background: "#070B1A" }}
     >
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
@@ -446,9 +454,9 @@ function WorkflowSection() {
               <div
                 className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full mb-6"
                 style={{
-                  color: "#22d3ee",
-                  background: "rgba(34,211,238,0.08)",
-                  border: "1px solid rgba(34,211,238,0.20)",
+                  color: "#67E8F9",
+                  background: "rgba(103,232,249,0.08)",
+                  border: "1px solid rgba(103,232,249,0.20)",
                 }}
               >
                 Assessment workflow
@@ -502,7 +510,7 @@ function WorkflowSection() {
               className="rounded-2xl p-6 border"
               style={{
                 background: "rgba(11,16,32,0.7)",
-                borderColor: "rgba(148,163,184,0.12)",
+                borderColor: "rgba(203,213,225,0.12)",
               }}
             >
               <div className="mb-4 flex items-center justify-between">
@@ -524,7 +532,7 @@ function EditionSplit() {
   return (
     <section
       className="py-24 md:py-28 lg:py-32"
-      style={{ background: "#080D1F" }}
+      style={{ background: "#0B1224" }}
     >
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
@@ -548,20 +556,20 @@ function EditionSplit() {
             <div
               className="rounded-2xl p-8 h-full flex flex-col border transition-all duration-200 hover:-translate-y-0.5"
               style={{
-                background: "rgba(34,211,238,0.04)",
-                borderColor: "rgba(34,211,238,0.22)",
+                background: "rgba(103,232,249,0.04)",
+                borderColor: "rgba(103,232,249,0.22)",
               }}
             >
               <div className="flex items-center gap-3 mb-6">
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center"
-                  style={{ background: "rgba(34,211,238,0.10)" }}
+                  style={{ background: "rgba(103,232,249,0.10)" }}
                 >
-                  <Server size={18} className="text-cyan-400" />
+                  <Server size={18} className="text-pastel-cyan" />
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-lg leading-tight">Community Edition</h3>
-                  <span className="text-xs text-cyan-400 font-medium">Open Source · MIT License</span>
+                  <span className="text-xs text-pastel-cyan font-medium">Open Source · MIT License</span>
                 </div>
               </div>
               <ul className="space-y-2.5 flex-1 mb-8">
@@ -578,15 +586,15 @@ function EditionSplit() {
                   "Community support via GitHub",
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-sm text-slate-300">
-                    <CheckCircle2 size={14} className="text-cyan-400 mt-0.5 flex-shrink-0" aria-hidden="true" />
+                    <CheckCircle2 size={14} className="text-pastel-cyan mt-0.5 flex-shrink-0" aria-hidden="true" />
                     {f}
                   </li>
                 ))}
               </ul>
               <Link
                 to="/community"
-                className="inline-flex items-center justify-center gap-2 font-semibold text-white rounded-xl px-6 py-3 border transition-all hover:bg-cyan-400/[0.08]"
-                style={{ borderColor: "rgba(34,211,238,0.35)" }}
+                className="inline-flex items-center justify-center gap-2 font-semibold text-white rounded-xl px-6 py-3 border transition-all hover:text-pastel-cyan/[0.08]"
+                style={{ borderColor: "rgba(103,232,249,0.35)" }}
               >
                 Deploy Community Edition <ArrowRight size={15} />
               </Link>
@@ -598,21 +606,21 @@ function EditionSplit() {
             <div
               className="rounded-2xl p-8 h-full flex flex-col border relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5"
               style={{
-                background: "rgba(139,92,246,0.05)",
-                borderColor: "rgba(139,92,246,0.28)",
+                background: "rgba(196,181,253,0.05)",
+                borderColor: "rgba(196,181,253,0.28)",
               }}
             >
               <GlowOrb color="violet" size={300} x="110%" y="-20%" opacity={0.4} />
               <div className="relative flex items-center gap-3 mb-6">
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center"
-                  style={{ background: "rgba(139,92,246,0.12)" }}
+                  style={{ background: "rgba(196,181,253,0.12)" }}
                 >
-                  <Cloud size={18} className="text-violet-400" />
+                  <Cloud size={18} className="text-pastel-violet" />
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-lg leading-tight">Managed Edition</h3>
-                  <span className="text-xs text-violet-400 font-medium">Hosted &amp; operated by AffectLog</span>
+                  <span className="text-xs text-pastel-violet font-medium">Hosted &amp; operated by AffectLog</span>
                 </div>
               </div>
               <ul className="relative space-y-2.5 flex-1 mb-8">
@@ -629,7 +637,7 @@ function EditionSplit() {
                   "Optional bring-your-own-cloud",
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-sm text-slate-300">
-                    <CheckCircle2 size={14} className="text-violet-400 mt-0.5 flex-shrink-0" aria-hidden="true" />
+                    <CheckCircle2 size={14} className="text-pastel-violet mt-0.5 flex-shrink-0" aria-hidden="true" />
                     {f}
                   </li>
                 ))}
@@ -638,8 +646,9 @@ function EditionSplit() {
                 to="/request-access"
                 className="relative inline-flex items-center justify-center gap-2 font-semibold text-white rounded-xl px-6 py-3 transition-all hover:-translate-y-px"
                 style={{
-                  background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
-                  boxShadow: "0 4px 16px rgba(139,92,246,0.25)",
+                  background: "linear-gradient(135deg, #C4B5FD 0%, #D8B4FE 100%)",
+                  boxShadow: "0 4px 20px rgba(196,181,253,0.30)",
+                  color: "#08111F",
                 }}
               >
                 Request Managed Access <ArrowRight size={15} />
@@ -659,7 +668,7 @@ const ECOSYSTEM_TOOLS = [
     affil: "EDGE-Skills Ecosystem",
     role: "Design-time AI risk & compliance",
     phase: "Design-time",
-    color: "#38bdf8",
+    color: "#93C5FD",
     desc: "Model-level security, risk, and compliance analysis at design time. Annotates model artefacts with compliance markers before deployment.",
   },
   {
@@ -667,7 +676,7 @@ const ECOSYSTEM_TOOLS = [
     affil: "EDGE-Skills Ecosystem",
     role: "Scenario-based evaluation",
     phase: "Evaluation scenario",
-    color: "#a78bfa",
+    color: "#C4B5FD",
     desc: "Algorithm evaluation using educational scenario datasets. Bridges the gap between design constraints and operational evidence.",
   },
   {
@@ -675,7 +684,7 @@ const ECOSYSTEM_TOOLS = [
     affil: "This platform",
     role: "Operation-time dataset & model assessment",
     phase: "Operation-time",
-    color: "#22d3ee",
+    color: "#67E8F9",
     highlight: true,
     desc: "Dataset profiling, model explainability, fairness metrics, privacy scanning, and audit-ready evidence generation at operation time.",
   },
@@ -685,7 +694,7 @@ function EcosystemSection() {
   return (
     <section
       className="py-24 md:py-28 lg:py-32"
-      style={{ background: "#050814" }}
+      style={{ background: "#070B1A" }}
     >
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
@@ -708,7 +717,7 @@ function EcosystemSection() {
             className="rounded-2xl p-6 border mb-10"
             style={{
               background: "rgba(11,16,32,0.7)",
-              borderColor: "rgba(148,163,184,0.12)",
+              borderColor: "rgba(203,213,225,0.12)",
             }}
           >
             <div className="mb-3 flex items-center justify-between">
@@ -727,7 +736,7 @@ function EcosystemSection() {
                 className="rounded-2xl p-6 h-full border transition-all duration-200 hover:-translate-y-0.5"
                 style={{
                   background: tool.highlight ? `${tool.color}07` : "rgba(255,255,255,0.025)",
-                  borderColor: tool.highlight ? `${tool.color}32` : "rgba(148,163,184,0.10)",
+                  borderColor: tool.highlight ? `${tool.color}32` : "rgba(203,213,225,0.10)",
                 }}
               >
                 <div className="flex items-start justify-between mb-4">
@@ -759,7 +768,7 @@ function EcosystemSection() {
           <div className="text-center mt-8 flex flex-wrap justify-center gap-4">
             <Link
               to="/ecosystem"
-              className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-cyan-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-pastel-cyan transition-colors"
             >
               Ecosystem overview <ArrowRight size={13} />
             </Link>
@@ -794,7 +803,7 @@ function DeveloperSection() {
   return (
     <section
       className="py-24 md:py-28 lg:py-32"
-      style={{ background: "#080D1F" }}
+      style={{ background: "#0B1224" }}
     >
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
@@ -824,20 +833,20 @@ function DeveloperSection() {
                   className="block rounded-xl p-4 border transition-all duration-200 group hover:-translate-y-0.5"
                   style={{
                     background: "rgba(255,255,255,0.025)",
-                    borderColor: "rgba(148,163,184,0.10)",
+                    borderColor: "rgba(203,213,225,0.10)",
                   }}
                   onMouseEnter={(e) => {
                     const el = e.currentTarget as HTMLAnchorElement;
-                    el.style.borderColor = "rgba(34,211,238,0.25)";
-                    el.style.background  = "rgba(34,211,238,0.04)";
+                    el.style.borderColor = "rgba(103,232,249,0.25)";
+                    el.style.background  = "rgba(103,232,249,0.04)";
                   }}
                   onMouseLeave={(e) => {
                     const el = e.currentTarget as HTMLAnchorElement;
-                    el.style.borderColor = "rgba(148,163,184,0.10)";
+                    el.style.borderColor = "rgba(203,213,225,0.10)";
                     el.style.background  = "rgba(255,255,255,0.025)";
                   }}
                 >
-                  <Icon size={16} className="text-slate-500 group-hover:text-cyan-400 mb-2.5 transition-colors" aria-hidden="true" />
+                  <Icon size={16} className="text-slate-500 group-hover:text-pastel-cyan mb-2.5 transition-colors" aria-hidden="true" />
                   <p className="text-sm font-medium text-slate-300 mb-1 leading-tight">{c.label}</p>
                   <p className="text-xs text-slate-600">{c.desc}</p>
                 </a>
@@ -853,7 +862,7 @@ function DeveloperSection() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-semibold text-white px-6 py-3 rounded-xl border transition-all hover:bg-white/[0.06]"
-              style={{ borderColor: "rgba(148,163,184,0.18)", background: "rgba(255,255,255,0.04)" }}
+              style={{ borderColor: "rgba(203,213,225,0.18)", background: "rgba(255,255,255,0.04)" }}
             >
               <Github size={15} /> View on GitHub
             </a>
@@ -875,7 +884,7 @@ function FinalCTA() {
   return (
     <section
       className="py-20 md:py-24 lg:py-32 relative overflow-hidden"
-      style={{ background: "#050814" }}
+      style={{ background: "#070B1A" }}
     >
       <GlowOrb color="cyan" size={600} x="50%" y="80%" opacity={0.4} />
       <div className="relative max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
@@ -894,7 +903,7 @@ function FinalCTA() {
 // ── PAGE ASSEMBLY ──────────────────────────────────────────────────────────
 export default function Home() {
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
         <Hero />

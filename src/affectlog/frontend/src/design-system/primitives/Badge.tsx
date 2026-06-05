@@ -10,14 +10,14 @@ interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const colorMap: Record<BadgeColor, { bg: string; text: string; border: string }> = {
-  cyan:    { bg: "rgba(34,211,238,0.10)",  text: "#22d3ee", border: "rgba(34,211,238,0.25)" },
-  violet:  { bg: "rgba(139,92,246,0.10)",  text: "#a78bfa", border: "rgba(139,92,246,0.25)" },
-  green:   { bg: "rgba(16,185,129,0.10)",  text: "#34d399", border: "rgba(16,185,129,0.25)" },
-  blue:    { bg: "rgba(37,99,235,0.10)",   text: "#818cf8", border: "rgba(37,99,235,0.25)" },
-  amber:   { bg: "rgba(245,158,11,0.10)",  text: "#fbbf24", border: "rgba(245,158,11,0.25)" },
-  red:     { bg: "rgba(239,68,68,0.10)",   text: "#f87171", border: "rgba(239,68,68,0.25)" },
-  neutral: { bg: "rgba(148,163,184,0.10)", text: "#94a3b8", border: "rgba(148,163,184,0.20)" },
-  indigo:  { bg: "rgba(99,102,241,0.10)",  text: "#818cf8", border: "rgba(99,102,241,0.25)" },
+  cyan:    { bg: "rgba(103,232,249,0.10)",  text: "#67E8F9", border: "rgba(103,232,249,0.25)" },
+  violet:  { bg: "rgba(196,181,253,0.10)",  text: "#C4B5FD", border: "rgba(196,181,253,0.25)" },
+  green:   { bg: "rgba(134,239,172,0.10)",  text: "#86EFAC", border: "rgba(134,239,172,0.25)" },
+  blue:    { bg: "rgba(147,197,253,0.10)",   text: "#C4B5FD", border: "rgba(147,197,253,0.25)" },
+  amber:   { bg: "rgba(245,158,11,0.10)",  text: "#FCD34D", border: "rgba(245,158,11,0.25)" },
+  red:     { bg: "rgba(239,68,68,0.10)",   text: "#FCA5A5", border: "rgba(239,68,68,0.25)" },
+  neutral: { bg: "rgba(203,213,225,0.10)", text: "#94a3b8", border: "rgba(203,213,225,0.20)" },
+  indigo:  { bg: "rgba(99,102,241,0.10)",  text: "#C4B5FD", border: "rgba(99,102,241,0.25)" },
 };
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(

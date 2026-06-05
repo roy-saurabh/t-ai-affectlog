@@ -18,7 +18,7 @@ export function ConsoleTopbar({ onMenuOpen, breadcrumbs, title, actions }: Conso
       className="flex items-center gap-3 px-4 md:px-6 h-14 flex-shrink-0 border-b sticky top-0 z-20"
       style={{
         background: "rgba(11,16,32,0.95)",
-        borderColor: "rgba(148,163,184,0.09)",
+        borderColor: "rgba(203,213,225,0.09)",
         backdropFilter: "blur(8px)",
       }}
     >

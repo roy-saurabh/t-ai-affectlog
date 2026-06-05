@@ -29,7 +29,7 @@ function Hero() {
   return (
     <section
       className="relative min-h-[72vh] flex items-center overflow-hidden"
-      style={{ background: "radial-gradient(circle at 20% 50%, rgba(16,185,129,0.10), transparent 40%), linear-gradient(180deg, #050814 0%, #080D1F 100%)" }}
+      style={{ background: "radial-gradient(circle at 20% 50%, rgba(134,239,172,0.10), transparent 40%), linear-gradient(180deg, #070B1A 0%, #0B1224 100%)" }}
     >
       <GridBackground />
       <GlowOrb color="green" size={600} x="80%" y="30%" opacity={0.45} />
@@ -39,7 +39,7 @@ function Hero() {
           <FadeUp delay={0.04}>
             <div
               className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
-              style={{ color: "#10b981", background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.22)" }}
+              style={{ color: "#86EFAC", background: "rgba(134,239,172,0.08)", border: "1px solid rgba(134,239,172,0.22)" }}
             >
               <Shield size={11} />
               Privacy-first architecture
@@ -69,7 +69,7 @@ function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
-                style={{ background: "linear-gradient(135deg, #059669, #0891b2)", boxShadow: "0 6px 20px rgba(16,185,129,0.25)" }}
+                style={{ background: "linear-gradient(135deg, #059669, #0891b2)", boxShadow: "0 6px 20px rgba(134,239,172,0.25)" }}
               >
                 Read Security Policy <ExternalLink size={15} />
               </a>
@@ -91,7 +91,7 @@ const SECURITY_PILLARS = [
   {
     icon: Key,
     title: "Authentication",
-    color: "#22d3ee",
+    color: "#67E8F9",
     items: [
       "Email + password with bcrypt hashing",
       "MFA-ready architecture",
@@ -104,7 +104,7 @@ const SECURITY_PILLARS = [
   {
     icon: Users,
     title: "RBAC",
-    color: "#a78bfa",
+    color: "#C4B5FD",
     items: [
       "Role-based access: Super Admin, Admin, Reviewer, Viewer",
       "Granular permission matrices per resource",
@@ -117,7 +117,7 @@ const SECURITY_PILLARS = [
   {
     icon: Fingerprint,
     title: "Pseudonymisation",
-    color: "#10b981",
+    color: "#86EFAC",
     items: [
       "Actor IDs replaced with HMAC-hashed pseudonyms",
       "Configurable hash salt per deployment",
@@ -130,7 +130,7 @@ const SECURITY_PILLARS = [
   {
     icon: Activity,
     title: "Audit Logging",
-    color: "#38bdf8",
+    color: "#93C5FD",
     items: [
       "All admin actions logged with timestamp and actor",
       "User registration, approval, and role changes logged",
@@ -143,7 +143,7 @@ const SECURITY_PILLARS = [
   {
     icon: FileText,
     title: "Artifact Security",
-    color: "#fbbf24",
+    color: "#FCD34D",
     items: [
       "No raw dataset bytes in any export payload",
       "Artifact access scoped to workspace",
@@ -156,7 +156,7 @@ const SECURITY_PILLARS = [
   {
     icon: Eye,
     title: "Support Access Controls",
-    color: "#f87171",
+    color: "#FCA5A5",
     items: [
       "AffectLog staff access to tenant data requires approval",
       "Support access sessions are logged and auditable",
@@ -170,7 +170,7 @@ const SECURITY_PILLARS = [
 
 function SecurityPillars() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <FadeUp>
           <div className="text-center mb-14 max-w-3xl mx-auto">
@@ -186,7 +186,7 @@ function SecurityPillars() {
               <FadeUp key={pillar.title} delay={i * 0.05}>
                 <div
                   className="rounded-2xl p-6 border h-full"
-                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                 >
                   <div className="flex items-center gap-3 mb-5">
                     <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: `${pillar.color}14` }}>
@@ -214,20 +214,20 @@ function SecurityPillars() {
 
 function PrivacyByDefault() {
   const transforms = [
-    { from: "Raw actor identifier", to: "HMAC-SHA256 pseudonym", color: "#22d3ee" },
-    { from: "Personal name field",  to: "Suppressed / redacted",  color: "#10b981" },
-    { from: "Email address",        to: "Flagged PII, excluded",  color: "#f87171" },
-    { from: "Aggregate counts",     to: "Exported as metric only",color: "#a78bfa" },
+    { from: "Raw actor identifier", to: "HMAC-SHA256 pseudonym", color: "#67E8F9" },
+    { from: "Personal name field",  to: "Suppressed / redacted",  color: "#86EFAC" },
+    { from: "Email address",        to: "Flagged PII, excluded",  color: "#FCA5A5" },
+    { from: "Aggregate counts",     to: "Exported as metric only",color: "#C4B5FD" },
   ];
 
   return (
-    <section className="py-24 md:py-28" style={{ background: "#080D1F" }}>
+    <section className="py-24 md:py-28" style={{ background: "#0B1224" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           <FadeUp>
             <div
               className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full mb-6"
-              style={{ color: "#10b981", background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.20)" }}
+              style={{ color: "#86EFAC", background: "rgba(134,239,172,0.08)", border: "1px solid rgba(134,239,172,0.20)" }}
             >
               Privacy-by-default
             </div>
@@ -248,7 +248,7 @@ function PrivacyByDefault() {
                 "Artifacts are metadata manifests, not data extracts",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-2.5 text-sm text-slate-300">
-                  <CheckCircle2 size={14} className="text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 size={14} className="text-[#86EFAC] mt-0.5 flex-shrink-0" />
                   {item}
                 </div>
               ))}
@@ -258,7 +258,7 @@ function PrivacyByDefault() {
           <FadeUp delay={0.15}>
             <div
               className="rounded-2xl p-6 border"
-              style={{ background: "rgba(11,16,32,0.7)", borderColor: "rgba(16,185,129,0.18)" }}
+              style={{ background: "rgba(11,16,32,0.7)", borderColor: "rgba(134,239,172,0.18)" }}
             >
               <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-5">Privacy transformation</p>
               <div className="space-y-3">
@@ -290,7 +290,7 @@ function PrivacyByDefault() {
 
 function Disclosure() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-4xl mx-auto px-5 md:px-8 text-center">
         <FadeUp>
           <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ background: "rgba(239,68,68,0.10)", border: "1px solid rgba(239,68,68,0.20)" }}>
@@ -307,7 +307,7 @@ function Disclosure() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 font-semibold text-white px-6 py-3 rounded-xl transition-all hover:-translate-y-px"
-            style={{ background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.25)", color: "#f87171" }}
+            style={{ background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.25)", color: "#FCA5A5" }}
           >
             <AlertTriangle size={15} /> Report a vulnerability <ExternalLink size={13} />
           </a>
@@ -319,7 +319,7 @@ function Disclosure() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 md:py-24" style={{ background: "#080D1F" }}>
+    <section className="py-20 md:py-24" style={{ background: "#0B1224" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <CTABand
           headline="Questions about the security model?"
@@ -335,7 +335,7 @@ function FinalCTA() {
 
 export default function SecurityPage() {
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
         <Hero />

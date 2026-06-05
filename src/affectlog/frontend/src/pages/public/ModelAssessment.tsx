@@ -22,17 +22,17 @@ function FadeUp({ children, delay = 0, className }: { children: React.ReactNode;
 const GITHUB = "https://github.com/roy-saurabh/edge_affectlog";
 
 const ADAPTERS = [
-  { label: "scikit-learn estimators",  desc: "Supports feature_importances_, coef_, and SHAP-compatible models.", color: "#22d3ee" },
-  { label: "Hugging Face models",      desc: "Classification heads with dataset-compatible feature mappings.",     color: "#a78bfa" },
-  { label: "SHAP-compatible models",   desc: "Any model supporting SHAP TreeExplainer or LinearExplainer.",       color: "#38bdf8" },
-  { label: "Custom API endpoints",     desc: "HTTP-based model APIs with JSON schema contracts.",                  color: "#10b981" },
+  { label: "scikit-learn estimators",  desc: "Supports feature_importances_, coef_, and SHAP-compatible models.", color: "#67E8F9" },
+  { label: "Hugging Face models",      desc: "Classification heads with dataset-compatible feature mappings.",     color: "#C4B5FD" },
+  { label: "SHAP-compatible models",   desc: "Any model supporting SHAP TreeExplainer or LinearExplainer.",       color: "#93C5FD" },
+  { label: "Custom API endpoints",     desc: "HTTP-based model APIs with JSON schema contracts.",                  color: "#86EFAC" },
 ];
 
 function Hero() {
   return (
     <section
       className="relative min-h-[76vh] flex items-center overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #050814 0%, #0C1328 100%)" }}
+      style={{ background: "linear-gradient(180deg, #070B1A 0%, #111A31 100%)" }}
     >
       <GridBackground />
       <GlowOrb color="violet" size={600} x="80%" y="25%" opacity={0.4} />
@@ -42,7 +42,7 @@ function Hero() {
           <FadeUp delay={0.04}>
             <div
               className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
-              style={{ color: "#a78bfa", background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.22)" }}
+              style={{ color: "#C4B5FD", background: "rgba(196,181,253,0.08)", border: "1px solid rgba(196,181,253,0.22)" }}
             >
               <Cpu size={11} />
               Model Assessment
@@ -68,7 +68,7 @@ function Hero() {
               <Link
                 to="/login"
                 className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
-                style={{ background: "linear-gradient(135deg, #7c3aed, #6d28d9)", boxShadow: "0 6px 20px rgba(139,92,246,0.28)" }}
+                style={{ background: "linear-gradient(135deg, #C4B5FD 0%, #D8B4FE 100%)", boxShadow: "0 6px 20px rgba(196,181,253,0.28)" }}
               >
                 Register a Model <ArrowRight size={17} />
               </Link>
@@ -90,7 +90,7 @@ function Hero() {
 
 function AdaptersSection() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+    <section className="py-24 md:py-28" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           <FadeUp>
@@ -105,7 +105,7 @@ function AdaptersSection() {
                 <div
                   key={a.label}
                   className="flex items-start gap-4 p-4 rounded-xl border"
-                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                 >
                   <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5" style={{ background: a.color }} />
                   <div>
@@ -121,7 +121,7 @@ function AdaptersSection() {
                 href={`${GITHUB}/blob/main/CONTRIBUTING.md`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-violet-400 transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#C4B5FD] transition-colors"
               >
                 Add a model adapter <ExternalLink size={12} />
               </a>
@@ -131,16 +131,16 @@ function AdaptersSection() {
           <FadeUp delay={0.15}>
             <div
               className="rounded-2xl p-6 border"
-              style={{ background: "rgba(11,16,32,0.7)", borderColor: "rgba(139,92,246,0.20)" }}
+              style={{ background: "rgba(11,16,32,0.7)", borderColor: "rgba(196,181,253,0.20)" }}
             >
               <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-5">What explanations require</p>
               <div className="space-y-3">
                 {[
-                  { label: "Compatible model adapter",       required: true,  color: "#a78bfa" },
-                  { label: "Matching feature schema",        required: true,  color: "#a78bfa" },
-                  { label: "Minimum feature count",          required: true,  color: "#a78bfa" },
-                  { label: "Non-zero training sample count", required: true,  color: "#a78bfa" },
-                  { label: "Model artifact or endpoint",     required: true,  color: "#a78bfa" },
+                  { label: "Compatible model adapter",       required: true,  color: "#C4B5FD" },
+                  { label: "Matching feature schema",        required: true,  color: "#C4B5FD" },
+                  { label: "Minimum feature count",          required: true,  color: "#C4B5FD" },
+                  { label: "Non-zero training sample count", required: true,  color: "#C4B5FD" },
+                  { label: "Model artifact or endpoint",     required: true,  color: "#C4B5FD" },
                   { label: "SHAP or coef_ support",          required: false, color: "#64748b" },
                 ].map((req) => (
                   <div key={req.label} className="flex items-center justify-between text-sm">
@@ -148,9 +148,9 @@ function AdaptersSection() {
                     <span
                       className="text-xs px-2 py-0.5 rounded-full font-medium"
                       style={{
-                        background: req.required ? "rgba(139,92,246,0.12)" : "rgba(100,116,139,0.12)",
-                        color: req.required ? "#a78bfa" : "#64748b",
-                        border: `1px solid ${req.required ? "rgba(139,92,246,0.25)" : "rgba(100,116,139,0.20)"}`,
+                        background: req.required ? "rgba(196,181,253,0.12)" : "rgba(100,116,139,0.12)",
+                        color: req.required ? "#C4B5FD" : "#64748b",
+                        border: `1px solid ${req.required ? "rgba(196,181,253,0.25)" : "rgba(100,116,139,0.20)"}`,
                       }}
                     >
                       {req.required ? "Required" : "Optional"}
@@ -168,7 +168,7 @@ function AdaptersSection() {
 
 function Guardrails() {
   return (
-    <section className="py-24 md:py-28" style={{ background: "#080D1F" }}>
+    <section className="py-24 md:py-28" style={{ background: "#0B1224" }}>
       <div className="max-w-4xl mx-auto px-5 md:px-8 text-center">
         <FadeUp>
           <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ background: "rgba(245,158,11,0.10)", border: "1px solid rgba(245,158,11,0.20)" }}>
@@ -196,7 +196,7 @@ function Guardrails() {
                 className="flex items-start gap-2.5 text-sm text-slate-400 p-3 rounded-xl"
                 style={{ background: "rgba(245,158,11,0.05)", border: "1px solid rgba(245,158,11,0.12)" }}
               >
-                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" style={{ background: "#fbbf24" }} />
+                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" style={{ background: "#FCD34D" }} />
                 {item}
               </div>
             ))}
@@ -209,7 +209,7 @@ function Guardrails() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 md:py-24" style={{ background: "#050814" }}>
+    <section className="py-20 md:py-24" style={{ background: "#070B1A" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
         <CTABand
           headline="Assess your model in its dataset context"
@@ -225,7 +225,7 @@ function FinalCTA() {
 
 export default function ModelAssessmentPage() {
   return (
-    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+    <div style={{ background: "#070B1A", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
       <main id="main-content">
         <Hero />
