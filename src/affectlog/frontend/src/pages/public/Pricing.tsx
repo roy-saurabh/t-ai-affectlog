@@ -1,235 +1,339 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CheckCircle2, ArrowRight, ExternalLink, Server, Cloud, Building2, Globe } from "lucide-react";
+import { CheckCircle2, ArrowRight, Server, Cloud, Building2, Globe } from "lucide-react";
 import { PublicHeader } from "../../components/public/PublicHeader";
 import { PublicFooter } from "../../components/public/PublicFooter";
-
-const fadeUp = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.45 },
-};
+import { GridBackground, GlowOrb } from "../../design-system/primitives/GridBackground";
+import { CTABand } from "../../design-system/primitives/CTAGroup";
 
 function FadeUp({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
-  return <motion.div {...fadeUp} transition={{ duration: 0.45, delay }} className={className}>{children}</motion.div>;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
+      className={className}
+    >{children}</motion.div>
+  );
 }
 
-const PLANS = [
+const TIERS = [
   {
+    name: "Community Edition",
     icon: Server,
-    title: "Community Edition",
-    tagline: "Self-hosted, open source",
     price: "Free",
-    priceNote: "MIT License",
+    priceNote: "Open source · MIT License",
     color: "#22d3ee",
     cta: { label: "Deploy Community Edition", to: "/community" },
     features: [
-      "Full dataset audit workflow",
-      "xAPI normalization & profiling",
+      "Full dataset audit pipeline",
+      "xAPI normalization",
       "PII scanning & pseudonymisation",
-      "Fairness & representation metrics",
-      "Model adapter architecture",
-      "SOP + JSON-LD exports",
-      "OpenAPI-first backend",
-      "RBAC + admin onboarding",
+      "Fairness & concentration metrics",
+      "Model adapters & explainability",
+      "Assessment recipes (YAML)",
+      "OpenAPI backend",
+      "RBAC + admin approval",
       "Docker Compose deployment",
-      "PostgreSQL + Redis",
-      "Synthetic test datasets",
-      "Community support (GitHub)",
+      "Self-hosted data control",
+      "Community GitHub support",
+    ],
+    excluded: [
+      "Managed infrastructure",
+      "Hosted backups",
+      "Multi-tenant provisioning",
+      "Support SLA",
     ],
   },
   {
+    name: "Managed Cloud",
     icon: Cloud,
-    title: "Managed Cloud",
-    tagline: "Hosted by AffectLog",
     price: "Contact",
-    priceNote: "Pricing configured per organization",
+    priceNote: "Hosted by AffectLog",
     color: "#a78bfa",
     highlight: true,
-    cta: { label: "Request Access", to: "/request-access" },
+    cta: { label: "Request Managed Access", to: "/request-access" },
     features: [
-      "Everything in Community Edition",
-      "AffectLog-hosted infrastructure",
+      "All Community Edition features",
+      "AffectLog-operated infrastructure",
       "Multi-tenant workspace provisioning",
-      "Admin-approved onboarding",
-      "Managed backups and retention",
-      "Platform monitoring and audit logs",
-      "Managed email and notifications",
-      "Usage metering and quotas",
-      "Support and upgrade path",
-      "SLA-ready operational tooling",
+      "Admin-approved user onboarding",
+      "Managed backups & artifact storage",
+      "Platform monitoring & health checks",
+      "Managed email & SMTP",
+      "Usage metering & quotas",
+      "Support & upgrade path",
+      "Platform-level audit trail",
     ],
+    badge: "Recommended",
   },
   {
+    name: "Private Tenant",
     icon: Building2,
-    title: "Private Tenant",
-    tagline: "Dedicated environment",
-    price: "Contact",
-    priceNote: "Pricing configured per deployment",
-    color: "#34d399",
-    cta: { label: "Request Access", to: "/request-access" },
+    price: "Configure",
+    priceNote: "Dedicated deployment",
+    color: "#38bdf8",
+    cta: { label: "Talk to AffectLog", to: "/request-access" },
     features: [
-      "Everything in Managed Cloud",
-      "Dedicated environment",
-      "Custom data residency option",
-      "Advanced governance controls",
-      "Dedicated support tier",
-      "Custom retention policies",
-      "Domain-level isolation",
+      "All Managed Cloud features",
+      "Single-organization tenant",
+      "Custom domain",
+      "Isolated artifact storage",
+      "Custom data retention policy",
+      "Dedicated support channel",
     ],
   },
   {
+    name: "BYOC / On-prem",
     icon: Globe,
-    title: "BYOC / On-Prem Support",
-    tagline: "Your infrastructure, our expertise",
-    price: "Contact",
-    priceNote: "Engagement-based",
-    color: "#38bdf8",
-    cta: { label: "Contact us", to: "/request-access" },
+    price: "Configure",
+    priceNote: "Bring-your-own-cloud",
+    color: "#10b981",
+    cta: { label: "Talk to AffectLog", to: "/request-access" },
     features: [
-      "Deployment support",
-      "Security and hardening review",
-      "Connector integration support",
-      "Institution-specific recipes",
-      "Custom model adapter development",
-      "Onboarding and training",
+      "Community Edition core",
+      "AffectLog deployment support",
+      "Cloud provider of your choice",
+      "On-premise institutional support",
+      "Custom SLA and governance",
+      "Annual support agreement",
     ],
   },
 ];
 
-const COMPARE = [
-  { feature: "Dataset audit workflow",        ce: true,  mc: true,  pt: true,  byoc: true  },
-  { feature: "xAPI normalization",            ce: true,  mc: true,  pt: true,  byoc: true  },
-  { feature: "PII scan + pseudonymisation",   ce: true,  mc: true,  pt: true,  byoc: true  },
-  { feature: "Model adapter framework",       ce: true,  mc: true,  pt: true,  byoc: true  },
-  { feature: "SOP + JSON-LD exports",         ce: true,  mc: true,  pt: true,  byoc: true  },
-  { feature: "Self-hosted deployment",        ce: true,  mc: false, pt: false, byoc: true  },
-  { feature: "AffectLog-hosted",             ce: false, mc: true,  pt: true,  byoc: false },
-  { feature: "Multi-tenant workspaces",       ce: false, mc: true,  pt: true,  byoc: false },
-  { feature: "Managed backups",               ce: false, mc: true,  pt: true,  byoc: false },
-  { feature: "Platform monitoring",           ce: false, mc: true,  pt: true,  byoc: false },
-  { feature: "Managed email",                 ce: false, mc: true,  pt: true,  byoc: false },
-  { feature: "Dedicated environment",         ce: false, mc: false, pt: true,  byoc: false },
-  { feature: "Custom data residency",         ce: false, mc: false, pt: true,  byoc: true  },
-  { feature: "Deployment support",            ce: false, mc: false, pt: false, byoc: true  },
-];
-
-const Tick = ({ v }: { v: boolean }) =>
-  v ? <CheckCircle2 size={14} className="text-emerald-400 mx-auto" /> : <span className="text-slate-700 mx-auto block text-center">—</span>;
-
-export default function Pricing() {
+function Hero() {
   return (
-    <div style={{ background: "#030712", color: "#f1f5f9", minHeight: "100vh" }}>
-      <PublicHeader />
-      <main>
-        {/* Hero */}
-        <section className="py-20 px-6 text-center" style={{ background: "radial-gradient(ellipse 70% 40% at 50% -10%, #0f1f3d 0%, #030712 60%)" }}>
-          <div className="max-w-3xl mx-auto">
-            <FadeUp>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Transparent, flexible pricing</h1>
-              <p className="text-slate-400 text-lg mb-4">
-                Community Edition is free and open source. Managed services are configured per organization.
-              </p>
-              <p className="text-slate-500 text-sm">
-                No payment implementation is required to get started. Request access and we'll discuss your needs.
-              </p>
-            </FadeUp>
-          </div>
-        </section>
+    <section
+      className="relative py-24 md:py-32 overflow-hidden"
+      style={{ background: "linear-gradient(180deg, #050814 0%, #080D1F 100%)" }}
+    >
+      <GridBackground />
+      <GlowOrb color="violet" size={600} x="75%" y="30%" opacity={0.35} />
 
-        {/* Plan cards */}
-        <section className="py-16 px-6" style={{ background: "#050c1a" }}>
-          <div className="max-w-7xl mx-auto">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {PLANS.map((plan, i) => {
-                const Icon = plan.icon;
-                return (
-                  <FadeUp key={plan.title} delay={i * 0.08}>
+      <div className="relative max-w-3xl mx-auto px-5 md:px-8 text-center">
+        <FadeUp>
+          <div
+            className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
+            style={{ color: "#a78bfa", background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.22)" }}
+          >
+            Pricing & Editions
+          </div>
+          <h1
+            className="font-bold text-white mb-5 leading-tight tracking-tight"
+            style={{ fontSize: "clamp(2.4rem, 4.5vw, 3.8rem)", letterSpacing: "-0.03em" }}
+          >
+            Choose how you want to run AffectLog
+          </h1>
+          <p className="text-lg text-slate-300 leading-relaxed">
+            Self-host the open-source core, use AffectLog-managed cloud, request a private
+            tenant, or deploy with institutional support.
+          </p>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+function PricingTiers() {
+  return (
+    <section className="py-12 md:py-16" style={{ background: "#080D1F" }}>
+      <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-5">
+          {TIERS.map((tier, i) => {
+            const Icon = tier.icon;
+            return (
+              <FadeUp key={tier.name} delay={i * 0.06}>
+                <div
+                  className="rounded-2xl p-6 h-full flex flex-col border relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5"
+                  style={{
+                    background: tier.highlight ? `${tier.color}05` : "rgba(255,255,255,0.025)",
+                    borderColor: tier.highlight ? `${tier.color}30` : "rgba(148,163,184,0.10)",
+                  }}
+                >
+                  {tier.badge && (
                     <div
-                      className="rounded-2xl p-6 h-full flex flex-col border"
-                      style={{
-                        background: plan.highlight ? `${plan.color}05` : "rgba(255,255,255,0.025)",
-                        borderColor: plan.highlight ? `${plan.color}35` : "rgba(255,255,255,0.07)",
-                      }}
+                      className="absolute top-4 right-4 text-xs font-semibold px-2.5 py-1 rounded-full"
+                      style={{ background: `${tier.color}15`, color: tier.color, border: `1px solid ${tier.color}30` }}
                     >
-                      <div className="flex items-center gap-2.5 mb-5">
-                        <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: `${plan.color}15` }}>
-                          <Icon size={16} style={{ color: plan.color }} />
-                        </div>
-                        <div>
-                          <h3 className="font-bold text-white text-sm">{plan.title}</h3>
-                          <p className="text-xs" style={{ color: plan.color }}>{plan.tagline}</p>
-                        </div>
-                      </div>
-
-                      <div className="mb-5">
-                        <div className="text-2xl font-bold text-white">{plan.price}</div>
-                        <div className="text-xs text-slate-600 mt-0.5">{plan.priceNote}</div>
-                      </div>
-
-                      <ul className="space-y-2 flex-1 mb-6">
-                        {plan.features.map((f) => (
-                          <li key={f} className="flex items-start gap-2 text-xs text-slate-300">
-                            <CheckCircle2 size={12} className="mt-0.5 flex-shrink-0" style={{ color: plan.color }} />
-                            {f}
-                          </li>
-                        ))}
-                      </ul>
-
-                      <Link
-                        to={plan.cta.to}
-                        className="inline-flex items-center justify-center gap-2 text-sm font-semibold rounded-xl py-2.5 px-4 transition-all w-full"
-                        style={
-                          plan.highlight
-                            ? { background: `linear-gradient(135deg, ${plan.color}cc, ${plan.color}aa)`, color: "#fff" }
-                            : { border: `1px solid ${plan.color}30`, color: plan.color }
-                        }
-                      >
-                        {plan.cta.label} <ArrowRight size={13} />
-                      </Link>
+                      {tier.badge}
                     </div>
-                  </FadeUp>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+                  )}
 
-        {/* Comparison table */}
-        <section className="py-16 px-6" style={{ background: "#030712" }}>
-          <div className="max-w-5xl mx-auto">
-            <FadeUp>
-              <h2 className="text-2xl font-bold text-white mb-8 text-center">Feature comparison</h2>
-            </FadeUp>
-            <FadeUp delay={0.1}>
-              <div className="overflow-x-auto rounded-2xl border border-white/[0.07]" style={{ background: "rgba(255,255,255,0.02)" }}>
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-                      <th className="text-left px-5 py-4 text-slate-400 font-medium">Feature</th>
-                      {["Community", "Managed Cloud", "Private Tenant", "BYOC / On-Prem"].map((h) => (
-                        <th key={h} className="px-4 py-4 text-center text-slate-400 font-medium text-xs">{h}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {COMPARE.map((row, i) => (
-                      <tr key={row.feature} style={{ borderBottom: i < COMPARE.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none" }}>
-                        <td className="px-5 py-3 text-slate-300 text-xs">{row.feature}</td>
-                        <td className="px-4 py-3"><Tick v={row.ce} /></td>
-                        <td className="px-4 py-3"><Tick v={row.mc} /></td>
-                        <td className="px-4 py-3"><Tick v={row.pt} /></td>
-                        <td className="px-4 py-3"><Tick v={row.byoc} /></td>
-                      </tr>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${tier.color}14` }}>
+                      <Icon size={16} style={{ color: tier.color }} aria-hidden="true" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-white text-sm">{tier.name}</h3>
+                    </div>
+                  </div>
+
+                  <div className="mb-5">
+                    <div className="text-3xl font-bold text-white" style={{ color: tier.color }}>{tier.price}</div>
+                    <div className="text-xs text-slate-500 mt-0.5">{tier.priceNote}</div>
+                  </div>
+
+                  <ul className="space-y-2 flex-1 mb-6">
+                    {tier.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
+                        <CheckCircle2 size={12} className="mt-0.5 flex-shrink-0" style={{ color: tier.color }} />
+                        {f}
+                      </li>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-            </FadeUp>
+                    {tier.excluded?.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-slate-600">
+                        <span className="mt-0.5 flex-shrink-0 w-3">—</span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link
+                    to={tier.cta.to}
+                    className="inline-flex items-center justify-center gap-2 font-semibold text-white rounded-xl px-4 py-2.5 text-sm transition-all border"
+                    style={{
+                      background: tier.highlight
+                        ? `linear-gradient(135deg, #7c3aed, #6d28d9)`
+                        : "rgba(255,255,255,0.04)",
+                      borderColor: tier.highlight ? "transparent" : `${tier.color}35`,
+                      boxShadow: tier.highlight ? "0 4px 14px rgba(139,92,246,0.25)" : "none",
+                    }}
+                  >
+                    {tier.cta.label} <ArrowRight size={13} />
+                  </Link>
+                </div>
+              </FadeUp>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeatureComparison() {
+  const categories = [
+    {
+      name: "Core Assessment",
+      rows: [
+        { label: "Dataset audit pipeline",        ce: true,  mc: true,  pt: true,  byoc: true  },
+        { label: "xAPI normalization",             ce: true,  mc: true,  pt: true,  byoc: true  },
+        { label: "PII scanning",                   ce: true,  mc: true,  pt: true,  byoc: true  },
+        { label: "Fairness & concentration",       ce: true,  mc: true,  pt: true,  byoc: true  },
+        { label: "Model adapters",                 ce: true,  mc: true,  pt: true,  byoc: true  },
+        { label: "OpenAPI endpoints",              ce: true,  mc: true,  pt: true,  byoc: true  },
+      ],
+    },
+    {
+      name: "Deployment & Operations",
+      rows: [
+        { label: "Docker Compose self-hosted",     ce: true,  mc: false, pt: false, byoc: true  },
+        { label: "Managed hosting",                ce: false, mc: true,  pt: true,  byoc: false },
+        { label: "Managed backups",                ce: false, mc: true,  pt: true,  byoc: false },
+        { label: "Platform monitoring",            ce: false, mc: true,  pt: true,  byoc: "Optional" },
+        { label: "Custom domain",                  ce: false, mc: false, pt: true,  byoc: true  },
+        { label: "Bring your own cloud",           ce: false, mc: false, pt: false, byoc: true  },
+      ],
+    },
+    {
+      name: "Support",
+      rows: [
+        { label: "Community GitHub support",       ce: true,  mc: true,  pt: true,  byoc: true  },
+        { label: "AffectLog support SLA",          ce: false, mc: true,  pt: true,  byoc: "Annual" },
+        { label: "Dedicated support channel",      ce: false, mc: false, pt: true,  byoc: "Annual" },
+        { label: "Custom SLA",                     ce: false, mc: false, pt: "Possible", byoc: true },
+      ],
+    },
+  ];
+
+  const headers = ["Community", "Managed Cloud", "Private Tenant", "BYOC / On-prem"];
+  const colors  = ["#22d3ee",  "#a78bfa",       "#38bdf8",        "#10b981"];
+
+  return (
+    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+      <div className="max-w-5xl mx-auto px-5 md:px-8">
+        <FadeUp>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">Detailed comparison</h2>
+            <p className="text-slate-400">All editions run the same open-source core.</p>
           </div>
-        </section>
+        </FadeUp>
+
+        <FadeUp delay={0.1}>
+          <div className="rounded-2xl overflow-hidden border" style={{ borderColor: "rgba(148,163,184,0.12)" }}>
+            {/* Header */}
+            <div className="grid grid-cols-5 px-5 py-3" style={{ background: "rgba(11,16,32,0.8)" }}>
+              <div className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Feature</div>
+              {headers.map((h, i) => (
+                <div key={h} className="text-center text-xs font-semibold uppercase tracking-widest" style={{ color: colors[i] }}>
+                  {h.split(" ")[0]}
+                </div>
+              ))}
+            </div>
+
+            {categories.map((cat, ci) => (
+              <div key={cat.name}>
+                <div
+                  className="px-5 py-2 text-xs font-bold uppercase tracking-widest text-slate-500"
+                  style={{ background: "rgba(255,255,255,0.02)", borderTop: "1px solid rgba(148,163,184,0.07)" }}
+                >
+                  {cat.name}
+                </div>
+                {cat.rows.map((row, ri) => (
+                  <div
+                    key={row.label}
+                    className="grid grid-cols-5 px-5 py-3 text-sm border-t"
+                    style={{
+                      borderColor: "rgba(148,163,184,0.07)",
+                      background: ri % 2 === 0 ? "rgba(255,255,255,0.01)" : "transparent",
+                    }}
+                  >
+                    <div className="text-slate-300">{row.label}</div>
+                    {[row.ce, row.mc, row.pt, row.byoc].map((v, vi) => (
+                      <div key={vi} className="text-center">
+                        {v === true  ? <CheckCircle2 size={14} className="mx-auto" style={{ color: colors[vi] }} />
+                         : v === false ? <span className="text-slate-700">—</span>
+                         : <span className="text-xs" style={{ color: colors[vi] }}>{String(v)}</span>}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+function FinalCTA() {
+  return (
+    <section className="py-20 md:py-24" style={{ background: "#080D1F" }}>
+      <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <CTABand
+          headline="Choose your deployment model"
+          subline="All editions run the same assessment workflows. The difference is who operates the infrastructure."
+          primary={{ label: "Request Managed Access", to: "/request-access" }}
+          secondary={{ label: "Deploy Community Edition", to: "/community" }}
+          tertiary={{ label: "Read Self-host Guide", to: "/self-host" }}
+        />
+      </div>
+    </section>
+  );
+}
+
+export default function PricingPage() {
+  return (
+    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
+      <PublicHeader />
+      <main id="main-content">
+        <Hero />
+        <PricingTiers />
+        <FeatureComparison />
+        <FinalCTA />
       </main>
       <PublicFooter />
     </div>

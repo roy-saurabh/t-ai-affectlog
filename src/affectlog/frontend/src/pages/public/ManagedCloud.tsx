@@ -3,220 +3,237 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Cloud, ArrowRight, CheckCircle2, Shield, BarChart2,
-  Users, Globe, Lock, Database, Cpu, Mail, Activity,
-  Building2, Key,
+  Server, Lock, Users, Activity, Database, FileText, GitBranch,
 } from "lucide-react";
 import { PublicHeader } from "../../components/public/PublicHeader";
 import { PublicFooter } from "../../components/public/PublicFooter";
-
-const fadeUp = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-40px" },
-  transition: { duration: 0.45 },
-};
+import { GridBackground, GlowOrb } from "../../design-system/primitives/GridBackground";
+import { CTABand } from "../../design-system/primitives/CTAGroup";
 
 function FadeUp({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
-    <motion.div {...fadeUp} transition={{ duration: 0.45, delay }} className={className}>
-      {children}
-    </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
+      className={className}
+    >{children}</motion.div>
   );
 }
 
-const MANAGED_FEATURES = [
-  { icon: Cloud,      title: "Hosted Infrastructure",      desc: "AffectLog operates all servers, databases, and workers. No infrastructure to manage.", color: "#a78bfa" },
-  { icon: Users,      title: "Multi-tenant Workspaces",    desc: "Isolated workspace provisioning per organization. Role-based access within each tenant.", color: "#22d3ee" },
-  { icon: Shield,     title: "Admin-approved Onboarding",  desc: "Organization registration reviewed by AffectLog before activation. Domain allowlists.", color: "#34d399" },
-  { icon: Activity,   title: "Platform Monitoring",        desc: "Uptime, job metrics, usage metering, and structured audit logs.", color: "#38bdf8" },
-  { icon: Database,   title: "Managed Backups",            desc: "Automatic backup with configurable retention policies per tenant.", color: "#a78bfa" },
-  { icon: Mail,       title: "Managed Email",              desc: "Transactional email for invitations, approvals, and notifications. No SMTP setup required.", color: "#22d3ee" },
-  { icon: Key,        title: "Support Access Protocol",    desc: "Time-limited, audit-logged support access. Tenant owner approval required.", color: "#34d399" },
-  { icon: Building2,  title: "Private Tenant Option",      desc: "Dedicated environment with custom data residency and advanced governance on request.", color: "#38bdf8" },
+function Hero() {
+  return (
+    <section
+      className="relative min-h-[80vh] flex items-center overflow-hidden"
+      style={{ background: "radial-gradient(circle at 20% 50%, rgba(139,92,246,0.15), transparent 40%), linear-gradient(180deg, #050814 0%, #0C1328 100%)" }}
+    >
+      <GridBackground />
+      <GlowOrb color="violet" size={700} x="80%" y="30%" opacity={0.5} />
+
+      <div className="relative max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-24 w-full">
+        <div className="grid lg:grid-cols-2 gap-14 items-center">
+          <div>
+            <FadeUp delay={0.04}>
+              <div
+                className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8"
+                style={{ color: "#a78bfa", background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.22)" }}
+              >
+                <Cloud size={11} />
+                Managed by AffectLog
+              </div>
+            </FadeUp>
+
+            <FadeUp delay={0.1}>
+              <h1
+                className="font-bold text-white mb-5 leading-tight tracking-tight"
+                style={{ fontSize: "clamp(2.6rem, 5vw, 4rem)", letterSpacing: "-0.03em" }}
+              >
+                Managed Trustworthy AI assessment, operated by AffectLog
+              </h1>
+            </FadeUp>
+
+            <FadeUp delay={0.17}>
+              <p className="text-lg text-slate-300 mb-8 leading-relaxed max-w-[520px]">
+                Use the same open-source core with hosted operations, tenant onboarding,
+                RBAC, monitoring, backups, support workflows, and organization-ready governance.
+              </p>
+            </FadeUp>
+
+            <FadeUp delay={0.23}>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  to="/request-access"
+                  className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
+                  style={{ background: "linear-gradient(135deg, #7c3aed, #6d28d9)", boxShadow: "0 6px 20px rgba(139,92,246,0.28)" }}
+                >
+                  Request Managed Access <ArrowRight size={17} />
+                </Link>
+                <Link
+                  to="/community"
+                  className="inline-flex items-center gap-2 font-semibold text-slate-200 rounded-xl px-6 py-3.5 border transition-all hover:bg-white/[0.06]"
+                  style={{ borderColor: "rgba(148,163,184,0.22)", background: "rgba(255,255,255,0.04)" }}
+                >
+                  Compare Editions
+                </Link>
+              </div>
+            </FadeUp>
+          </div>
+
+          {/* Features grid */}
+          <FadeUp delay={0.2}>
+            <div
+              className="rounded-2xl p-6 border"
+              style={{ background: "rgba(11,16,32,0.7)", borderColor: "rgba(139,92,246,0.20)" }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-5">Managed Edition includes</p>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  ["Multi-tenant workspaces",    "#a78bfa"],
+                  ["Admin-approved onboarding",  "#34d399"],
+                  ["Managed backups",            "#22d3ee"],
+                  ["Platform monitoring",        "#38bdf8"],
+                  ["Support & upgrade path",     "#a78bfa"],
+                  ["Managed email / SMTP",       "#34d399"],
+                  ["Audit trail",                "#22d3ee"],
+                  ["Usage metering",             "#38bdf8"],
+                ].map(([label, color]) => (
+                  <div key={label} className="flex items-center gap-2.5">
+                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: color }} />
+                    <span className="text-sm text-slate-300">{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const WHY_MANAGED = [
+  { icon: Cloud,     title: "No infrastructure to run",         desc: "We provision, operate, and upgrade the platform. Focus on assessments, not Kubernetes.", color: "#a78bfa" },
+  { icon: Users,     title: "Tenant isolation",                 desc: "Separate workspaces, credentials, and artifact storage per organization.",               color: "#22d3ee" },
+  { icon: Shield,    title: "Admin-approved onboarding",        desc: "All user registrations require explicit admin approval before access is granted.",        color: "#10b981" },
+  { icon: Activity,  title: "Monitoring and backups",           desc: "Automated health checks, artifact backups, and incident notification.",                  color: "#38bdf8" },
+  { icon: Lock,      title: "Support access governance",        desc: "AffectLog staff access is auditable, scoped, and requires approval.",                   color: "#10b981" },
+  { icon: GitBranch, title: "Managed upgrades",                 desc: "Platform updates are applied by AffectLog with no client-side disruption.",              color: "#a78bfa" },
 ];
 
-const SUPPORT_ACCESS = [
-  "Tenant owner grants access — not AffectLog",
-  "Time-limited with explicit expiry",
-  "Reason and scope required",
-  "All actions audited in tenant log",
-  "Raw dataset access disabled by default",
-  "Break-glass documented, not enabled by default",
-];
+function WhyManaged() {
+  return (
+    <section className="py-24 md:py-28" style={{ background: "#050814" }}>
+      <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <FadeUp>
+          <div className="text-center mb-14 max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+              All the workflows. None of the infrastructure.
+            </h2>
+            <p className="text-lg text-slate-400">
+              Built on the same open-source core as Community Edition, operated by AffectLog.
+            </p>
+          </div>
+        </FadeUp>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {WHY_MANAGED.map((item, i) => {
+            const Icon = item.icon;
+            return (
+              <FadeUp key={item.title} delay={i * 0.05}>
+                <div
+                  className="rounded-2xl p-6 border h-full transition-all duration-200 hover:-translate-y-0.5"
+                  style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(148,163,184,0.10)" }}
+                >
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: `${item.color}14` }}>
+                    <Icon size={16} style={{ color: item.color }} aria-hidden="true" />
+                  </div>
+                  <h3 className="font-semibold text-slate-200 mb-2">{item.title}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </FadeUp>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function OnboardingFlow() {
+  const steps = [
+    { step: 1, title: "Submit access request",     desc: "Tell us about your organization, assessment needs, and data volume.",      color: "#a78bfa" },
+    { step: 2, title: "AffectLog review",          desc: "We review your request and security requirements within a business day.",  color: "#22d3ee" },
+    { step: 3, title: "Tenant provisioned",        desc: "Dedicated workspace created with isolated storage and credentials.",       color: "#10b981" },
+    { step: 4, title: "Admin approval flow active",desc: "Your admin can approve team members and manage workspace access.",        color: "#38bdf8" },
+    { step: 5, title: "Start guided assessment",   desc: "Upload datasets, run the wizard, and generate your first audit artifacts.", color: "#a78bfa" },
+  ];
+
+  return (
+    <section className="py-24 md:py-28" style={{ background: "#080D1F" }}>
+      <div className="max-w-4xl mx-auto px-5 md:px-8">
+        <FadeUp>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+              Admin-controlled access, from day one
+            </h2>
+            <p className="text-slate-400">The onboarding process is intentionally gated and auditable.</p>
+          </div>
+        </FadeUp>
+
+        <div className="space-y-0">
+          {steps.map((s, i) => (
+            <FadeUp key={s.step} delay={i * 0.06}>
+              <div className="flex items-start gap-4">
+                <div className="flex flex-col items-center">
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
+                    style={{ background: `${s.color}14`, border: `1px solid ${s.color}40`, color: s.color }}
+                  >
+                    {s.step}
+                  </div>
+                  {i < steps.length - 1 && (
+                    <div className="w-px flex-1 my-1" style={{ background: `${s.color}20`, minHeight: "24px" }} />
+                  )}
+                </div>
+                <div className="pt-1 pb-5">
+                  <p className="font-semibold text-slate-200 mb-1">{s.title}</p>
+                  <p className="text-slate-500 text-sm leading-relaxed">{s.desc}</p>
+                </div>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FinalCTA() {
+  return (
+    <section className="py-20 md:py-24" style={{ background: "#050814" }}>
+      <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <CTABand
+          headline="Request a managed AffectLog environment"
+          subline="Tell us about your organization and assessment needs. We'll review and provision a dedicated tenant for your team."
+          primary={{ label: "Request Managed Access", to: "/request-access" }}
+          secondary={{ label: "Compare Editions",     to: "/community" }}
+          tertiary={{ label: "Read Security Model",   to: "/security" }}
+        />
+      </div>
+    </section>
+  );
+}
 
 export default function ManagedCloud() {
   return (
-    <div style={{ background: "#030712", color: "#f1f5f9", minHeight: "100vh" }}>
+    <div style={{ background: "#050814", color: "#F8FAFC", minHeight: "100vh" }}>
       <PublicHeader />
-      <main>
-        {/* Hero */}
-        <section
-          className="py-24 px-6 relative overflow-hidden"
-          style={{ background: "radial-gradient(ellipse 80% 60% at 50% -10%, #1a0a2e 0%, #030712 60%)" }}
-        >
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)", backgroundSize: "64px 64px" }} />
-          <div className="absolute top-0 right-1/3 w-80 h-80 rounded-full pointer-events-none"
-            style={{ background: "radial-gradient(circle, rgba(167,139,250,0.07) 0%, transparent 70%)" }} />
-
-          <div className="relative max-w-4xl mx-auto text-center">
-            <FadeUp>
-              <div className="inline-flex items-center gap-2 text-xs text-violet-400 border border-violet-400/20 bg-violet-400/[0.06] px-3 py-1.5 rounded-full mb-6">
-                <Cloud size={12} />
-                Hosted &amp; operated by AffectLog
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-                AffectLog Managed Edition
-              </h1>
-              <p className="text-xl text-slate-300 mb-4 max-w-2xl mx-auto leading-relaxed">
-                The same open-source assessment workflows, without the infrastructure.
-              </p>
-              <p className="text-slate-500 mb-10 max-w-xl mx-auto">
-                AffectLog operates the hosted environment including multi-tenant provisioning, monitoring,
-                backups, support, and managed email — so your team can focus on assessments.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link
-                  to="/request-access"
-                  className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3 transition-all"
-                  style={{ background: "linear-gradient(135deg, #7c3aed, #6d28d9)", boxShadow: "0 0 24px rgba(167,139,250,0.25)" }}
-                >
-                  Request Access <ArrowRight size={16} />
-                </Link>
-                <Link
-                  to="/pricing"
-                  className="inline-flex items-center gap-2 text-slate-200 rounded-xl px-6 py-3 border border-white/10 hover:border-violet-400/30 hover:bg-violet-400/[0.04] transition-all"
-                >
-                  View pricing <ArrowRight size={15} />
-                </Link>
-              </div>
-            </FadeUp>
-          </div>
-        </section>
-
-        {/* Features grid */}
-        <section className="py-20 px-6" style={{ background: "#050c1a" }}>
-          <div className="max-w-7xl mx-auto">
-            <FadeUp>
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-10 text-center">What AffectLog manages for you</h2>
-            </FadeUp>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {MANAGED_FEATURES.map((f, i) => {
-                const Icon = f.icon;
-                return (
-                  <FadeUp key={f.title} delay={i * 0.04}>
-                    <div
-                      className="rounded-xl p-5 h-full border"
-                      style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(255,255,255,0.07)" }}
-                    >
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-3" style={{ background: `${f.color}15` }}>
-                        <Icon size={16} style={{ color: f.color }} />
-                      </div>
-                      <h3 className="font-semibold text-slate-200 text-sm mb-1.5">{f.title}</h3>
-                      <p className="text-slate-500 text-xs leading-relaxed">{f.desc}</p>
-                    </div>
-                  </FadeUp>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Support access model */}
-        <section className="py-20 px-6" style={{ background: "#030712" }}>
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-start">
-              <FadeUp>
-                <h2 className="text-2xl font-bold text-white mb-4">Support access model</h2>
-                <p className="text-slate-400 mb-6 leading-relaxed">
-                  AffectLog support staff do not have permanent blanket access to tenant environments.
-                  Access is time-limited, tenant-owner-approved, and fully audited.
-                </p>
-                <ul className="space-y-3">
-                  {SUPPORT_ACCESS.map((s) => (
-                    <li key={s} className="flex items-start gap-2 text-sm text-slate-300">
-                      <CheckCircle2 size={14} className="text-emerald-400 mt-0.5 flex-shrink-0" />
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <h2 className="text-2xl font-bold text-white mb-4">Admin hierarchy</h2>
-                <div className="space-y-2">
-                  {[
-                    { role: "Platform Super Admin", scope: "Full platform" },
-                    { role: "Platform Operator",    scope: "Tenant management" },
-                    { role: "Support Engineer",     scope: "Time-limited, tenant-approved" },
-                    { role: "Tenant Owner",         scope: "Their workspace" },
-                    { role: "Tenant Admin",         scope: "Workspace users and settings" },
-                    { role: "Tenant Auditor",       scope: "Read-only audit access" },
-                    { role: "Tenant Researcher",    scope: "Dataset and assessment runs" },
-                    { role: "Tenant Viewer",        scope: "Results only" },
-                  ].map((r) => (
-                    <div key={r.role} className="flex items-center justify-between py-2 border-b border-white/[0.04]">
-                      <span className="text-sm text-slate-300">{r.role}</span>
-                      <span className="text-xs text-slate-600">{r.scope}</span>
-                    </div>
-                  ))}
-                </div>
-              </FadeUp>
-            </div>
-          </div>
-        </section>
-
-        {/* Open-source core note */}
-        <section className="py-12 px-6" style={{ background: "#050c1a", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-          <div className="max-w-4xl mx-auto">
-            <FadeUp>
-              <div
-                className="rounded-xl p-6 border"
-                style={{ background: "rgba(167,139,250,0.04)", borderColor: "rgba(167,139,250,0.2)" }}
-              >
-                <p className="text-sm font-semibold text-slate-200 mb-2">Built on the open-source core</p>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                  Managed Edition is built on the same open-source codebase as Community Edition. The open-source
-                  assessment workflows, APIs, and data models are identical. Managed Edition adds hosted
-                  infrastructure, multi-tenant operations, support, and optional enterprise services.
-                </p>
-                <Link
-                  to="/community"
-                  className="inline-flex items-center gap-1.5 mt-4 text-sm text-violet-400 hover:text-violet-300 transition-colors"
-                >
-                  View Community Edition <ArrowRight size={13} />
-                </Link>
-              </div>
-            </FadeUp>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="py-20 px-6 text-center" style={{ background: "#030712" }}>
-          <div className="max-w-2xl mx-auto">
-            <FadeUp>
-              <h2 className="text-2xl font-bold text-white mb-4">Ready to get started?</h2>
-              <p className="text-slate-400 mb-8">
-                Request managed access and our team will review your organization's requirements.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link
-                  to="/request-access"
-                  className="inline-flex items-center gap-2 font-semibold text-white rounded-xl px-6 py-3 transition-all"
-                  style={{ background: "linear-gradient(135deg, #7c3aed, #6d28d9)", boxShadow: "0 0 24px rgba(167,139,250,0.2)" }}
-                >
-                  Request access <ArrowRight size={16} />
-                </Link>
-                <Link
-                  to="/pricing"
-                  className="inline-flex items-center gap-2 text-slate-400 hover:text-white px-6 py-3 rounded-xl hover:bg-white/[0.04] transition-all"
-                >
-                  View pricing <ArrowRight size={14} />
-                </Link>
-              </div>
-            </FadeUp>
-          </div>
-        </section>
+      <main id="main-content">
+        <Hero />
+        <WhyManaged />
+        <OnboardingFlow />
+        <FinalCTA />
       </main>
       <PublicFooter />
     </div>

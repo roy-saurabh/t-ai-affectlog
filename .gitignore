@@ -1,4 +1,10 @@
 # === AffectLog ALT-AI — .gitignore ===
+
+# Dev SQLite databases — never commit
+*.db
+*.sqlite
+*.sqlite3
+
 # Raw and private partner data — NEVER commit
 data/raw/maskott/
 data/raw/becomino/

@@ -1,0 +1,46 @@
+export const colors = {
+  bg: {
+    950: "#050814",
+    900: "#080D1F",
+    850: "#0C1328",
+    800: "#111A33",
+  },
+  surface: {
+    900: "#0B1020",
+    800: "#111827",
+    700: "#172033",
+    600: "#334155",
+    0:   "#ffffff",
+    50:  "#F8FAFC",
+    100: "#F1F5F9",
+    200: "#E2E8F0",
+    300: "#CBD5E1",
+  },
+  text: {
+    primaryDark:   "#F8FAFC",
+    secondaryDark: "#CBD5E1",
+    mutedDark:     "#94A3B8",
+    primaryLight:  "#0F172A",
+    secondaryLight:"#334155",
+  },
+  border: {
+    dark:  "rgba(148,163,184,0.18)",
+    light: "#E2E8F0",
+  },
+  accent: {
+    blue:    "#2563EB",
+    cyan:    "#22D3EE",
+    violet:  "#8B5CF6",
+    green:   "#10B981",
+    indigo:  "#6366F1",
+    amber:   "#F59E0B",
+    red:     "#EF4444",
+  },
+  // Extended shades for components
+  cyan:    { 300:"#67E8F9", 400:"#22D3EE", 500:"#06B6D4", 600:"#0891B2", 700:"#0E7490" },
+  violet:  { 300:"#C4B5FD", 400:"#A78BFA", 500:"#8B5CF6", 600:"#7C3AED", 700:"#6D28D9" },
+  emerald: { 300:"#6EE7B7", 400:"#34D399", 500:"#10B981", 600:"#059669" },
+  indigo:  { 400:"#818CF8", 500:"#6366F1", 600:"#4F46E5", 700:"#4338CA" },
+  amber:   { 400:"#FCD34D", 500:"#F59E0B" },
+  red:     { 400:"#F87171", 500:"#EF4444", 600:"#DC2626" },
+} as const;
