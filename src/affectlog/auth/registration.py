@@ -72,5 +72,5 @@ async def create_pending_registration(
         resource_id=str(reg.id),
         ip_address=ip_address,
     )
-    logger.info("New registration request from %s", email)
+    logger.info("New registration request from %s", email.replace("\n", "\\n").replace("\r", "\\r"))
     return reg

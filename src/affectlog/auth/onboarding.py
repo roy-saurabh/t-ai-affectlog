@@ -111,7 +111,11 @@ async def approve_registration(
         resource_id=str(registration_id),
         detail=f"Assigned role={role_name}, workspace={workspace_slug}",
     )
-    logger.info("Registration %s approved → user %s created", registration_id, new_user.id)
+    logger.info(
+        "Registration %s approved → user %s created",
+        str(registration_id).replace("\n", "\\n"),
+        new_user.id,
+    )
     return new_user, plain
 
 

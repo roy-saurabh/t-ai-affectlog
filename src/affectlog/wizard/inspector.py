@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import contextlib
 import csv
+import ipaddress
 import json
 import logging
+import socket
 import tempfile
 import urllib.request
 from pathlib import Path
@@ -13,6 +15,8 @@ from typing import Any
 from urllib.parse import urlparse
 
 from affectlog.capabilities.formats import FORMAT_BY_ID
+from affectlog.config import get_settings
+from affectlog.core.paths import resolve_safe_path
 from affectlog.wizard.schemas import (
     FieldInventoryEntry,
     FieldRole,
@@ -23,6 +27,32 @@ from affectlog.wizard.schemas import (
 log = logging.getLogger(__name__)
 
 _URL_SIZE_LIMIT = 50 * 1024 * 1024  # 50 MB safety cap for remote fetches
+
+_PRIVATE_NETWORKS: tuple[ipaddress.IPv4Network | ipaddress.IPv6Network, ...] = (
+    ipaddress.ip_network("10.0.0.0/8"),
+    ipaddress.ip_network("172.16.0.0/12"),
+    ipaddress.ip_network("192.168.0.0/16"),
+    ipaddress.ip_network("127.0.0.0/8"),
+    ipaddress.ip_network("169.254.0.0/16"),  # link-local / AWS metadata
+    ipaddress.ip_network("::1/128"),
+    ipaddress.ip_network("fc00::/7"),
+    ipaddress.ip_network("fe80::/10"),
+)
+
+
+def _is_ssrf_safe(url: str) -> tuple[bool, str]:
+    """Return (True, '') or (False, reason). Blocks private/link-local hosts."""
+    try:
+        host = urlparse(url).hostname or ""
+        if not host:
+            return False, "No hostname in URL."
+        for info in socket.getaddrinfo(host, None):
+            ip = ipaddress.ip_address(info[4][0])
+            if any(ip in net for net in _PRIVATE_NETWORKS):
+                return False, "URL resolves to a private or reserved address."
+        return True, ""
+    except OSError:
+        return False, "Could not resolve hostname."
 
 
 def _is_url(s: str) -> bool:
@@ -35,6 +65,9 @@ def _is_url(s: str) -> bool:
 
 def _fetch_url_to_tempfile(url: str) -> tuple[Path, int] | tuple[None, str]:
     """Download url into a named temp file. Returns (path, size) or (None, error_msg)."""
+    safe, reason = _is_ssrf_safe(url)
+    if not safe:
+        return None, reason
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "AffectLog-Inspector/1.0"})
         with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310
@@ -289,7 +322,19 @@ def inspect(req: InspectInputRequest) -> InspectInputResponse:
         # Preserve original extension so format detection works by suffix
         suffix = Path(urlparse(path_str).path).suffix.lower() or path.suffix.lower()
     else:
-        path = Path(path_str)
+        _s = get_settings()
+        _allowed = [
+            Path(_s.data_dir).resolve(),
+            Path(_s.runs_dir).resolve(),
+            Path(tempfile.gettempdir()).resolve(),
+        ]
+        candidate = Path(path_str).resolve()
+        if not any(candidate.is_relative_to(b) for b in _allowed):
+            return InspectInputResponse(
+                is_supported=False,
+                unsupported_reason="Dataset path is outside the allowed directories.",
+            )
+        path = resolve_safe_path(Path(_s.data_dir), path_str) if not Path(path_str).is_absolute() else candidate
         if not path.exists():
             return InspectInputResponse(
                 is_supported=False,

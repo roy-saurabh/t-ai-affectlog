@@ -9,6 +9,7 @@ from typing import Any
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 
 from affectlog.capabilities.help_text import get_analysis_help, get_step_help
+from affectlog.core.paths import resolve_safe_path, validate_run_id
 from affectlog.wizard.executor import (
     _WIZARD_RUNS,
     create_run,
@@ -189,11 +190,15 @@ async def download_wizard_run_artifact(wizard_run_id: str, filename: str) -> Any
 
     from affectlog.config import get_settings
 
-    if not re.fullmatch(r"[\w\-]+\.[\w]+", filename):
+    if not re.fullmatch(r"[\w\-]{1,200}\.[\w]{1,10}", filename):
         raise HTTPException(status_code=400, detail="Invalid filename.")
+    try:
+        validate_run_id(wizard_run_id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid run ID.")
     settings = get_settings()
-    run_dir = Path(settings.runs_dir) / wizard_run_id
-    artifact_path = run_dir / filename
+    run_dir = resolve_safe_path(Path(settings.runs_dir), wizard_run_id)
+    artifact_path = resolve_safe_path(run_dir, filename)
     if not artifact_path.exists():
         raise HTTPException(
             status_code=404, detail=f"Artifact '{filename}' not found for run '{wizard_run_id}'."
@@ -210,8 +215,12 @@ async def get_wizard_run_artifacts(wizard_run_id: str) -> dict[str, Any]:
 
     from affectlog.config import get_settings
 
+    try:
+        validate_run_id(wizard_run_id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid run ID.")
     settings = get_settings()
-    run_dir = Path(settings.runs_dir) / wizard_run_id
+    run_dir = resolve_safe_path(Path(settings.runs_dir), wizard_run_id)
     if not run_dir.exists():
         raise HTTPException(
             status_code=404, detail=f"Run directory for '{wizard_run_id}' not found."

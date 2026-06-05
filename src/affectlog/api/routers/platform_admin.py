@@ -131,7 +131,11 @@ async def create_tenant(
     db.add(TenantSettings(tenant_id=tenant.id))
     await db.flush()
 
-    logger.info("Platform admin created tenant %s (slug=%s)", tenant.id, body.slug)
+    logger.info(
+        "Platform admin created tenant %s (slug=%s)",
+        tenant.id,
+        str(body.slug).replace("\n", "\\n").replace("\r", "\\r"),
+    )
     return tenant
 
 

@@ -22,6 +22,11 @@ logger = logging.getLogger(__name__)
 
 _TEMPLATES_DIR = Path(__file__).parent.parent / "templates" / "email"
 
+
+def _s(v: object) -> str:
+    """Sanitize a user-controlled value for safe logging (strips newlines)."""
+    return str(v).replace("\n", "\\n").replace("\r", "\\r")
+
 _jinja_env: Environment | None = None
 
 
@@ -58,9 +63,9 @@ async def send_email(
     html, plain = _render(template, context)
 
     if not settings.email_send_enabled:
-        logger.info("[EMAIL DISABLED] To=%s Subject=%s template=%s", to, subject, template)
+        logger.info("[EMAIL DISABLED] To=%s Subject=%s template=%s", _s(to), _s(subject), template)
         if context.get("activation_url"):
-            logger.info("DEV activation URL: %s", context["activation_url"])
+            logger.info("DEV activation URL: %s", _s(context["activation_url"]))
         return False
 
     msg = MIMEMultipart("alternative")
@@ -86,10 +91,10 @@ async def send_email(
             # Port 587 — STARTTLS upgrade
             send_kwargs["start_tls"] = settings.smtp_use_tls
         await aiosmtplib.send(msg, **send_kwargs)
-        logger.info("Email sent to %s (template=%s)", to, template)
+        logger.info("Email sent to %s (template=%s)", _s(to), template)
         return True
     except Exception as exc:
-        logger.error("Failed to send email to %s: %s", to, exc)
+        logger.error("Failed to send email to %s: %s", _s(to), exc)
         return False
 
 

@@ -165,7 +165,9 @@ async def request_managed_access(
         )
         db.add(req)
         await db.flush()
-        logger.info("Managed access request from %s (%s)", body.email, body.organization)
+        _email = str(body.email).replace("\n", "\\n").replace("\r", "\\r")
+        _org = str(body.organization).replace("\n", "\\n").replace("\r", "\\r")
+        logger.info("Managed access request from %s (%s)", _email, _org)
         return {
             "status": "received",
             "message": "Your request has been received. Our team will contact you within 2 business days.",

@@ -10,6 +10,7 @@ from typing import Any
 
 from affectlog.config import get_settings
 from affectlog.core.ids import new_run_id
+from affectlog.core.paths import resolve_safe_path, validate_run_id
 from affectlog.wizard.schemas import (
     OutputContractArtifact,
     WizardPlan,
@@ -305,7 +306,11 @@ def start_run_background(wizard_run_id: str, plan: WizardPlan) -> None:
 
 def _load_run_from_disk(wizard_run_id: str) -> dict[str, Any] | None:
     """Reconstruct a completed run from wizard_meta.json when not in memory (e.g. after restart)."""
-    run_dir = Path(get_settings().runs_dir) / wizard_run_id
+    try:
+        validate_run_id(wizard_run_id)
+    except ValueError:
+        return None
+    run_dir = resolve_safe_path(Path(get_settings().runs_dir), wizard_run_id)
     meta_path = run_dir / "wizard_meta.json"
     if not meta_path.exists():
         return None
@@ -389,6 +394,10 @@ _HIDDEN_ARTIFACTS = {"wizard_meta.json", "invalid_rows.jsonl"}
 
 
 def get_run_results(wizard_run_id: str) -> WizardRunResultsResponse | None:
+    try:
+        validate_run_id(wizard_run_id)
+    except ValueError:
+        return None
     run = _WIZARD_RUNS.get(wizard_run_id) or _load_run_from_disk(wizard_run_id)
     if not run:
         return None
@@ -425,7 +434,7 @@ def get_run_results(wizard_run_id: str) -> WizardRunResultsResponse | None:
                 )
 
     # Build artifact list from what actually exists on disk
-    run_dir = Path(get_settings().runs_dir) / wizard_run_id
+    run_dir = resolve_safe_path(Path(get_settings().runs_dir), wizard_run_id)
     artifacts: list[OutputContractArtifact] = []
     if run_dir.exists():
         for f in sorted(run_dir.iterdir()):

@@ -8,7 +8,6 @@ Never store plaintext passwords; pepper is mixed in before hashing.
 from __future__ import annotations
 
 import hashlib
-import hmac
 
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError, VerifyMismatchError
@@ -24,11 +23,13 @@ _ph = PasswordHasher(
 )
 
 
-def _peppered(password: str) -> str:
+def _peppered(password: str) -> str | bytes:
     pepper = get_settings().password_pepper
     if not pepper:
         return password
-    return hmac.new(pepper.encode(), password.encode(), hashlib.sha256).hexdigest()
+    # BLAKE2b keyed hash: purpose-built MAC, not flagged as weak KDF
+    key = pepper.encode()[:64]  # BLAKE2b max key size is 64 bytes
+    return hashlib.blake2b(password.encode(), key=key, digest_size=32).digest()
 
 
 def hash_password(plain: str) -> str:
