@@ -10,7 +10,7 @@ export const hero = {
   primaryCta: { label: "Launch the Assessment Console", href: "/login" },
   secondaryCta: {
     label: "Contribute on GitHub",
-    href: "https://github.com/roy-saurabh/edge_affectlog",
+    href: "https://github.com/Prometheus-X-association/t-ai-affectlog",
     external: true,
   },
   tertiaryCta: {
@@ -208,22 +208,22 @@ export const developerCta = {
     { label: "Read Contributor Guide", href: "/docs/contributing", external: false },
     {
       label: "Open GitHub Issues",
-      href: "https://github.com/roy-saurabh/edge_affectlog/issues",
+      href: "https://github.com/Prometheus-X-association/t-ai-affectlog/issues",
       external: true,
     },
     {
       label: "Create an Assessment Recipe",
-      href: "https://github.com/roy-saurabh/edge_affectlog/blob/main/CONTRIBUTING.md#assessment-recipes",
+      href: "https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/CONTRIBUTING.md#assessment-recipes",
       external: true,
     },
     {
       label: "Add a Model Adapter",
-      href: "https://github.com/roy-saurabh/edge_affectlog/blob/main/CONTRIBUTING.md#model-adapters",
+      href: "https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/CONTRIBUTING.md#model-adapters",
       external: true,
     },
     {
       label: "Review Security Policy",
-      href: "https://github.com/roy-saurabh/edge_affectlog/blob/main/SECURITY.md",
+      href: "https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/SECURITY.md",
       external: true,
     },
   ],
@@ -237,7 +237,7 @@ export const finalCta = {
     { label: "API Reference", href: "/openapi", external: false },
     {
       label: "Contribute",
-      href: "https://github.com/roy-saurabh/edge_affectlog",
+      href: "https://github.com/Prometheus-X-association/t-ai-affectlog",
       external: true,
     },
   ],
@@ -265,7 +265,7 @@ export const euFooter = {
     },
     {
       label: "GitHub Repository",
-      href: "https://github.com/roy-saurabh/edge_affectlog",
+      href: "https://github.com/Prometheus-X-association/t-ai-affectlog",
     },
     { label: "Prometheus-X", href: "https://prometheus-x.org/" },
   ],

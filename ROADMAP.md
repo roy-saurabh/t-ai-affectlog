@@ -64,4 +64,4 @@ This roadmap outlines the planned development trajectory for the AffectLog Trust
 
 ---
 
-Contributions welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) and [GitHub Issues](https://github.com/roy-saurabh/edge_affectlog/issues).
+Contributions welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) and [GitHub Issues](https://github.com/Prometheus-X-association/t-ai-affectlog/issues).

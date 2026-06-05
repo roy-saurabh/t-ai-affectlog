@@ -5,8 +5,8 @@ Thank you for your interest in contributing.
 ## Quick Start
 
 ```bash
-git clone https://github.com/roy-saurabh/edge_affectlog.git
-cd edge_affectlog
+git clone https://github.com/Prometheus-X-association/t-ai-affectlog.git
+cd t-ai-affectlog
 make install
 make test
 ```

@@ -71,7 +71,7 @@ Body: CARiSMA report JSON — stored for cross-referencing.
   "complianceMappings": {
     "gdprArticlesTriggered": ["Art.5", "Art.25"],
     "aiActAnnexIVRelevant": true,
-    "dataGovernancePolicyRef": "https://github.com/roy-saurabh/edge_affectlog/docs/data-governance.md"
+    "dataGovernancePolicyRef": "https://github.com/Prometheus-X-association/t-ai-affectlog/docs/data-governance.md"
   },
   "carismaAnnotations": {}
 }
@@ -180,4 +180,4 @@ See [`examples/carisma_lola_interoperability/metadata-exchange-example.json`](..
 
 - [Prometheus-X BB04 Technical Documentation](https://prometheus-x-association.github.io/docs/t-ai/)
 - [Prometheus-X Association](https://prometheus-x.org/)
-- [AffectLog GitHub Repository](https://github.com/roy-saurabh/edge_affectlog)
+- [AffectLog GitHub Repository](https://github.com/Prometheus-X-association/t-ai-affectlog)

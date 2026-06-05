@@ -24,7 +24,7 @@ function FadeUp({ children, delay = 0, className }: { children: React.ReactNode;
   );
 }
 
-const GITHUB = "https://github.com/roy-saurabh/edge_affectlog";
+const GITHUB = "https://github.com/Prometheus-X-association/t-ai-affectlog";
 
 function Hero() {
   return (
@@ -94,8 +94,8 @@ function Hero() {
             <CodeBlock
               label="Developer quickstart"
               lines={[
-                { text: "git clone https://github.com/roy-saurabh/edge_affectlog", color: "#67E8F9" },
-                { text: "cd edge_affectlog && docker compose up", color: "#86EFAC" },
+                { text: "git clone https://github.com/Prometheus-X-association/t-ai-affectlog", color: "#67E8F9" },
+                { text: "cd t-ai-affectlog && docker compose up", color: "#86EFAC" },
                 { text: "# Run backend tests", color: "#475569" },
                 { text: "make test", color: "#C4B5FD" },
                 { text: "# Generate 1M-row synthetic dataset", color: "#475569" },

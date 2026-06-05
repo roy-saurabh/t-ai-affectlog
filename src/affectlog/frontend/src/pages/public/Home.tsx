@@ -827,7 +827,7 @@ function DeveloperSection() {
             return (
               <FadeUp key={c.label} delay={i * 0.035}>
                 <a
-                  href="https://github.com/roy-saurabh/edge_affectlog/blob/main/CONTRIBUTING.md"
+                  href="https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/CONTRIBUTING.md"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block rounded-xl p-4 border transition-all duration-200 group hover:-translate-y-0.5"
@@ -858,7 +858,7 @@ function DeveloperSection() {
         <FadeUp delay={0.25}>
           <div className="flex flex-wrap justify-center gap-4">
             <a
-              href="https://github.com/roy-saurabh/edge_affectlog"
+              href="https://github.com/Prometheus-X-association/t-ai-affectlog"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-semibold text-white px-6 py-3 rounded-xl border transition-all hover:bg-white/[0.06]"

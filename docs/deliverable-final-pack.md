@@ -13,7 +13,7 @@
 
 It is developed as the **AffectLog building block** within the Prometheus-X Trustworthy AI Assessment ecosystem (BB04), in the context of the **EDGE-Skills project** (Grant agreement ID: 101123471), co-funded by the European Union under the Digital Europe Programme.
 
-**Repository:** https://github.com/roy-saurabh/edge_affectlog  
+**Repository:** https://github.com/Prometheus-X-association/t-ai-affectlog  
 **License:** MIT  
 **Version:** 1.0.0  
 **Status:** Production-ready open-source release
@@ -426,7 +426,7 @@ make demo
 
 ## 13. Project References
 
-- **Repository:** https://github.com/roy-saurabh/edge_affectlog
+- **Repository:** https://github.com/Prometheus-X-association/t-ai-affectlog
 - **Prometheus-X BB04:** https://prometheus-x.org/bb04-trustworthy-ai-assessment/
 - **Technical documentation:** https://prometheus-x-association.github.io/docs/t-ai/
 - **EDGE-Skills EU project:** https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/how-to-participate/org-details/883807838/project/101123471/program/43152860/details

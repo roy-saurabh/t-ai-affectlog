@@ -23,7 +23,7 @@ function FadeUp({ children, delay = 0, className }: { children: React.ReactNode;
   );
 }
 
-const GITHUB = "https://github.com/roy-saurabh/edge_affectlog";
+const GITHUB = "https://github.com/Prometheus-X-association/t-ai-affectlog";
 
 function Hero() {
   return (
@@ -148,7 +148,7 @@ function Requirements() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-5 tracking-tight">Quick setup</h2>
             <div className="space-y-4">
               {[
-                { step: 1, title: "Clone repository",       cmd: "git clone https://github.com/roy-saurabh/edge_affectlog", color: "#67E8F9" },
+                { step: 1, title: "Clone repository",       cmd: "git clone https://github.com/Prometheus-X-association/t-ai-affectlog", color: "#67E8F9" },
                 { step: 2, title: "Start services",         cmd: "docker compose up -d",                                     color: "#86EFAC" },
                 { step: 3, title: "Create admin account",   cmd: "make create-admin",                                        color: "#C4B5FD" },
                 { step: 4, title: "Seed demo scenarios",    cmd: "make seed",                                                 color: "#93C5FD" },

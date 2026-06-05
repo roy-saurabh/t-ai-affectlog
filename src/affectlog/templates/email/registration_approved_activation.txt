@@ -21,4 +21,4 @@ AffectLog is developed in the context of the EDGE-Skills project,
 part of the Prometheus-X Trustworthy AI Assessment building block ecosystem.
 Co-funded by the European Union under the Digital Europe Programme.
 
-{{ app_base_url }} | https://github.com/roy-saurabh/edge_affectlog
+{{ app_base_url }} | https://github.com/Prometheus-X-association/t-ai-affectlog

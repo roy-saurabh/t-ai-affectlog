@@ -24,7 +24,7 @@ function FadeUp({ children, delay = 0, className }: { children: React.ReactNode;
   );
 }
 
-const GITHUB = "https://github.com/roy-saurabh/edge_affectlog";
+const GITHUB = "https://github.com/Prometheus-X-association/t-ai-affectlog";
 
 function Hero() {
   return (
@@ -92,7 +92,7 @@ function Hero() {
               lines={[
                 { text: "# Clone and run locally" },
                 { text: `git clone ${GITHUB}`, color: "#67E8F9" },
-                { text: "cd edge_affectlog",   color: "#67E8F9" },
+                { text: "cd t-ai-affectlog",   color: "#67E8F9" },
                 { text: "docker compose up",   color: "#86EFAC" },
                 { text: "make seed && make create-admin", color: "#C4B5FD" },
                 { text: "# Generate 1M-row synthetic dataset", color: "#475569" },

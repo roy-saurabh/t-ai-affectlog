@@ -206,7 +206,7 @@ function FinalCTA() {
           headline="Automate your assessment workflows"
           subline="All platform capabilities are available via documented, versioned OpenAPI endpoints."
           primary={{ label: "Interactive API Docs",  href: "/api/docs" }}
-          secondary={{ label: "API Reference Guide",  href: "https://github.com/roy-saurabh/edge_affectlog/blob/main/docs/api.md" }}
+          secondary={{ label: "API Reference Guide",  href: "https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/docs/api.md" }}
           tertiary={{ label: "Self-host Guide",       to: "/self-host" }}
         />
       </div>

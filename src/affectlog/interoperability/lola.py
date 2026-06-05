@@ -37,7 +37,7 @@ SHARED_METRICS_VOCABULARY: dict[str, str] = {
 
 LOLA_EXCHANGE_SCHEMA: dict[str, Any] = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://github.com/roy-saurabh/edge_affectlog/schemas/lola-exchange-v1.json",
+    "$id": "https://github.com/Prometheus-X-association/t-ai-affectlog/schemas/lola-exchange-v1.json",
     "title": "AffectLog → LOLA Metadata Exchange",
     "description": (
         "Schema for exporting AffectLog dataset evaluation metrics to LOLA "

@@ -1,6 +1,5 @@
 # AffectLog – Trustworthy AI Assessment
 
-[![CI](https://github.com/roy-saurabh/edge_affectlog/actions/workflows/ci.yml/badge.svg)](https://github.com/roy-saurabh/edge_affectlog/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![OpenAPI 3.1](https://img.shields.io/badge/OpenAPI-3.1-green.svg)](docs/openapi.yaml)
@@ -19,7 +18,7 @@ EdTechs, data providers, and auditors who need local or on-premise execution.
 Datasets remain under the control of the deploying institution.
 
 ```bash
-git clone https://github.com/roy-saurabh/edge_affectlog
+git clone https://github.com/Prometheus-X-association/t-ai-affectlog
 docker compose up
 make seed && make create-admin
 # → http://localhost:3000

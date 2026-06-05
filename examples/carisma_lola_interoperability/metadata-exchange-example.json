@@ -1,6 +1,6 @@
 {
   "_comment": "AffectLog metadata exchange example — CARiSMA and LOLA interoperability",
-  "_doc": "https://github.com/roy-saurabh/edge_affectlog/docs/carisma-lola-interoperability.md",
+  "_doc": "https://github.com/Prometheus-X-association/t-ai-affectlog/docs/carisma-lola-interoperability.md",
 
   "carisma_export": {
     "schemaVersion": "1.0",
@@ -35,7 +35,7 @@
     "complianceMappings": {
       "gdprArticlesTriggered": ["Art.5(1)(a)", "Art.5(1)(e)", "Art.25"],
       "aiActAnnexIVRelevant": true,
-      "dataGovernancePolicyRef": "https://github.com/roy-saurabh/edge_affectlog/blob/main/docs/data-governance.md"
+      "dataGovernancePolicyRef": "https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/docs/data-governance.md"
     },
     "carismaAnnotations": {
       "_note": "This section is populated by CARiSMA tooling during design-time risk analysis"

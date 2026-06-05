@@ -4,7 +4,7 @@ type: software
 title: "AffectLog Trustworthy AI Assessment Building Block (ALT-AI)"
 version: 0.1.0
 date-released: 2024-12-20
-repository-code: https://github.com/roy-saurabh/edge_affectlog
+repository-code: https://github.com/Prometheus-X-association/t-ai-affectlog
 license: MIT
 abstract: >
   ALT-AI provides dataset profiling, privacy-preserving pseudonymisation,

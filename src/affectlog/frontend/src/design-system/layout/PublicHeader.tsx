@@ -48,12 +48,12 @@ const NAV_MENUS = [
     label: "Developers",
     key:   "developers",
     items: [
-      { label: "GitHub",            href: "https://github.com/roy-saurabh/edge_affectlog",          icon: Github,      desc: "Source code and issues" },
-      { label: "Contributor Guide", href: "https://github.com/roy-saurabh/edge_affectlog/blob/main/CONTRIBUTING.md",
+      { label: "GitHub",            href: "https://github.com/Prometheus-X-association/t-ai-affectlog",          icon: Github,      desc: "Source code and issues" },
+      { label: "Contributor Guide", href: "https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/CONTRIBUTING.md",
                                                                                                     icon: GitBranch,   desc: "How to add recipes and adapters" },
       { label: "API Reference",     to: "/openapi",                                                 icon: BookOpen,    desc: "OpenAPI spec, endpoint contracts" },
       { label: "Recipes",           to: "/developers",                                              icon: Package,     desc: "Reusable assessment pipeline specs" },
-      { label: "Model Adapters",    href: "https://github.com/roy-saurabh/edge_affectlog/blob/main/CONTRIBUTING.md",
+      { label: "Model Adapters",    href: "https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/CONTRIBUTING.md",
                                                                                                     icon: Wrench,      desc: "Adapter interface for ML frameworks" },
     ],
   },
@@ -320,7 +320,7 @@ export function PublicHeader() {
           {/* CTAs */}
           <div className="flex items-center gap-3 flex-shrink-0">
             <a
-              href="https://github.com/roy-saurabh/edge_affectlog"
+              href="https://github.com/Prometheus-X-association/t-ai-affectlog"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-sm text-[#8391A8] hover:text-[#D8E0EE] transition-colors px-2 py-1.5 rounded-lg hover:bg-white/[0.04]"

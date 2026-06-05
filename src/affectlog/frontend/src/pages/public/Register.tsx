@@ -123,7 +123,7 @@ export default function Register() {
                 className="mt-0.5 flex-shrink-0 accent-indigo-500" />
               <span className="text-sm text-slate-300">
                 I agree to the{" "}
-                <a href="https://github.com/roy-saurabh/edge_affectlog/blob/main/CODE_OF_CONDUCT.md"
+                <a href="https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/CODE_OF_CONDUCT.md"
                   target="_blank" rel="noopener" className="text-indigo-400 hover:underline">Code of Conduct</a>.
               </span>
             </label>
@@ -132,7 +132,7 @@ export default function Register() {
                 className="mt-0.5 flex-shrink-0 accent-indigo-500" />
               <span className="text-sm text-slate-300">
                 I agree to the{" "}
-                <a href="https://github.com/roy-saurabh/edge_affectlog/blob/main/docs/data-governance.md"
+                <a href="https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/docs/data-governance.md"
                   target="_blank" rel="noopener" className="text-indigo-400 hover:underline">Data Governance Policy</a>{" "}
                 and understand that raw personal data must not be uploaded without lawful basis.
               </span>

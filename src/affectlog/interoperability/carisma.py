@@ -21,7 +21,7 @@ CARISMA_SCHEMA_VERSION = "1.0"
 
 CARISMA_EXCHANGE_SCHEMA: dict[str, Any] = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://github.com/roy-saurabh/edge_affectlog/schemas/carisma-exchange-v1.json",
+    "$id": "https://github.com/Prometheus-X-association/t-ai-affectlog/schemas/carisma-exchange-v1.json",
     "title": "AffectLog → CARiSMA Metadata Exchange",
     "description": (
         "Schema for exporting AffectLog operation-time dataset and model audit findings "
@@ -133,7 +133,7 @@ def build_carisma_export(audit_artifacts: dict[str, Any]) -> dict[str, Any]:
         "complianceMappings": {
             "gdprArticlesTriggered": audit_artifacts.get("gdpr_articles", []),
             "aiActAnnexIVRelevant": audit_artifacts.get("ai_act_relevant", False),
-            "dataGovernancePolicyRef": "https://github.com/roy-saurabh/edge_affectlog/docs/data-governance.md",
+            "dataGovernancePolicyRef": "https://github.com/Prometheus-X-association/t-ai-affectlog/docs/data-governance.md",
         },
         "carismaAnnotations": {},
     }

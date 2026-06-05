@@ -19,7 +19,7 @@ function FadeUp({ children, delay = 0, className }: { children: React.ReactNode;
   );
 }
 
-const GITHUB = "https://github.com/roy-saurabh/edge_affectlog";
+const GITHUB = "https://github.com/Prometheus-X-association/t-ai-affectlog";
 
 const ADAPTERS = [
   { label: "scikit-learn estimators",  desc: "Supports feature_importances_, coef_, and SHAP-compatible models.", color: "#67E8F9" },

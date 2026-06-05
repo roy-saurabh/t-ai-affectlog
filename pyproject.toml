@@ -105,10 +105,10 @@ all = [
 affectlog = "affectlog.cli:app"
 
 [project.urls]
-Homepage = "https://github.com/roy-saurabh/edge_affectlog"
+Homepage = "https://github.com/Prometheus-X-association/t-ai-affectlog"
 Documentation = "https://prometheus-x-association.github.io/docs/t-ai/"
-Repository = "https://github.com/roy-saurabh/edge_affectlog"
-Issues = "https://github.com/roy-saurabh/edge_affectlog/issues"
+Repository = "https://github.com/Prometheus-X-association/t-ai-affectlog"
+Issues = "https://github.com/Prometheus-X-association/t-ai-affectlog/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/affectlog"]

@@ -10,7 +10,7 @@ export const DEVELOPERS = {
     subheadline:
       "Contribute recipes, model adapters, metrics, connector bridges, visualizations, docs, tests, and OpenAPI contracts for trustworthy AI assessment.",
     ctas: {
-      primary:   { label: "Contribute on GitHub", href: "https://github.com/roy-saurabh/edge_affectlog" },
+      primary:   { label: "Contribute on GitHub", href: "https://github.com/Prometheus-X-association/t-ai-affectlog" },
       secondary: { label: "Add a Dataset Recipe", to: "/developers" },
       tertiary:  { label: "Add a Model Adapter", to: "/developers" },
     },
@@ -27,7 +27,7 @@ export const DEVELOPERS = {
   ],
   finalCta: {
     headline: "Every contribution makes the ecosystem stronger",
-    primary:   { label: "View on GitHub", href: "https://github.com/roy-saurabh/edge_affectlog" },
-    secondary: { label: "Read Contributor Guide", href: "https://github.com/roy-saurabh/edge_affectlog/blob/main/CONTRIBUTING.md" },
+    primary:   { label: "View on GitHub", href: "https://github.com/Prometheus-X-association/t-ai-affectlog" },
+    secondary: { label: "Read Contributor Guide", href: "https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/CONTRIBUTING.md" },
   },
 } as const;

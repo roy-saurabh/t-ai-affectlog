@@ -23,7 +23,7 @@ function FadeUp({ children, delay = 0, className }: { children: React.ReactNode;
   );
 }
 
-const GITHUB = "https://github.com/roy-saurabh/edge_affectlog";
+const GITHUB = "https://github.com/Prometheus-X-association/t-ai-affectlog";
 
 function Hero() {
   return (

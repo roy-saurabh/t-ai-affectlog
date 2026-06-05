@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ExternalLink, Github, ChevronDown, ArrowRight, Server, Cloud } from "lucide-react";
 import { cn } from "../cn";
 
-const GITHUB = "https://github.com/roy-saurabh/edge_affectlog";
+const GITHUB = "https://github.com/Prometheus-X-association/t-ai-affectlog";
 const DOCS   = `${GITHUB}/blob/main/docs`;
 
 const FOOTER_COLS = [

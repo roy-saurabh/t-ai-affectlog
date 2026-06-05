@@ -211,7 +211,7 @@ function FinalCTA() {
           headline="Generate audit-ready evidence"
           subline="Run an assessment and download structured SOPs, data cards, and JSON-LD compliance graphs."
           primary={{ label: "View Export Catalog",    to: "/login" }}
-          secondary={{ label: "Compliance Mapping",  href: "https://github.com/roy-saurabh/edge_affectlog/blob/main/docs/compliance-mapping.md" }}
+          secondary={{ label: "Compliance Mapping",  href: "https://github.com/Prometheus-X-association/t-ai-affectlog/blob/main/docs/compliance-mapping.md" }}
           tertiary={{ label: "Request Access",        to: "/request-access" }}
         />
       </div>

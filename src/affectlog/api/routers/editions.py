@@ -98,7 +98,7 @@ async def editions_info() -> dict[str, Any]:
             "enterprise_sso": defaults.get(Feature.ENTERPRISE_SSO, False),
         },
         "links": {
-            "community_edition": "https://github.com/roy-saurabh/edge_affectlog",
+            "community_edition": "https://github.com/Prometheus-X-association/t-ai-affectlog",
             "managed_edition": "/cloud",
             "request_access": "/request-access",
             "prometheus_x": "https://prometheus-x.org/bb04-trustworthy-ai-assessment/",
@@ -125,7 +125,7 @@ async def cloud_info() -> dict[str, Any]:
             "Optional private tenant deployment",
         ],
         "contact": "/request-access",
-        "open_source_core": "https://github.com/roy-saurabh/edge_affectlog",
+        "open_source_core": "https://github.com/Prometheus-X-association/t-ai-affectlog",
     }
 
 
