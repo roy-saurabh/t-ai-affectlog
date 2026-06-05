@@ -1,6 +1,8 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { authApi, MeResponse, UserOut } from "../api/auth";
 
+const SESSION_HINT_KEY = "affectlog_has_session";
+
 interface AuthState {
   user: UserOut | null;
   workspaces: string[];
@@ -27,9 +29,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const me: MeResponse = await authApi.me();
       setUser(me.user);
       setWorkspaces(me.workspaces);
+      localStorage.setItem(SESSION_HINT_KEY, "1");
     } catch {
       setUser(null);
       setWorkspaces([]);
+      localStorage.removeItem(SESSION_HINT_KEY);
     } finally {
       setLoading(false);
     }
@@ -39,10 +43,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await authApi.logout().catch(() => {});
     setUser(null);
     setWorkspaces([]);
+    localStorage.removeItem(SESSION_HINT_KEY);
     window.location.href = "/login";
   }, []);
 
-  useEffect(() => { refresh(); }, [refresh]);
+  // Only probe the server if a prior session was established — avoids a
+  // guaranteed 401 console error on every fresh / logged-out page load.
+  useEffect(() => {
+    if (localStorage.getItem(SESSION_HINT_KEY)) {
+      refresh();
+    } else {
+      setLoading(false);
+    }
+  }, [refresh]);
 
   return (
     <AuthContext.Provider value={{ user, workspaces, loading, refresh, logout }}>
