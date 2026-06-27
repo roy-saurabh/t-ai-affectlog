@@ -1,0 +1,50 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SonarCloud — CI-based code analysis.
+#
+# AffectLog – Trustworthy AI Assessment · Prometheus-X BB04 / EDGE-Skills.
+#
+# CI-based analysis is used (rather than SonarCloud Automatic Analysis) so that
+# the settings in sonar-project.properties — notably sonar.python.version, which
+# eliminates false-positive CRITICAL weak-TLS findings — are actually applied.
+#
+# SCOPE GUARD: this job runs ONLY on the dedicated scan mirror
+# (roy-saurabh/edge_affectlog). On the upstream Prometheus-X consortium repo the
+# job is skipped, so this file is inert there (no token, no project, no run).
+#
+# PREREQUISITES on the scan repo:
+#   1. Repository secret SONAR_TOKEN (generated at sonarcloud.io → My Account →
+#      Security). 2. SonarCloud Automatic Analysis DISABLED for the project
+#      (Administration → Analysis Method), otherwise CI analysis is rejected.
+#
+# SECURITY: the third-party action is pinned to a full commit SHA.
+# ─────────────────────────────────────────────────────────────────────────────
+name: SonarCloud
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sonarcloud:
+    name: SonarCloud scan
+    if: github.repository == 'roy-saurabh/edge_affectlog'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          # Full history lets SonarCloud attribute "new code" via SCM blame.
+          fetch-depth: 0
+
+      - name: SonarCloud scan
+        uses: SonarSource/sonarqube-scan-action@713881670b6b3676cda39549040e2d88c70d582e # v8.2.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
