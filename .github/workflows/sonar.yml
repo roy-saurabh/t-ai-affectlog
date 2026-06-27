@@ -43,6 +43,22 @@ jobs:
           # Full history lets SonarCloud attribute "new code" via SCM blame.
           fetch-depth: 0
 
+      - name: Set up Python
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install project (with dev extras)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run tests with coverage
+        # Produces coverage.xml consumed by SonarCloud (sonar-project.properties).
+        run: pytest -m "not slow" --cov=src/affectlog --cov-report=xml
+
       - name: SonarCloud scan
         uses: SonarSource/sonarqube-scan-action@713881670b6b3676cda39549040e2d88c70d582e # v8.2.0
         env:
