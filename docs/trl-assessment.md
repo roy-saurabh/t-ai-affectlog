@@ -52,21 +52,29 @@ TRL 5 is evidenced by the full-stack implementation operating on real partner da
 | HMAC-SHA256 pseudonymisation applied to production identifiers | `src/affectlog/privacy/` |
 | Compliance exports (JSON-LD, Data Card, Model Card, SOP, GDPR, EU AI Act) generated from real runs | `src/affectlog/compliance/` |
 | 1 M-row synthetic throughput benchmark (Polars lazy scanning, no OOM) | `tests/performance/test_synthetic_million_rows.py` |
-| CI/CD pipeline (lint, typecheck, unit, integration, security) | `.github/workflows/ci.yml` |
-| OpenAPI 3.1 contract tested in CI | `.github/workflows/ci.yml` → `openapi-validate` job |
-| Mock and real Prometheus-X PDC connector | `src/affectlog/pdc/` |
+| CI/CD pipeline (lint, format, unit, integration, security) | `.github/workflows/deploy.yml` |
+| OpenAPI 3.1 contract tested in CI | `tests/integration/test_api_openapi_contract.py` (validates the spec against a live server) |
+| Prometheus-X PDC connector — mock server + client (specified; live activation by config) | `src/affectlog/pdc/` |
 
 ---
 
 ## 3. TRL 5 → TRL 6 Gap
 
-TRL 6 (system/subsystem prototype in operational environment) requires:
+**The gap is environmental, not functional.** No interface change is required:
+the API, data model and message schemas are stable, and the remaining work is
+*activation* of already-specified connectors against a live source —
+configuration, not a schema change. TRL 6 (system/subsystem prototype in
+operational environment) requires:
 
 1. Deployment on project-partner infrastructure (Maskott or Inokufu production systems) with real-time ingestion.
-2. End-to-end integration with the Prometheus-X PDC in a live data-space transaction (ODRL policy enforcement, not just mock).
-3. Demonstrated SLA: audit pipeline completes within defined latency bounds on partner hardware.
+2. Activation of the specified Prometheus-X PDC connector in a live data-space transaction (ODRL policy enforcement, not just the mock server).
+3. Activation of xAPI LRS ingestion against a live statement feed.
+4. Demonstrated SLA: audit pipeline completes within defined latency bounds on partner hardware.
 
-These items are out of scope for D3.7 and planned for subsequent project phases.
+These items are out of scope for D3.7 and depend on a live use case (data source
+or model) being made available under a lawful data-sharing / PDC arrangement —
+i.e. on master-product / consortium use-case maturity, not on additional
+AffectLog component development.
 
 ---
 

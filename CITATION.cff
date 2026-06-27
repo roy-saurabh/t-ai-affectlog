@@ -13,7 +13,7 @@ abstract: >
   Developed as D3.7 of the EDGE-Skills / Prometheus-X project.
 authors:
   - name: "AffectLog Team"
-    affiliation: "AffectLog"
+    affiliation: "AffectLog SAS"
   - name: "Prometheus-X EDGE-Skills Consortium"
 keywords:
   - trustworthy-ai

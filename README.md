@@ -7,6 +7,12 @@
 **Open-source and managed Trustworthy AI assessment for education and skills data spaces.**  
 Part of the [Prometheus-X Trustworthy AI Assessment ecosystem (BB04)](https://prometheus-x.org/bb04-trustworthy-ai-assessment/).
 
+> **Status:** Delivered and validated at **TRL 5** per D3.7 against the available
+> partner datasets (Maskott/Tactileo, Inokufu/Becomino), with a stable OpenAPI 3.1
+> contract. The remaining step to TRL 6 is operation on a live partner data source
+> — an environmental dependency on use-case availability, not further component
+> development. See [ROADMAP.md](ROADMAP.md) and [docs/trl-assessment.md](docs/trl-assessment.md).
+
 ---
 
 ## Two ways to run AffectLog
@@ -30,7 +36,7 @@ The same open-source platform hosted and operated by AffectLog.
 Provides tenant provisioning, managed backups, monitoring, support,
 managed email, usage metering, and optional enterprise services.
 
-→ [Request managed access](https://affectlog.ai/request-access)
+→ [Request managed access](https://trustworthyai.affectlog.com/request-access)
 
 ---
 
@@ -56,7 +62,7 @@ ALT-AI (AffectLog Trustworthy AI) implements D3.7 of the EDGE-Skills Prometheus-
 - **Compliance exports**: JSON-LD graph, Data Card (Gebru 2018), Model Card (Mitchell 2019), GDPR field inventory, EU AI Act Annex IV, SOP markdown
 - **Scalable processing**: 1M+ rows via Polars lazy scanning, never loads full dataset into memory
 - **Model explainability**: SHAP, permutation importance, multi-model comparison
-- **PDC interoperability**: Mock and real Prometheus-X connector integration
+- **PDC interoperability**: Prometheus-X connector specified against the OpenAPI 3.1 contract (mock server + client); live data-space activation is configuration pending a use case
 
 ---
 
