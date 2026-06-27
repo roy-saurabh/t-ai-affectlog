@@ -1,0 +1,189 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# CI/CD Pipeline — lint, test, build, publish and deploy AffectLog.
+#
+# AffectLog – Trustworthy AI Assessment · Prometheus-X BB04 / EDGE-Skills.
+#
+# Pipeline stages:
+#   backend   — Ruff lint/format gate + pytest (hard gates); Bandit, pip-audit
+#               and mypy run as advisory checks (non-blocking until the baseline
+#               is clean — promote to blocking by removing continue-on-error).
+#   frontend  — install, lint, type-check and production build of the Vite app.
+#   images    — on main / tags only: publish container images to GHCR by
+#               invoking the reusable Container Images workflow (docker.yml).
+#   deploy    — on version tags only: roll the published images out to the
+#               production host over SSH, gated by a protected environment.
+#
+# SECURITY: every third-party action is pinned to a full commit SHA (not a
+# floating tag) to prevent supply-chain tampering, per GitHub hardening guidance
+# and SonarQube rule "Use full commit SHA hash for this dependency". The trailing
+# comment records the human-readable version the SHA corresponds to.
+# ─────────────────────────────────────────────────────────────────────────────
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Default to read-only; individual jobs widen the token only where required.
+permissions:
+  contents: read
+
+# Supersede superseded runs for the same ref to save CI minutes; never cancel a
+# tag build, which may already be publishing release artifacts.
+concurrency:
+  group: cicd-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+jobs:
+  # ── Backend: lint, security scan and tests ───────────────────────────────
+  backend:
+    name: Backend lint & tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Python
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install project (with dev extras)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Ruff lint
+        run: ruff check .
+
+      - name: Ruff format check
+        run: ruff format --check .
+
+      - name: Static type check (advisory)
+        run: mypy src
+        continue-on-error: true
+
+      - name: Security scan — Bandit (advisory)
+        run: bandit -c pyproject.toml -r src
+        continue-on-error: true
+
+      - name: Dependency audit — pip-audit (advisory)
+        run: pip-audit
+        continue-on-error: true
+
+      - name: Run tests
+        # The suite provisions its own in-memory SQLite schema per test, so no
+        # external database service is required here.
+        run: pytest
+
+  # ── Frontend: lint, type-check and production build ──────────────────────
+  frontend:
+    name: Frontend build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: src/affectlog/frontend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: src/affectlog/frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (advisory)
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Type-check (advisory)
+        run: npm run typecheck
+        continue-on-error: true
+
+      - name: Production build
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: frontend-dist
+          path: src/affectlog/frontend/dist
+          retention-days: 7
+          if-no-files-found: error
+
+  # ── Publish container images (main branch and version tags only) ─────────
+  images:
+    name: Publish images
+    needs: [backend, frontend]
+    if: >-
+      github.event_name == 'push' &&
+      (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/docker.yml
+    secrets: inherit
+
+  # ── Deploy to production (version tags only) ─────────────────────────────
+  deploy:
+    name: Deploy (production)
+    needs: [images]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Bind to a protected GitHub Environment so required reviewers / wait timers
+    # and the deployment secrets below are enforced before anything ships.
+    environment:
+      name: production
+      url: ${{ vars.PRODUCTION_URL }}
+    steps:
+      - name: Check deployment configuration
+        id: cfg
+        # Skip gracefully (rather than fail) on forks/clones where the SSH
+        # deployment secrets have not been configured.
+        run: |
+          if [ -z "${{ secrets.DEPLOY_SSH_HOST }}" ]; then
+            echo "::notice::Deployment secrets are not configured — skipping deploy."
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy released images over SSH
+        if: steps.cfg.outputs.configured == 'true'
+        # Required repository/environment secrets:
+        #   DEPLOY_SSH_HOST      — production host name or IP
+        #   DEPLOY_SSH_USER      — SSH user with permission to run Docker Compose
+        #   DEPLOY_SSH_KEY       — private key (PEM) for that user
+        #   DEPLOY_KNOWN_HOSTS   — pinned host key(s) from `ssh-keyscan <host>`
+        #   DEPLOY_PATH          — directory on the host holding docker-compose.yml
+        env:
+          DEPLOY_SSH_HOST: ${{ secrets.DEPLOY_SSH_HOST }}
+          DEPLOY_SSH_USER: ${{ secrets.DEPLOY_SSH_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          # Pin the host key (no blind TOFU) and load the deploy key.
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          install -m 600 /dev/stdin ~/.ssh/deploy_key <<< "$DEPLOY_SSH_KEY"
+          # Pull the freshly published images and restart the stack.
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+            "$DEPLOY_SSH_USER@$DEPLOY_SSH_HOST" \
+            "cd '$DEPLOY_PATH' && docker compose pull && docker compose up -d --remove-orphans && docker image prune -f"
