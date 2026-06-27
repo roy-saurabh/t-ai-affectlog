@@ -1,7 +1,11 @@
 FROM node:20-alpine AS build
 WORKDIR /app
-COPY package.json ./
-RUN npm install
+# Copy the lockfile so installs use locked, resolved versions (reproducible,
+# tamper-resistant). --ignore-scripts blocks dependency lifecycle scripts from
+# executing during install (supply-chain hardening); the build runs explicitly
+# via `npm run build` below.
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
 COPY . .
 RUN npm run build
 
