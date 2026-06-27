@@ -15,7 +15,7 @@ PII_FIELD_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"(phone|mobile|^tel$)", re.I),
     re.compile(r"(address|postcode|zipcode|^city$|^country$)", re.I),
     re.compile(r"(ip[-_]?address|ipv4|ipv6)", re.I),
-    re.compile(r"(user[-_]?id|userid|entity[-_]?id|learner[-_]?id|student[-_]?id)", re.I),
+    re.compile(r"(user[-_]?id|entity[-_]?id|learner[-_]?id|student[-_]?id)", re.I),
     re.compile(r"(session[-_]?id|activity[-_]?session)", re.I),
     re.compile(r"(uai[-_]?code|institution[-_]?code|school[-_]?code)", re.I),
     re.compile(r"(^token$|^secret$|password|passwd|credential)", re.I),

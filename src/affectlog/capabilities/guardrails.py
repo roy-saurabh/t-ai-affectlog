@@ -68,7 +68,6 @@ def check_regression_requires_numeric(
     if "regression_performance" not in analyses and "model_residual_diagnostics" not in analyses:
         return None
     target = field_mappings.get("target_field")
-    field_mappings.get("prediction_field")
     if target and field_types.get(target) not in ("float", "int", "numeric", None):
         return GuardrailResult(
             rule_id="regression_requires_numeric_target",

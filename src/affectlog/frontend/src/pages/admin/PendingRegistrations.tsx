@@ -30,7 +30,18 @@ function RegistrationRow({ reg, onAction }: { reg: PendingRegistration; onAction
 
   return (
     <div className="bg-slate-800/40 border border-slate-700 rounded-xl overflow-hidden mb-3">
-      <div className="flex items-center justify-between p-4 cursor-pointer" onClick={() => setExpanded((x) => !x)}>
+      <div
+        className="flex items-center justify-between p-4 cursor-pointer"
+        role="button"
+        tabIndex={0}
+        onClick={() => setExpanded((x) => !x)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setExpanded((x) => !x);
+          }
+        }}
+      >
         <div className="flex-1 min-w-0">
           <p className="font-medium text-white text-sm">{reg.full_name}</p>
           <p className="text-slate-400 text-xs">{reg.email} · {reg.organization ?? "—"}</p>

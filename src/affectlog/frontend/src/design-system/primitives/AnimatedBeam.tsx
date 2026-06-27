@@ -33,7 +33,7 @@ export function AnimatedBeam({
       y2={to.y}
       stroke={color}
       strokeWidth={width}
-      strokeDasharray={dashed ? `${len}` : `${len}`}
+      strokeDasharray={dashed ? `6 6` : `${len}`}
       strokeDashoffset={len}
       strokeOpacity="0.7"
       strokeLinecap="round"
