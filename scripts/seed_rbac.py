@@ -25,12 +25,17 @@ from affectlog.db.models import Permission, Role, RolePermission, Workspace
 from affectlog.db.session import AsyncSessionLocal, engine
 
 
-async def seed(db: AsyncSession) -> None:
-    # ── Ensure tables exist ─────────────────────────────────────────────
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+DEFAULT_WORKSPACES = [
+    ("default", "Default Workspace", False),
+    ("demo", "Demo Workspace", False),
+    ("maskott-tactileo", "Maskott / Tactileo", False),
+    ("inokufu-becomino", "Inokufu / Becomino", False),
+    ("public-samples", "Public Samples", True),
+]
 
-    # ── Permissions ─────────────────────────────────────────────────────
+
+async def _seed_permissions(db: AsyncSession) -> dict[str, Permission]:
+    """Upsert all known permissions and return a name → Permission map."""
     perm_map: dict[str, Permission] = {}
     for name, description in ALL_PERMISSIONS:
         result = await db.execute(select(Permission).where(Permission.name == name))
@@ -41,45 +46,56 @@ async def seed(db: AsyncSession) -> None:
             await db.flush()
             print(f"  + permission: {name}")
         perm_map[name] = perm
+    return perm_map
 
-    # ── Roles ────────────────────────────────────────────────────────────
+
+async def _get_or_create_role(db: AsyncSession, role_name: str) -> Role:
+    result = await db.execute(select(Role).where(Role.name == role_name))
+    role = result.scalar_one_or_none()
+    if role is None:
+        role = Role(name=role_name, is_system=True)
+        db.add(role)
+        await db.flush()
+        print(f"  + role: {role_name}")
+    return role
+
+
+async def _link_role_permission(db: AsyncSession, role: Role, perm: Permission) -> None:
+    exists = await db.execute(
+        select(RolePermission).where(
+            RolePermission.role_id == role.id,
+            RolePermission.permission_id == perm.id,
+        )
+    )
+    if exists.scalar_one_or_none() is None:
+        db.add(RolePermission(role_id=role.id, permission_id=perm.id))
+
+
+async def _seed_roles(db: AsyncSession, perm_map: dict[str, Permission]) -> None:
     for role_name, perm_names in ROLE_DEFAULTS.items():
-        result = await db.execute(select(Role).where(Role.name == role_name))
-        role = result.scalar_one_or_none()
-        if role is None:
-            role = Role(name=role_name, is_system=True)
-            db.add(role)
-            await db.flush()
-            print(f"  + role: {role_name}")
-
-        # Sync permissions for role
+        role = await _get_or_create_role(db, role_name)
         for pname in perm_names:
-            if pname not in perm_map:
-                continue
-            perm = perm_map[pname]
-            exists = await db.execute(
-                select(RolePermission).where(
-                    RolePermission.role_id == role.id,
-                    RolePermission.permission_id == perm.id,
-                )
-            )
-            if exists.scalar_one_or_none() is None:
-                db.add(RolePermission(role_id=role.id, permission_id=perm.id))
+            perm = perm_map.get(pname)
+            if perm is not None:
+                await _link_role_permission(db, role, perm)
 
-    # ── Workspaces ───────────────────────────────────────────────────────
-    default_workspaces = [
-        ("default", "Default Workspace", False),
-        ("demo", "Demo Workspace", False),
-        ("maskott-tactileo", "Maskott / Tactileo", False),
-        ("inokufu-becomino", "Inokufu / Becomino", False),
-        ("public-samples", "Public Samples", True),
-    ]
-    for slug, name, is_public in default_workspaces:
+
+async def _seed_workspaces(db: AsyncSession) -> None:
+    for slug, name, is_public in DEFAULT_WORKSPACES:
         result = await db.execute(select(Workspace).where(Workspace.slug == slug))
-        ws = result.scalar_one_or_none()
-        if ws is None:
+        if result.scalar_one_or_none() is None:
             db.add(Workspace(slug=slug, name=name, is_public_samples=is_public))
             print(f"  + workspace: {slug}")
+
+
+async def seed(db: AsyncSession) -> None:
+    # ── Ensure tables exist ─────────────────────────────────────────────
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+    perm_map = await _seed_permissions(db)
+    await _seed_roles(db, perm_map)
+    await _seed_workspaces(db)
 
     await db.commit()
     print("RBAC seed complete.")

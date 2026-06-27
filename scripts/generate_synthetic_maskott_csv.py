@@ -29,8 +29,29 @@ def _random_base64_id(rng: random.Random) -> str:
     return base64.b64encode(raw).decode("ascii")
 
 
+def _resolve_safe_output_path(output_path: Path | str, allowed_base: Path | None = None) -> Path:
+    """Resolve ``output_path`` and ensure it stays within ``allowed_base``.
+
+    The output path comes from a CLI argument, so an attacker (or an LLM/agent
+    invoking this script with faulty arguments) could supply a traversal payload
+    such as ``--output ../../etc/passwd`` to write outside the intended tree.
+    We canonicalize the path and reject anything that escapes the allowed base.
+    """
+    base = (allowed_base or Path.cwd()).resolve()
+    candidate = Path(output_path)
+    if not candidate.is_absolute():
+        candidate = base / candidate
+    resolved = candidate.resolve()
+    if resolved != base and base not in resolved.parents:
+        raise ValueError(
+            f"Refusing to write outside the allowed base directory: "
+            f"{resolved} is not under {base}"
+        )
+    return resolved
+
+
 def generate_csv(output_path: Path | str, n_rows: int = 1_000_000, seed: int = 42) -> None:
-    output_path = Path(output_path)
+    output_path = _resolve_safe_output_path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     rng = random.Random(seed)
@@ -59,7 +80,7 @@ def generate_csv(output_path: Path | str, n_rows: int = 1_000_000, seed: int = 4
     chunk_size = 50_000
     written = 0
 
-    with Path(output_path).open("w", newline="", encoding="utf-8") as f:
+    with output_path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(HEADERS)
 

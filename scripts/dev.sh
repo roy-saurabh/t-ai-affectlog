@@ -14,7 +14,7 @@ echo -e "${BLUE}▶ ALT-AI local development${RESET}"
 echo -e "  Root: $ROOT"
 
 # ── .env setup ────────────────────────────────────────────────────────
-if [ ! -f "$ENV_FILE" ]; then
+if [[ ! -f "$ENV_FILE" ]]; then
   echo -e "${YELLOW}⚠  .env not found — copying from .env.example${RESET}"
   cp "$ROOT/.env.example" "$ENV_FILE"
   echo -e "${YELLOW}   Edit $ENV_FILE to set AFFECTLOG_HASH_SECRET${RESET}"
@@ -27,7 +27,7 @@ if ! python3 -c "import affectlog" &>/dev/null; then
 fi
 
 # ── Node install check ────────────────────────────────────────────────
-if [ ! -d "$FRONTEND_DIR/node_modules" ]; then
+if [[ ! -d "$FRONTEND_DIR/node_modules" ]]; then
   echo -e "${YELLOW}⚠  node_modules missing — running: npm install${RESET}"
   cd "$FRONTEND_DIR" && npm install --silent
 fi
