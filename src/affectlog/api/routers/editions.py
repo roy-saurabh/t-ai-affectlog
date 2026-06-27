@@ -136,9 +136,7 @@ async def cloud_info() -> dict[str, Any]:
         status.HTTP_400_BAD_REQUEST: {"description": "Validation or reCAPTCHA failure."},
         status.HTTP_422_UNPROCESSABLE_ENTITY: {"description": "Consent is required."},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"description": "Failed to save request."},
-        status.HTTP_503_SERVICE_UNAVAILABLE: {
-            "description": "reCAPTCHA verification unavailable."
-        },
+        status.HTTP_503_SERVICE_UNAVAILABLE: {"description": "reCAPTCHA verification unavailable."},
     },
 )
 async def request_managed_access(

@@ -113,9 +113,7 @@ async def approve(
     return response
 
 
-@router.post(
-    "/pending-registrations/{reg_id}/reject", status_code=200, responses=_RESP_404_REG
-)
+@router.post("/pending-registrations/{reg_id}/reject", status_code=200, responses=_RESP_404_REG)
 async def reject(
     reg_id: UUID,
     body: RejectRegistrationRequest,

@@ -78,8 +78,13 @@ async def create_admin(email: str, full_name: str, password: str) -> None:
 
 async def main() -> None:
     # input() blocks the event loop; offload to a worker thread in this async context.
-    email = os.environ.get("ADMIN_EMAIL") or (await asyncio.to_thread(input, "Admin email: ")).strip()
-    full_name = os.environ.get("ADMIN_NAME") or (await asyncio.to_thread(input, "Admin full name: ")).strip()
+    email = (
+        os.environ.get("ADMIN_EMAIL") or (await asyncio.to_thread(input, "Admin email: ")).strip()
+    )
+    full_name = (
+        os.environ.get("ADMIN_NAME")
+        or (await asyncio.to_thread(input, "Admin full name: ")).strip()
+    )
 
     if not email or not full_name:
         print("Email and full name are required.")

@@ -44,8 +44,7 @@ def _resolve_safe_output_path(output_path: Path | str, allowed_base: Path | None
     resolved = candidate.resolve()
     if resolved != base and base not in resolved.parents:
         raise ValueError(
-            f"Refusing to write outside the allowed base directory: "
-            f"{resolved} is not under {base}"
+            f"Refusing to write outside the allowed base directory: {resolved} is not under {base}"
         )
     return resolved
 

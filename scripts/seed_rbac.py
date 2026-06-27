@@ -24,7 +24,6 @@ from affectlog.db.base import Base
 from affectlog.db.models import Permission, Role, RolePermission, Workspace
 from affectlog.db.session import AsyncSessionLocal, engine
 
-
 DEFAULT_WORKSPACES = [
     ("default", "Default Workspace", False),
     ("demo", "Demo Workspace", False),
