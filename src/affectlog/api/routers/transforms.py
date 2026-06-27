@@ -9,7 +9,11 @@ from fastapi import APIRouter, HTTPException
 router = APIRouter(prefix="/v1/transforms", tags=["Transforms"])
 
 
-@router.post("/infer-template", summary="Infer Becomino xAPI template from a JSON sample")
+@router.post(
+    "/infer-template",
+    summary="Infer Becomino xAPI template from a JSON sample",
+    responses={400: {"description": "Failed to infer template from the JSON sample"}},
+)
 async def infer_template(sample_path: str) -> dict[str, Any]:
     from pathlib import Path
 

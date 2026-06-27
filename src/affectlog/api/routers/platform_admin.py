@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import logging
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -27,6 +27,10 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/platform", tags=["platform-admin"])
 
 _require_superadmin = require_permission(P.SYSTEM_READ)
+
+_TENANT_NOT_FOUND = "Tenant not found."
+_RESP_404_TENANT = {status.HTTP_404_NOT_FOUND: {"description": _TENANT_NOT_FOUND}}
+_RESP_409_SLUG = {status.HTTP_409_CONFLICT: {"description": "Tenant slug already exists."}}
 
 # ── Schemas ─────────────────────────────────────────────────────────────────
 
@@ -104,6 +108,7 @@ async def list_tenants(
     response_model=TenantOut,
     status_code=status.HTTP_201_CREATED,
     dependencies=[requires_feature(Feature.MULTI_TENANT)],
+    responses=_RESP_409_SLUG,
 )
 async def create_tenant(
     body: TenantCreate,
@@ -143,6 +148,7 @@ async def create_tenant(
     "/tenants/{tenant_id}",
     response_model=TenantOut,
     dependencies=[requires_feature(Feature.MULTI_TENANT)],
+    responses=_RESP_404_TENANT,
 )
 async def get_tenant(
     tenant_id: uuid.UUID,
@@ -154,7 +160,7 @@ async def get_tenant(
     result = await db.execute(select(Tenant).where(Tenant.id == tenant_id))
     tenant = result.scalar_one_or_none()
     if not tenant:
-        raise HTTPException(status_code=404, detail="Tenant not found.")
+        raise HTTPException(status_code=404, detail=_TENANT_NOT_FOUND)
     return tenant
 
 
@@ -162,6 +168,7 @@ async def get_tenant(
     "/tenants/{tenant_id}",
     response_model=TenantOut,
     dependencies=[requires_feature(Feature.MULTI_TENANT)],
+    responses=_RESP_404_TENANT,
 )
 async def update_tenant(
     tenant_id: uuid.UUID,
@@ -174,7 +181,7 @@ async def update_tenant(
     result = await db.execute(select(Tenant).where(Tenant.id == tenant_id))
     tenant = result.scalar_one_or_none()
     if not tenant:
-        raise HTTPException(status_code=404, detail="Tenant not found.")
+        raise HTTPException(status_code=404, detail=_TENANT_NOT_FOUND)
     if body.name is not None:
         tenant.name = body.name
     if body.description is not None:
@@ -189,6 +196,7 @@ async def update_tenant(
     "/tenants/{tenant_id}/suspend",
     status_code=200,
     dependencies=[requires_feature(Feature.MULTI_TENANT)],
+    responses=_RESP_404_TENANT,
 )
 async def suspend_tenant(
     tenant_id: uuid.UUID,
@@ -201,10 +209,10 @@ async def suspend_tenant(
     result = await db.execute(select(Tenant).where(Tenant.id == tenant_id))
     tenant = result.scalar_one_or_none()
     if not tenant:
-        raise HTTPException(status_code=404, detail="Tenant not found.")
+        raise HTTPException(status_code=404, detail=_TENANT_NOT_FOUND)
     tenant.is_active = False
     tenant.status = "suspended"
-    tenant.suspended_at = datetime.utcnow()
+    tenant.suspended_at = datetime.now(UTC)
     tenant.suspended_reason = body.reason
     await db.flush()
     return {"status": "suspended"}
@@ -214,6 +222,7 @@ async def suspend_tenant(
     "/tenants/{tenant_id}/activate",
     status_code=200,
     dependencies=[requires_feature(Feature.MULTI_TENANT)],
+    responses=_RESP_404_TENANT,
 )
 async def activate_tenant(
     tenant_id: uuid.UUID,
@@ -225,7 +234,7 @@ async def activate_tenant(
     result = await db.execute(select(Tenant).where(Tenant.id == tenant_id))
     tenant = result.scalar_one_or_none()
     if not tenant:
-        raise HTTPException(status_code=404, detail="Tenant not found.")
+        raise HTTPException(status_code=404, detail=_TENANT_NOT_FOUND)
     tenant.is_active = True
     tenant.status = "active"
     tenant.suspended_at = None
@@ -277,7 +286,7 @@ async def set_tenant_feature_flag(
     if flag:
         flag.enabled = body.enabled
         flag.set_by = actor.email
-        flag.set_at = datetime.utcnow()
+        flag.set_at = datetime.now(UTC)
     else:
         flag = TenantFeatureFlag(
             tenant_id=tenant_id,
@@ -304,7 +313,7 @@ async def platform_usage(
 ) -> dict[str, Any]:
     from affectlog.tenancy.models import UsageRecord
 
-    period_filter = period or datetime.utcnow().strftime("%Y-%m")
+    period_filter = period or datetime.now(UTC).strftime("%Y-%m")
     result = await db.execute(select(UsageRecord).where(UsageRecord.period_month == period_filter))
     records = result.scalars().all()
     return {

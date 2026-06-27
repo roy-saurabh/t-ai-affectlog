@@ -129,7 +129,18 @@ async def cloud_info() -> dict[str, Any]:
     }
 
 
-@router.post("/request-managed-access", status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/request-managed-access",
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        status.HTTP_400_BAD_REQUEST: {"description": "Validation or reCAPTCHA failure."},
+        status.HTTP_422_UNPROCESSABLE_ENTITY: {"description": "Consent is required."},
+        status.HTTP_500_INTERNAL_SERVER_ERROR: {"description": "Failed to save request."},
+        status.HTTP_503_SERVICE_UNAVAILABLE: {
+            "description": "reCAPTCHA verification unavailable."
+        },
+    },
+)
 async def request_managed_access(
     body: ManagedAccessRequestIn,
     request: Request,
@@ -173,7 +184,7 @@ async def request_managed_access(
             "message": "Your request has been received. Our team will contact you within 2 business days.",
         }
     except Exception as exc:
-        logger.error("Failed to save access request: %s", exc)
+        logger.exception("Failed to save access request")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to save request. Please try again.",

@@ -45,7 +45,11 @@ async def public_config() -> dict[str, Any]:
     }
 
 
-@router.post("/register", status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/register",
+    status_code=status.HTTP_201_CREATED,
+    responses={403: {"description": "Public registration is currently closed."}},
+)
 async def register(
     body: RegisterRequest,
     request: Request,
@@ -112,7 +116,10 @@ async def password_reset_request(
     return {"status": "ok", "message": "If that email exists, a password reset link has been sent."}
 
 
-@router.post("/password-reset/confirm")
+@router.post(
+    "/password-reset/confirm",
+    responses={400: {"description": "Invalid or expired reset token."}},
+)
 async def password_reset_confirm(
     body: PasswordResetConfirmIn,
     db: AsyncSession = Depends(get_db),

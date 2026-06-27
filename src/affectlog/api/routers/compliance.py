@@ -27,7 +27,11 @@ async def build_jsonld(req: ComplianceJSONLDRequest) -> dict[str, Any]:
     return graph
 
 
-@router.post("/data-card", summary="Build Data Card for a run")
+@router.post(
+    "/data-card",
+    summary="Build Data Card for a run",
+    responses={400: {"description": "Invalid run identifier or unsafe run path"}},
+)
 async def build_data_card_endpoint(req: DataCardRequest) -> dict[str, Any]:
     try:
         validate_run_id(req.run_id)
@@ -46,7 +50,11 @@ async def build_data_card_endpoint(req: DataCardRequest) -> dict[str, Any]:
     return build_data_card(req.dataset_name, [], 0, run_id=req.run_id)
 
 
-@router.post("/model-card", summary="Build Model Card for a registered model")
+@router.post(
+    "/model-card",
+    summary="Build Model Card for a registered model",
+    responses={404: {"description": "Model not found in registry"}},
+)
 async def build_model_card_endpoint(model_id: str, run_id: str) -> dict[str, Any]:
     from affectlog.compliance.model_card import build_model_card
     from affectlog.models.registry import get_registry

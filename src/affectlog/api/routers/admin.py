@@ -53,6 +53,15 @@ _require_user_manage = require_permission(P.USERS_UPDATE)
 _require_audit_logs = require_permission(P.AUDIT_LOGS_READ)
 _require_system = require_permission(P.SYSTEM_READ)
 
+_USER_NOT_FOUND = "User not found."
+_REGISTRATION_NOT_FOUND = "Not found."
+_RESP_404_USER = {404: {"description": _USER_NOT_FOUND}}
+_RESP_404_REG = {404: {"description": _REGISTRATION_NOT_FOUND}}
+_RESP_404_403_USER = {
+    404: {"description": _USER_NOT_FOUND},
+    403: {"description": "Cannot disable superadmin."},
+}
+
 
 # ── Pending Registrations ────────────────────────────────────────────────
 
@@ -104,7 +113,9 @@ async def approve(
     return response
 
 
-@router.post("/pending-registrations/{reg_id}/reject", status_code=200)
+@router.post(
+    "/pending-registrations/{reg_id}/reject", status_code=200, responses=_RESP_404_REG
+)
 async def reject(
     reg_id: UUID,
     body: RejectRegistrationRequest,
@@ -116,7 +127,7 @@ async def reject(
     )
     reg = reg_result.scalar_one_or_none()
     if reg is None:
-        raise HTTPException(status_code=404, detail="Not found.")
+        raise HTTPException(status_code=404, detail=_REGISTRATION_NOT_FOUND)
 
     await reject_registration(
         db, registration_id=reg_id, approver=actor, admin_notes=body.admin_notes
@@ -125,7 +136,9 @@ async def reject(
     return {"status": "rejected"}
 
 
-@router.post("/pending-registrations/{reg_id}/request-info", status_code=200)
+@router.post(
+    "/pending-registrations/{reg_id}/request-info", status_code=200, responses=_RESP_404_REG
+)
 async def request_more_info(
     reg_id: UUID,
     body: RequestMoreInfoRequest,
@@ -137,7 +150,7 @@ async def request_more_info(
     )
     reg = reg_result.scalar_one_or_none()
     if reg is None:
-        raise HTTPException(status_code=404, detail="Not found.")
+        raise HTTPException(status_code=404, detail=_REGISTRATION_NOT_FOUND)
 
     reg.status = "more_info_requested"
     await db.flush()
@@ -188,7 +201,7 @@ async def list_users(
     return out
 
 
-@router.post("/users/{user_id}/disable", status_code=200)
+@router.post("/users/{user_id}/disable", status_code=200, responses=_RESP_404_403_USER)
 async def disable_user(
     user_id: UUID,
     actor: Any = Depends(require_permission(P.USERS_DISABLE)),
@@ -197,7 +210,7 @@ async def disable_user(
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
     if user is None:
-        raise HTTPException(status_code=404, detail="User not found.")
+        raise HTTPException(status_code=404, detail=_USER_NOT_FOUND)
     if user.is_superadmin and not actor.is_superadmin:
         raise HTTPException(status_code=403, detail="Cannot disable superadmin.")
     user.is_active = False
@@ -208,7 +221,7 @@ async def disable_user(
     return {"status": "disabled"}
 
 
-@router.post("/users/{user_id}/resend-activation", status_code=200)
+@router.post("/users/{user_id}/resend-activation", status_code=200, responses=_RESP_404_USER)
 async def resend_activation_email(
     user_id: UUID,
     actor: Any = Depends(_require_approve),
@@ -217,7 +230,7 @@ async def resend_activation_email(
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
     if user is None:
-        raise HTTPException(status_code=404, detail="User not found.")
+        raise HTTPException(status_code=404, detail=_USER_NOT_FOUND)
 
     plain = await resend_activation(db, user=user, admin=actor)
     await send_registration_approved(user.email, user.full_name, plain, "assigned role")
@@ -228,7 +241,7 @@ async def resend_activation_email(
     return resp
 
 
-@router.patch("/users/{user_id}/roles", status_code=200)
+@router.patch("/users/{user_id}/roles", status_code=200, responses=_RESP_404_USER)
 async def assign_roles(
     user_id: UUID,
     body: AssignRolesRequest,
@@ -238,7 +251,7 @@ async def assign_roles(
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
     if user is None:
-        raise HTTPException(status_code=404, detail="User not found.")
+        raise HTTPException(status_code=404, detail=_USER_NOT_FOUND)
 
     # Remove existing roles, add new
     existing = await db.execute(select(UserRole).where(UserRole.user_id == user_id))

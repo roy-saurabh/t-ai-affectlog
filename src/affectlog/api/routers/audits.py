@@ -16,6 +16,8 @@ from affectlog.schemas.api import AuditMetricsResponse, AuditRunRequest, AuditRu
 
 router = APIRouter(prefix="/v1/audits", tags=["Audits"])
 
+_RESP_400 = {400: {"description": "Invalid run ID."}}
+
 _run_status: dict[str, dict[str, Any]] = {}
 
 
@@ -69,7 +71,12 @@ async def run_audit_endpoint(
     return AuditRunResponse(run_id=run_id, status="running", recipe=req.recipe)
 
 
-@router.get("/{run_id}", response_model=AuditRunResponse, summary="Get audit run status")
+@router.get(
+    "/{run_id}",
+    response_model=AuditRunResponse,
+    summary="Get audit run status",
+    responses={404: {"description": "Run not found."}},
+)
 async def get_audit(run_id: str) -> AuditRunResponse:
     if run_id not in _run_status:
         raise HTTPException(status_code=404, detail=f"Run '{run_id}' not found.")
@@ -82,7 +89,11 @@ async def get_audit(run_id: str) -> AuditRunResponse:
     )
 
 
-@router.get("/{run_id}/artifacts", summary="List run artifacts")
+@router.get(
+    "/{run_id}/artifacts",
+    summary="List run artifacts",
+    responses={**_RESP_400, 404: {"description": "Run directory not found."}},
+)
 async def get_artifacts(run_id: str) -> dict[str, Any]:
     try:
         validate_run_id(run_id)
@@ -98,7 +109,12 @@ async def get_artifacts(run_id: str) -> dict[str, Any]:
     return {"run_id": run_id, "artifacts": [f.name for f in run_dir.iterdir() if f.is_file()]}
 
 
-@router.get("/{run_id}/metrics", response_model=AuditMetricsResponse, summary="Get run metrics")
+@router.get(
+    "/{run_id}/metrics",
+    response_model=AuditMetricsResponse,
+    summary="Get run metrics",
+    responses={**_RESP_400, 404: {"description": "metrics.json not found for this run."}},
+)
 async def get_metrics(run_id: str) -> AuditMetricsResponse:
     try:
         validate_run_id(run_id)
@@ -115,7 +131,12 @@ async def get_metrics(run_id: str) -> AuditMetricsResponse:
     return AuditMetricsResponse(run_id=run_id, metrics=json.loads(metrics_path.read_text()))
 
 
-@router.get("/{run_id}/sop", response_class=PlainTextResponse, summary="Get SOP markdown")
+@router.get(
+    "/{run_id}/sop",
+    response_class=PlainTextResponse,
+    summary="Get SOP markdown",
+    responses={**_RESP_400, 404: {"description": "SOP.md not found for this run."}},
+)
 async def get_sop(run_id: str) -> str:
     try:
         validate_run_id(run_id)
@@ -132,7 +153,11 @@ async def get_sop(run_id: str) -> str:
     return sop_path.read_text()
 
 
-@router.get("/{run_id}/compliance-graph", summary="Get compliance JSON-LD graph")
+@router.get(
+    "/{run_id}/compliance-graph",
+    summary="Get compliance JSON-LD graph",
+    responses={**_RESP_400, 404: {"description": "compliance_graph.jsonld not found."}},
+)
 async def get_compliance_graph(run_id: str) -> dict[str, Any]:
     try:
         validate_run_id(run_id)
@@ -149,7 +174,11 @@ async def get_compliance_graph(run_id: str) -> dict[str, Any]:
     return json.loads(jld_path.read_text())  # type: ignore[no-any-return]
 
 
-@router.get("/{run_id}/dashboard", summary="Get dashboard payload for this run")
+@router.get(
+    "/{run_id}/dashboard",
+    summary="Get dashboard payload for this run",
+    responses={**_RESP_400, 404: {"description": "dashboard_payload.json not found for this run."}},
+)
 async def get_dashboard(run_id: str) -> dict[str, Any]:
     try:
         validate_run_id(run_id)

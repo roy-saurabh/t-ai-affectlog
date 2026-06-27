@@ -11,7 +11,11 @@ from affectlog.schemas.api import PredictRequest
 router = APIRouter(prefix="/v1/explanations", tags=["Explanations"])
 
 
-@router.post("/{model_id}/feature-importance", summary="Get feature importance for a model")
+@router.post(
+    "/{model_id}/feature-importance",
+    summary="Get feature importance for a model",
+    responses={500: {"description": "Failed to generate feature importance"}},
+)
 async def feature_importance(model_id: str, req: PredictRequest) -> dict[str, Any]:
     import numpy as np
 

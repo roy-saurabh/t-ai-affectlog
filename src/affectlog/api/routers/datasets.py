@@ -20,6 +20,8 @@ from affectlog.schemas.api import (
 
 router = APIRouter(prefix="/v1/datasets", tags=["Datasets"])
 
+_DATASET_NOT_FOUND_DESC = "Dataset not found."
+
 # In-memory dataset registry (production would use a DB)
 _dataset_registry: dict[str, dict[str, Any]] = {}
 
@@ -100,14 +102,25 @@ async def ingest_dataset(req: DatasetIngestRequest) -> DatasetIngestResponse:
     )
 
 
-@router.get("/{dataset_id}", summary="Get dataset info")
+@router.get(
+    "/{dataset_id}",
+    summary="Get dataset info",
+    responses={404: {"description": _DATASET_NOT_FOUND_DESC}},
+)
 async def get_dataset(dataset_id: str) -> dict[str, Any]:
     if dataset_id not in _dataset_registry:
         raise HTTPException(status_code=404, detail=f"Dataset '{dataset_id}' not found.")
     return _dataset_registry[dataset_id]
 
 
-@router.post("/{dataset_id}/transform", response_model=DatasetTransformResponse)
+@router.post(
+    "/{dataset_id}/transform",
+    response_model=DatasetTransformResponse,
+    responses={
+        404: {"description": _DATASET_NOT_FOUND_DESC},
+        500: {"description": "Dataset transformation failed."},
+    },
+)
 async def transform_dataset(
     dataset_id: str, req: DatasetTransformRequest
 ) -> DatasetTransformResponse:
@@ -147,7 +160,14 @@ async def transform_dataset(
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 
 
-@router.post("/{dataset_id}/profile", summary="Profile a dataset")
+@router.post(
+    "/{dataset_id}/profile",
+    summary="Profile a dataset",
+    responses={
+        404: {"description": _DATASET_NOT_FOUND_DESC},
+        500: {"description": "Dataset profiling failed."},
+    },
+)
 async def profile_dataset(dataset_id: str) -> dict[str, Any]:
     if dataset_id not in _dataset_registry:
         raise HTTPException(status_code=404, detail=f"Dataset '{dataset_id}' not found.")

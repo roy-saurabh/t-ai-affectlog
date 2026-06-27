@@ -39,11 +39,18 @@ log = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/v1/wizard", tags=["Guided Assessment Wizard"])
 
+# Shared response documentation constants (avoid duplicate-literal SonarQube issues).
+_RESP_400 = {400: {"description": "Bad request."}}
+_RESP_404 = {404: {"description": "Wizard run not found."}}
+_RESP_500 = {500: {"description": "Internal error."}}
+_RESP_422 = {422: {"description": "Invalid plan input."}}
+
 
 @router.post(
     "/inspect-inputs",
     response_model=InspectInputResponse,
     summary="Inspect uploaded inputs and detect format/schema",
+    responses=_RESP_500,
 )
 async def inspect_inputs(req: InspectInputRequest) -> InspectInputResponse:
     try:
@@ -57,6 +64,7 @@ async def inspect_inputs(req: InspectInputRequest) -> InspectInputResponse:
     "/recommend",
     response_model=RecommendResponse,
     summary="Recommend a scoped analysis plan based on inputs and purpose",
+    responses=_RESP_500,
 )
 async def recommend_plan(req: RecommendRequest) -> RecommendResponse:
     try:
@@ -70,6 +78,7 @@ async def recommend_plan(req: RecommendRequest) -> RecommendResponse:
     "/validate-plan",
     response_model=ValidatePlanResponse,
     summary="Validate the wizard plan — returns pass/warn/fail with blocking issues",
+    responses=_RESP_500,
 )
 async def validate_wizard_plan(plan: WizardPlan) -> ValidatePlanResponse:
     try:
@@ -83,6 +92,7 @@ async def validate_wizard_plan(plan: WizardPlan) -> ValidatePlanResponse:
     "/output-contract",
     response_model=OutputContract,
     summary="Build the pre-run output contract from a validated plan",
+    responses=_RESP_500,
 )
 async def get_output_contract(plan: WizardPlan) -> OutputContract:
     try:
@@ -96,6 +106,7 @@ async def get_output_contract(plan: WizardPlan) -> OutputContract:
     "/run",
     response_model=WizardRunResponse,
     summary="Execute the wizard plan via the production audit pipeline",
+    responses={**_RESP_400, **_RESP_422, **_RESP_500},
 )
 async def run_wizard(req: WizardRunRequest, background_tasks: BackgroundTasks) -> WizardRunResponse:
     if not req.output_contract_confirmed:
@@ -118,6 +129,7 @@ async def run_wizard(req: WizardRunRequest, background_tasks: BackgroundTasks) -
     "/runs/{wizard_run_id}",
     response_model=WizardRunStatusResponse,
     summary="Get wizard run status",
+    responses=_RESP_404,
 )
 async def get_wizard_run(wizard_run_id: str) -> WizardRunStatusResponse:
     result = get_run_status(wizard_run_id)
@@ -129,6 +141,7 @@ async def get_wizard_run(wizard_run_id: str) -> WizardRunStatusResponse:
 @router.get(
     "/runs/{wizard_run_id}/plan",
     summary="Get the plan for a wizard run",
+    responses=_RESP_404,
 )
 async def get_wizard_run_plan(wizard_run_id: str) -> dict[str, Any]:
     run = _WIZARD_RUNS.get(wizard_run_id)
@@ -140,6 +153,7 @@ async def get_wizard_run_plan(wizard_run_id: str) -> dict[str, Any]:
 @router.get(
     "/runs/{wizard_run_id}/scope",
     summary="Get the analysis scope for a wizard run",
+    responses=_RESP_404,
 )
 async def get_wizard_run_scope(wizard_run_id: str) -> dict[str, Any]:
     run = _WIZARD_RUNS.get(wizard_run_id)
@@ -159,6 +173,7 @@ async def get_wizard_run_scope(wizard_run_id: str) -> dict[str, Any]:
     "/runs/{wizard_run_id}/progress",
     response_model=WizardRunStatusResponse,
     summary="Get real-time progress of a wizard run",
+    responses=_RESP_404,
 )
 async def get_wizard_run_progress(wizard_run_id: str) -> WizardRunStatusResponse:
     result = get_run_status(wizard_run_id)
@@ -171,6 +186,7 @@ async def get_wizard_run_progress(wizard_run_id: str) -> WizardRunStatusResponse
     "/runs/{wizard_run_id}/results",
     response_model=WizardRunResultsResponse,
     summary="Get results and guidance for a completed wizard run",
+    responses=_RESP_404,
 )
 async def get_wizard_run_results(wizard_run_id: str) -> WizardRunResultsResponse:
     result = get_run_results(wizard_run_id)
@@ -182,6 +198,7 @@ async def get_wizard_run_results(wizard_run_id: str) -> WizardRunResultsResponse
 @router.get(
     "/runs/{wizard_run_id}/artifacts/{filename}",
     summary="Download a single artifact from a completed wizard run",
+    responses={**_RESP_400, **_RESP_404},
 )
 async def download_wizard_run_artifact(wizard_run_id: str, filename: str) -> Any:
     import re
@@ -209,6 +226,7 @@ async def download_wizard_run_artifact(wizard_run_id: str, filename: str) -> Any
 @router.get(
     "/runs/{wizard_run_id}/artifacts",
     summary="List artifacts for a completed wizard run",
+    responses={**_RESP_400, **_RESP_404},
 )
 async def get_wizard_run_artifacts(wizard_run_id: str) -> dict[str, Any]:
     from pathlib import Path
@@ -249,7 +267,11 @@ async def list_wizard_runs() -> dict[str, Any]:
     return {"runs": sorted(runs, key=lambda r: r.get("created_at", ""), reverse=True)}
 
 
-@router.get("/help/step/{step}", summary="Contextual help for wizard step")
+@router.get(
+    "/help/step/{step}",
+    summary="Contextual help for wizard step",
+    responses=_RESP_404,
+)
 async def get_step_help_endpoint(step: int) -> dict[str, Any]:
     h = get_step_help(step)
     if h is None:
@@ -257,7 +279,11 @@ async def get_step_help_endpoint(step: int) -> dict[str, Any]:
     return h.model_dump()
 
 
-@router.get("/help/analysis/{analysis_id}", summary="Contextual help for an analysis")
+@router.get(
+    "/help/analysis/{analysis_id}",
+    summary="Contextual help for an analysis",
+    responses=_RESP_404,
+)
 async def get_analysis_help_endpoint(analysis_id: str) -> dict[str, Any]:
     h = get_analysis_help(analysis_id)
     if h is None:

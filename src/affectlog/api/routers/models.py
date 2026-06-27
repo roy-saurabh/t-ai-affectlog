@@ -25,8 +25,18 @@ from affectlog.schemas.api import (
 
 router = APIRouter(prefix="/v1/models", tags=["Models"])
 
+_INTERNAL_ERROR_DESC = "Internal server error"
 
-@router.post("/register", response_model=ModelRegisterResponse, summary="Register a model")
+
+@router.post(
+    "/register",
+    response_model=ModelRegisterResponse,
+    summary="Register a model",
+    responses={
+        400: {"description": "Unknown adapter type"},
+        500: {"description": _INTERNAL_ERROR_DESC},
+    },
+)
 async def register_model(req: ModelRegisterRequest) -> ModelRegisterResponse:
     settings = get_settings()
     trusted_dir = Path(settings.models_dir).resolve()
@@ -67,7 +77,11 @@ async def register_model(req: ModelRegisterRequest) -> ModelRegisterResponse:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 
 
-@router.get("/{model_id}", summary="Get model metadata")
+@router.get(
+    "/{model_id}",
+    summary="Get model metadata",
+    responses={404: {"description": "Model not found"}},
+)
 async def get_model(model_id: str) -> dict[str, Any]:
     registry = get_registry()
     try:
@@ -77,7 +91,12 @@ async def get_model(model_id: str) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
-@router.post("/{model_id}/predict", response_model=PredictResponse, summary="Run model prediction")
+@router.post(
+    "/{model_id}/predict",
+    response_model=PredictResponse,
+    summary="Run model prediction",
+    responses={500: {"description": _INTERNAL_ERROR_DESC}},
+)
 async def predict(model_id: str, req: PredictRequest) -> PredictResponse:
     import numpy as np
 
@@ -92,7 +111,10 @@ async def predict(model_id: str, req: PredictRequest) -> PredictResponse:
 
 
 @router.post(
-    "/{model_id}/explain", response_model=ExplainResponse, summary="Generate model explanations"
+    "/{model_id}/explain",
+    response_model=ExplainResponse,
+    summary="Generate model explanations",
+    responses={500: {"description": _INTERNAL_ERROR_DESC}},
 )
 async def explain(model_id: str, req: PredictRequest) -> ExplainResponse:
     import numpy as np

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import logging
 from datetime import UTC, datetime
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Cookie, Depends, HTTPException, Request, Response, status
 from sqlalchemy import select
@@ -30,13 +30,16 @@ from affectlog.schemas.auth import (
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
+_RESP_401 = {status.HTTP_401_UNAUTHORIZED: {"description": "Invalid credentials."}}
+_RESP_400 = {status.HTTP_400_BAD_REQUEST: {"description": "Bad request."}}
 
-@router.post("/login")
+
+@router.post("/login", responses=_RESP_401)
 async def login(
     body: LoginRequest,
     request: Request,
     response: Response,
-    db: AsyncSession = Depends(get_db),
+    db: Annotated[AsyncSession, Depends(get_db)],
 ) -> dict[str, Any]:
     settings = get_settings()
     ip = request.client.host if request.client else None
@@ -119,8 +122,8 @@ async def login(
 @router.post("/logout")
 async def logout(
     response: Response,
-    db: AsyncSession = Depends(get_db),
-    session_token: str | None = Cookie(None, alias=SESSION_COOKIE),
+    db: Annotated[AsyncSession, Depends(get_db)],
+    session_token: Annotated[str | None, Cookie(alias=SESSION_COOKIE)] = None,
 ) -> dict[str, str]:
     if session_token:
         await revoke_session(db, session_token)
@@ -130,8 +133,8 @@ async def logout(
 
 @router.get("/me", response_model=MeResponse)
 async def me(
-    user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)],
 ) -> MeResponse:
     roles = await get_user_role_names(db, user.id)
     perms = await get_user_permissions(db, user.id)
@@ -159,11 +162,11 @@ async def me(
     )
 
 
-@router.post("/change-password")
+@router.post("/change-password", responses=_RESP_400)
 async def change_password(
     body: ChangePasswordRequest,
-    user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)],
 ) -> dict[str, str]:
     if not verify_password(body.current_password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Current password is incorrect.")
@@ -182,7 +185,7 @@ async def change_password(
 
 
 @router.post("/mfa/setup")
-async def mfa_setup(user: User = Depends(get_current_user)) -> dict[str, str]:
+async def mfa_setup(user: Annotated[User, Depends(get_current_user)]) -> dict[str, str]:
     """Scaffold: returns TOTP secret for setup. Full TOTP not yet enforced in this release."""
     import pyotp
 
@@ -192,11 +195,11 @@ async def mfa_setup(user: User = Depends(get_current_user)) -> dict[str, str]:
     return {"secret": secret, "provisioning_uri": provisioning_uri}
 
 
-@router.post("/mfa/verify")
+@router.post("/mfa/verify", responses=_RESP_400)
 async def mfa_verify(
     code: str,
-    user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)],
 ) -> dict[str, str]:
     if not user.mfa_secret:
         raise HTTPException(status_code=400, detail="MFA not set up.")
