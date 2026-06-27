@@ -80,8 +80,10 @@ jobs:
 
       - name: Run tests
         # The suite provisions its own in-memory SQLite schema per test, so no
-        # external database service is required here.
-        run: pytest
+        # external database service is required here. Slow 1M-row performance
+        # tests are deselected from the push/PR gate by design (run them on
+        # demand with `pytest -m slow`).
+        run: pytest -m "not slow"
 
   # ── Frontend: lint, type-check and production build ──────────────────────
   frontend:

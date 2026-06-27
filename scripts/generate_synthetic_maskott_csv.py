@@ -13,6 +13,7 @@ import argparse
 import base64
 import csv
 import random
+import tempfile
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -30,21 +31,27 @@ def _random_base64_id(rng: random.Random) -> str:
 
 
 def _resolve_safe_output_path(output_path: Path | str, allowed_base: Path | None = None) -> Path:
-    """Resolve ``output_path`` and ensure it stays within ``allowed_base``.
+    """Resolve ``output_path`` and ensure it stays within an allowed root.
 
     The output path comes from a CLI argument, so an attacker (or an LLM/agent
     invoking this script with faulty arguments) could supply a traversal payload
     such as ``--output ../../etc/passwd`` to write outside the intended tree.
-    We canonicalize the path and reject anything that escapes the allowed base.
+    We canonicalize the path and reject anything that escapes the permitted
+    roots: the working tree (or an explicit ``allowed_base``) plus the system
+    temporary directory, which is a legitimate scratch location for tests and
+    ad-hoc runs.
     """
     base = (allowed_base or Path.cwd()).resolve()
+    temp_root = Path(tempfile.gettempdir()).resolve()
     candidate = Path(output_path)
     if not candidate.is_absolute():
         candidate = base / candidate
     resolved = candidate.resolve()
-    if resolved != base and base not in resolved.parents:
+    allowed_roots = (base, temp_root)
+    if not any(resolved == root or root in resolved.parents for root in allowed_roots):
         raise ValueError(
-            f"Refusing to write outside the allowed base directory: {resolved} is not under {base}"
+            f"Refusing to write outside the allowed roots {[str(r) for r in allowed_roots]}: "
+            f"{resolved}"
         )
     return resolved
 
