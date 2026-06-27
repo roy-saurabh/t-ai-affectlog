@@ -238,7 +238,7 @@ def _run_tabular(wizard_run_id: str, plan: WizardPlan, input_path: Path, run_dir
         "wizard_run_id": wizard_run_id,
         "plan": plan.model_dump(),
         "status": "completed",
-        "completed_at": datetime.datetime.utcnow().isoformat(),
+        "completed_at": datetime.datetime.now(datetime.UTC).isoformat(),
     }
     (run_dir / "wizard_meta.json").write_text(json.dumps(wizard_meta, indent=2))
 
@@ -294,7 +294,7 @@ def _run_background(wizard_run_id: str, plan: WizardPlan) -> None:
             "wizard_run_id": wizard_run_id,
             "plan": plan.model_dump(),
             "artifacts": ctx.artifacts,
-            "completed_at": datetime.datetime.utcnow().isoformat(),
+            "completed_at": datetime.datetime.now(datetime.UTC).isoformat(),
         }
         (run_dir / "wizard_meta.json").write_text(json.dumps(wizard_meta, indent=2))
 
@@ -340,7 +340,7 @@ def create_run(req: WizardRunRequest) -> WizardRunResponse:
         "warnings": [],
         "errors": [],
         "progress_pct": 0.0,
-        "created_at": datetime.datetime.utcnow().isoformat(),
+        "created_at": datetime.datetime.now(datetime.UTC).isoformat(),
     }
 
     return WizardRunResponse(

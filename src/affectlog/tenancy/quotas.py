@@ -8,7 +8,7 @@ Community Edition has no quota enforcement; quotas only apply in managed mode.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 
 from fastapi import HTTPException, status
 from sqlalchemy import select
@@ -25,7 +25,7 @@ async def check_audit_run_quota(tenant_id: uuid.UUID, db: AsyncSession) -> None:
     try:
         from affectlog.tenancy.models import TenantQuota, UsageRecord
 
-        period = datetime.utcnow().strftime("%Y-%m")
+        period = datetime.now(UTC).strftime("%Y-%m")
 
         quota_res = await db.execute(select(TenantQuota).where(TenantQuota.tenant_id == tenant_id))
         quota = quota_res.scalar_one_or_none()
@@ -69,7 +69,7 @@ async def increment_usage(
 
         from affectlog.tenancy.models import UsageRecord
 
-        period = datetime.utcnow().strftime("%Y-%m")
+        period = datetime.now(UTC).strftime("%Y-%m")
         stmt = (
             pg_insert(UsageRecord)
             .values(
