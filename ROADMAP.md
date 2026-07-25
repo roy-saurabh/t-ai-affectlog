@@ -96,7 +96,10 @@ cases, not on additional AffectLog development.
 - [x] Pre-built recipes (Maskott CSV, Inokufu/Becomino xAPI, generic xAPI, tabular + model)
 - [x] Prometheus-X PDC connector (specified; mock + client)
 - [x] Docker Compose deployment
-- [x] MkDocs documentation site
+- [ ] MkDocs documentation site — the Markdown documentation set under `docs/` is
+      complete, but **no `mkdocs.yml` is present in the repository**, so the
+      `make docs` target (`mkdocs build --strict`) cannot run as-is. Documentation
+      references are validated instead by `scripts/check_doc_references.py`.
 - [x] Comprehensive test suite
 - [x] Open-source contribution workflow
 
