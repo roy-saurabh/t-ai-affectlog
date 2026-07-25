@@ -25,10 +25,32 @@ Datasets remain under the control of the deploying institution.
 
 ```bash
 git clone https://github.com/Prometheus-X-association/t-ai-affectlog
-docker compose up
-make seed && make create-admin
-# → http://localhost:3000
+cd t-ai-affectlog
+
+# 1. Configure secrets — compose refuses to start without POSTGRES_PASSWORD.
+cp .env.example .env
+#    In .env, set POSTGRES_PASSWORD and keep AFFECTLOG_DATABASE_URL in sync with it,
+#    then fill the auth secrets (generate each with the command shown in .env.example):
+#      AFFECTLOG_SECRET_KEY  AFFECTLOG_PASSWORD_PEPPER  AFFECTLOG_HASH_SECRET  AFFECTLOG_CSRF_SECRET
+
+# 2. Build and start the full stack (Postgres, Redis, API, worker, frontend).
+docker compose up -d --build
+
+# 3. Seed RBAC and create the admin INSIDE the api container, so they use the
+#    server's exact database and password pepper. (Running these on the host is
+#    the usual cause of a "created admin but Invalid credentials" login failure.)
+make docker-bootstrap
+#    Equivalent to:
+#      docker compose exec api python scripts/seed_rbac.py
+#      docker compose exec api python scripts/create_initial_admin.py
+
+# → open http://localhost:3000 and sign in
 ```
+
+> **Why inside the container?** The API runs in Docker against Postgres with the
+> pepper from your `.env`. The admin's password hash must be created with the
+> *same* pepper and written to the *same* database — running the bootstrap inside
+> the `api` container guarantees both. See **Troubleshooting** below.
 
 ### Managed Edition — AffectLog-operated
 
@@ -130,10 +152,58 @@ curl http://localhost:8000/openapi.json
 ## Docker Compose
 
 ```bash
-cp .env.example .env  # Edit AFFECTLOG_HASH_SECRET
-docker compose up --build
-curl http://localhost:8000/healthz
+cp .env.example .env
+#  Required: POSTGRES_PASSWORD (compose won't start without it) and matching
+#  AFFECTLOG_DATABASE_URL. Recommended: AFFECTLOG_SECRET_KEY, AFFECTLOG_PASSWORD_PEPPER,
+#  AFFECTLOG_HASH_SECRET, AFFECTLOG_CSRF_SECRET (see .env.example for generators).
+
+docker compose up -d --build
+curl http://localhost:8000/healthz          # API is up
+
+make docker-bootstrap                        # seed RBAC + create admin in the container
+# → open http://localhost:3000 and sign in
 ```
+
+Services: **frontend** → http://localhost:3000 · **API** → http://localhost:8000
+(`/healthz`, `/openapi.json`) · **Mailpit** (dev email) → http://localhost:8025.
+
+---
+
+## Troubleshooting
+
+**"Invalid credentials" right after creating the admin.**
+The admin's password hash is bound to two things that must match the running API
+server: the **database** it is written to and the **password pepper**
+(`AFFECTLOG_PASSWORD_PEPPER`) used to compute the hash. In the Docker setup the API
+runs in a container against Postgres, so the admin must be created **inside that
+container** — not on your host, where the database URL and pepper differ:
+
+```bash
+make docker-bootstrap
+#  or, explicitly:
+docker compose exec api python scripts/seed_rbac.py
+docker compose exec api python scripts/create_initial_admin.py
+```
+
+If you already created an admin on the host (or with a different pepper), remove the
+stale row and recreate it in the container:
+
+```bash
+docker compose exec postgres psql -U affectlog -d affectlog \
+  -c "DELETE FROM users WHERE email = 'you@example.org';"
+docker compose exec api python scripts/create_initial_admin.py
+```
+
+Notes:
+- The password must be **at least 12 characters** (enforced by the admin script).
+- The tables are created by the seed/admin scripts, so run `make docker-bootstrap`
+  once before your first login.
+- Non-interactive create: set `ADMIN_EMAIL`, `ADMIN_NAME`, `ADMIN_PASSWORD`, e.g.
+  `docker compose exec -e ADMIN_EMAIL=you@example.org -e ADMIN_NAME="You" -e ADMIN_PASSWORD='min-12-chars' api python scripts/create_initial_admin.py`.
+
+**Running without Docker?** The [Quick Start](#quick-start) path runs everything from
+one `.env`, so the pepper and database always match — `make seed && make create-admin`
+is correct there.
 
 ---
 

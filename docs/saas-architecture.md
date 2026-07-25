@@ -39,11 +39,11 @@ Gate a route:
 from affectlog.editions.gates import requires_feature
 from affectlog.editions.features import Feature
 
+
 @router.get("/platform/tenants")
 async def list_tenants(
     _=Depends(requires_feature(Feature.MULTI_TENANT)),
-):
-    ...
+): ...
 ```
 
 ## Tenant Isolation

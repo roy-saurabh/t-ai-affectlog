@@ -231,8 +231,7 @@ Permission resolution: User → UserRole → Role → RolePermission → Permiss
 All route guards use permission-string checks (not role-name checks):
 ```python
 @router.post("/datasets/ingest")
-async def ingest(user = Depends(require_permission(P.DATASETS_UPLOAD))):
-    ...
+async def ingest(user=Depends(require_permission(P.DATASETS_UPLOAD))): ...
 ```
 
 Superadmins bypass permission checks (shortcut in `require_permission`).
