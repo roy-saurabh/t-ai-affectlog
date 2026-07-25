@@ -1,5 +1,3 @@
-version: "3.9"
-
 # AffectLog – Trustworthy AI Assessment
 # Prometheus-X BB04 / EDGE-Skills
 # Full-stack Docker Compose: API + Worker + Frontend + Postgres + Redis + Mailpit

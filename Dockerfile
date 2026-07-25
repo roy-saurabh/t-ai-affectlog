@@ -14,6 +14,9 @@ RUN pip install --no-cache-dir -e "." && \
 
 COPY configs/ configs/
 COPY data/samples/ data/samples/
+# Bootstrap scripts (RBAC seed + initial admin) must be runnable inside the
+# container so they use the same DATABASE_URL and PASSWORD_PEPPER as the server.
+COPY scripts/ scripts/
 
 EXPOSE 8000
 

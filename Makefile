@@ -4,7 +4,8 @@
 # Run 'make help' for available targets.
 
 .PHONY: help install seed create-admin test test-e2e test-slow lint typecheck \
-        security docs api frontend docker-up docker-down demo synthetic-1m \
+        security hygiene docs api frontend docker-up docker-down docker-seed \
+        docker-create-admin docker-bootstrap demo synthetic-1m \
         benchmark clean dev format check-editions
 
 PYTHON := python3
@@ -16,10 +17,15 @@ help:
 	@echo "AffectLog — Trustworthy AI Assessment"
 	@echo "Community Edition (self-hosted) | Managed Edition (AffectLog-operated)"
 	@echo ""
-	@echo "Setup:"
+	@echo "Setup (local / non-Docker):"
 	@echo "  make install        — Install Python + frontend dependencies"
 	@echo "  make seed           — Seed database (RBAC roles/permissions/workspaces)"
 	@echo "  make create-admin   — Create initial superadmin account"
+	@echo ""
+	@echo "Setup (Docker — run AFTER 'docker compose up'):"
+	@echo "  make docker-bootstrap    — Seed RBAC + create admin inside the api container"
+	@echo "  make docker-seed         — Seed RBAC inside the api container"
+	@echo "  make docker-create-admin — Create admin inside the api container"
 	@echo ""
 	@echo "Development:"
 	@echo "  make dev            — Start API + worker in dev mode"
@@ -40,6 +46,7 @@ help:
 	@echo "  make format         — Ruff auto-format"
 	@echo "  make typecheck      — mypy type checking"
 	@echo "  make security       — Bandit + pip-audit security scan"
+	@echo "  make hygiene        — Repository authorship & privacy guard"
 	@echo "  make check-editions — Verify edition/feature flag system"
 	@echo ""
 	@echo "Docs:"
@@ -85,6 +92,9 @@ security:
 	bandit -r src/affectlog/ -c pyproject.toml
 	pip-audit --desc on
 
+hygiene:
+	$(PYTHON) scripts/check_repository_hygiene.py
+
 docs:
 	mkdocs build --strict
 
@@ -99,6 +109,19 @@ docker-up:
 
 docker-down:
 	docker compose down
+
+# ── Docker bootstrap ──────────────────────────────────────────────────────
+# These run the seed/admin scripts INSIDE the running api container so they use
+# the exact same DATABASE_URL and PASSWORD_PEPPER as the server. Running them on
+# the host instead is the usual cause of a "created admin but Invalid credentials"
+# login failure (host pepper/DB differ from the container's).
+docker-seed:
+	docker compose exec api python scripts/seed_rbac.py
+
+docker-create-admin:
+	docker compose exec api python scripts/create_initial_admin.py
+
+docker-bootstrap: docker-seed docker-create-admin
 
 demo:
 	affectlog validate-csv --input data/samples/maskott_csv_sample.csv --schema maskott_csv_v1

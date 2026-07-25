@@ -23,6 +23,7 @@ Models are **optional**. All dataset profiling, privacy, and compliance features
 from affectlog.models.base import BaseModelAdapter
 import numpy as np
 
+
 class MyAdapter(BaseModelAdapter):
     def predict(self, X: np.ndarray) -> list:
         return [0] * len(X)

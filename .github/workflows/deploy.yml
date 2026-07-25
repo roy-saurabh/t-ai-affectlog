@@ -39,9 +39,43 @@ concurrency:
   cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
 
 jobs:
+  # ── Repository privacy guard (blocking) ──────────────────────────────────
+  # Ensures repository-bound content and commit messages carry no private
+  # personal identifiers or private-correspondence markers before anything is
+  # published. Runs first and gates image publication so private data can never
+  # reach a released artifact. Private name patterns are supplied out of band
+  # via HYGIENE_DENYLIST_FILE / HYGIENE_EXTRA_PATTERNS, never committed.
+  hygiene:
+    name: Repository privacy guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          # Full history so pull-request runs can diff against the base branch
+          # and scan the incoming commit messages.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.11"
+
+      - name: Scan changed content and commit messages
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --no-tags --depth=200 origin "${{ github.base_ref }}"
+            python scripts/check_repository_hygiene.py \
+              --base "origin/${{ github.base_ref }}" --check-commits
+          else
+            python scripts/check_repository_hygiene.py
+          fi
+
   # ── Backend: lint, security scan and tests ───────────────────────────────
   backend:
     name: Backend lint & tests
+    needs: [hygiene]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -88,6 +122,7 @@ jobs:
   # ── Frontend: lint, type-check and production build ──────────────────────
   frontend:
     name: Frontend build
+    needs: [hygiene]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     defaults:

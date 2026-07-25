@@ -3,15 +3,19 @@
 Create the initial superadmin user.
 
 Usage:
-    python scripts/create_initial_admin.py
-    # or via CLI:
-    affectlog create-admin --email admin@example.org --name "Admin User"
-    # or via Makefile:
-    make create-admin
+    # Local (non-Docker) — uses the same .env as the server:
+    python scripts/create_initial_admin.py        # or: make create-admin
+
+    # Docker — MUST run inside the api container so the database URL and
+    # password pepper match the running server (otherwise login fails with
+    # "Invalid credentials"):
+    docker compose exec api python scripts/create_initial_admin.py
+    #   or: make docker-create-admin  /  make docker-bootstrap
 
 Environment:
-    Set ADMIN_EMAIL and ADMIN_NAME env vars, or edit defaults below.
-    Password will be prompted interactively.
+    Set ADMIN_EMAIL and ADMIN_NAME to skip the prompts. Set ADMIN_PASSWORD to
+    create the account non-interactively (min 12 chars); otherwise the password
+    is prompted for and confirmed.
 """
 
 from __future__ import annotations
