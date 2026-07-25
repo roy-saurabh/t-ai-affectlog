@@ -89,7 +89,7 @@ Each row traces one design-document requirement through the D3.7 deliverable sco
 | Attribute | Detail |
 |-----------|--------|
 | D3.7 scope | Section on AffectLog operation-time assessment; model adapter layer |
-| Implementation | `src/affectlog/models/` — `sklearn_adapter.py`, `onnx_adapter.py`, `torch_adapter.py`, `tensorflow_adapter.py`, `http_adapter.py`, `base.py` (abstract), `registry.py` |
+| Implementation | `src/affectlog/models/` — `sklearn_adapter.py`, `onnx_adapter.py`, `torch_adapter.py`, `tensorflow_adapter.py`, `http_adapter.py`, `models/base.py` (abstract), `models/registry.py` |
 | Verification | `tests/unit/test_model_adapters.py` — exercises each adapter with dummy inputs; `tests/integration/test_api_dataset_transform.py` |
 | Verification command | `pytest tests/unit/test_model_adapters.py -v` |
 | Notes | HTTP adapter covers black-box model services. Polars replaces pandas for streaming; pandas interop preserved via `to_pandas()` when adapters require it. |
@@ -101,7 +101,7 @@ Each row traces one design-document requirement through the D3.7 deliverable sco
 | Attribute | Detail |
 |-----------|--------|
 | D3.7 scope | ALT-AI operation-time assessment; explainability layer; FastAPI OpenAPI 3.1 backend |
-| Implementation | `src/affectlog/explanations/` — `generator.py`, `feature_importance.py`, `permutation.py`, `shap_adapter.py`, `comparison.py`; REST endpoints at `src/affectlog/api/routers/explanations.py`, `models.py`; OpenAPI spec at `docs/openapi.yaml` |
+| Implementation | `src/affectlog/explanations/` — `generator.py`, `feature_importance.py`, `permutation.py`, `shap_adapter.py`, `comparison.py`; REST endpoints at `src/affectlog/api/routers/explanations.py`, `src/affectlog/api/routers/models.py`; OpenAPI spec at `docs/openapi.yaml` |
 | Verification | `tests/unit/test_explanations.py`; `tests/integration/test_api_openapi_contract.py` (validates spec against live server); `make typecheck` |
 | Verification command | `pytest tests/unit/test_explanations.py tests/integration/test_api_openapi_contract.py -v` |
 | Notes | SHAP integration optional (`pip install affectlog[shap]`). Permutation importance works on any adapter without SHAP. |

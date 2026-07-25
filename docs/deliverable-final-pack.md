@@ -9,28 +9,41 @@
 
 ## 1. Application Overview
 
-**AffectLog – Trustworthy AI Assessment** is a production-grade, open-source full-stack application for privacy-preserving dataset and model audits in education and skills data spaces.
+**AffectLog – Trustworthy AI Assessment** is an open-source full-stack application for privacy-preserving dataset and model audits in education and skills data spaces.
 
 It is developed as the **AffectLog building block** within the Prometheus-X Trustworthy AI Assessment ecosystem (BB04), in the context of the **EDGE-Skills project** (Grant agreement ID: 101123471), co-funded by the European Union under the Digital Europe Programme.
 
 **Repository:** https://github.com/Prometheus-X-association/t-ai-affectlog  
 **License:** MIT  
-**Version:** 1.0.0  
-**Status:** Production-ready open-source release
+**Version:** 1.0.0 (`pyproject.toml`; note the version discrepancy recorded in
+[design-document.md](design-document.md#implementation-details))
+
+**Status:** Open-source release, assessed **TRL 5 — validated in a relevant
+environment**. Production activation additionally requires the deployment-time
+controls in §9 "Production checklist" and the external dependencies listed in
+[design-document.md](design-document.md#implementation-details).
 
 ---
 
 ## 2. Implemented Service Scope
 
-The following capabilities have been fully implemented:
+The following capabilities are implemented. Items marked *conditional*, *optional*,
+*mock-validated* or *roadmap* are qualified in
+[design-conformance.md](design-conformance.md) and
+[design-document.md](design-document.md); this list is not a claim that every
+capability is production-activated.
 
 ### 2.1 Platform infrastructure
 - Full-stack application: FastAPI backend + React/TypeScript frontend
 - PostgreSQL database with SQLAlchemy 2.0 async ORM and Alembic migrations
-- Redis + Celery for background job processing
+- Redis provisioned as a broker/cache; **the Compose `worker` service is a
+  sleep-poll stub — no Celery application consumes the broker** (*roadmap*).
+  Asynchronous work runs in-process via FastAPI `BackgroundTasks` and threads.
 - Docker Compose deployment with Nginx reverse proxy example
-- OpenAPI 3.1 documented REST API
-- MkDocs Material documentation site
+- OpenAPI 3.1 documented REST API (committed contract covers the v1 assessment API)
+- Markdown documentation set under `docs/`, with references validated by
+  `scripts/check_doc_references.py`. **No `mkdocs.yml` is present in the repository**,
+  so the `make docs` target (`mkdocs build --strict`) cannot run as-is (*roadmap*).
 
 ### 2.2 Authentication and authorisation
 - Admin-approved user registration workflow
@@ -167,10 +180,16 @@ Exact column mapping for Maskott/Tactileo headers:
     └──────────────┘   └──────┬──────┘
                               │
                     ┌─────────▼─────────┐
-                    │  Celery Worker    │
-                    │  (large-file jobs)│
+                    │  Worker (stub)    │
+                    │  poll loop only   │
                     └───────────────────┘
 ```
+
+> **Worker status.** The Compose `worker` service runs the sleep-poll stub in
+> `src/affectlog/jobs/worker.py`. Redis is provisioned and healthy, but no Celery
+> application consumes it; large-file and audit work executes in the API process
+> (synchronously or via `BackgroundTasks`/threads). A queue-backed worker is
+> roadmap — see [design-document.md](design-document.md#implementation-details).
 
 ---
 
