@@ -94,11 +94,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
-      - name: Ruff lint
-        run: ruff check .
+      # Record the resolved formatter build. Ruff's formatter output is
+      # version-dependent, so an unlogged version makes a lint failure
+      # impossible to reproduce from the run alone.
+      - name: Ruff version
+        run: ruff --version
 
-      - name: Ruff format check
-        run: ruff format --check .
+      # Blocking lint gate. This calls the same `make lint` target developers
+      # run locally, so CI and the working tree can never disagree about the
+      # contract. The target is deliberately scoped to the maintained Python
+      # roots (src/, tests/, scripts/) — the whole of the repository's Python
+      # source. Prose under docs/ is not maintained as formatter input; Ruff
+      # 0.16 began formatting fenced code blocks inside Markdown, which would
+      # otherwise turn illustrative documentation snippets into release
+      # blockers. Both `ruff check` and `ruff format --check` remain blocking.
+      - name: Ruff lint & format check
+        run: make lint
 
       - name: Static type check (advisory)
         run: mypy src
