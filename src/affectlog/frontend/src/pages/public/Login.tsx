@@ -5,6 +5,9 @@ import { useAuth } from "../../auth/AuthProvider";
 import { ApiError } from "../../api/client";
 import { PublicHeader } from "../../components/public/PublicHeader";
 import { PublicFooter } from "../../components/public/PublicFooter";
+import { safeInternalDestination } from "../../security/safeNavigation";
+
+const DEFAULT_DESTINATION = "/app";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,7 +17,17 @@ export default function Login() {
   const { refresh } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? "/app";
+  // The pre-login location is replayed from router state. Treat it as untrusted
+  // and constrain it to a path on this origin (CWE-601).
+  const priorLocation = (
+    location.state as { from?: { pathname?: string; search?: string; hash?: string } } | null
+  )?.from;
+  const from = safeInternalDestination(
+    priorLocation
+      ? `${priorLocation.pathname ?? ""}${priorLocation.search ?? ""}${priorLocation.hash ?? ""}`
+      : undefined,
+    DEFAULT_DESTINATION,
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

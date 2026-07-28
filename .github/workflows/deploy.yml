@@ -139,6 +139,12 @@ jobs:
           cache: npm
           cache-dependency-path: src/affectlog/frontend/package-lock.json
 
+      # Blocking guard: the built bundle must never ship a React Router version
+      # affected by GHSA-jjmj-jmhj-qwj2 / CVE-2026-53668 (CWE-601).
+      - name: React Router advisory guard
+        working-directory: ${{ github.workspace }}
+        run: python3 scripts/check_frontend_security.py
+
       - name: Install dependencies
         run: npm ci
 
@@ -149,6 +155,9 @@ jobs:
       - name: Type-check (advisory)
         run: npm run typecheck
         continue-on-error: true
+
+      - name: Same-origin navigation tests
+        run: npm run test:security
 
       - name: Production build
         run: npm run build
