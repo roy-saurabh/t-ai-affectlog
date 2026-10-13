@@ -39,6 +39,12 @@ concurrency:
 jobs:
   build:
     name: Build & push (${{ matrix.name }})
+    # Publish only from the consortium repository. Forks publish only when the
+    # repository variable ALLOW_IMAGE_PUBLISH is set to 'true', so merging a
+    # dependency update into a fork's main branch never pushes images.
+    if: >-
+      github.repository == 'Prometheus-X-association/t-ai-affectlog' ||
+      vars.ALLOW_IMAGE_PUBLISH == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
