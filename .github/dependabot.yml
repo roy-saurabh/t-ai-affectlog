@@ -1,0 +1,87 @@
+# Dependabot configuration for the AffectLog fork (roy-saurabh/t-ai-affectlog).
+#
+# Fork-only. Do not propose this file upstream: Dependabot settings for
+# Prometheus-X-association/t-ai-affectlog are decided by its administrators.
+#
+# - Version updates: monthly, one grouped PR per ecosystem, majors excluded.
+#   On a fork they run only after "Dependabot version updates" is enabled
+#   in Settings > Advanced Security.
+# - Security updates: raised when an alert is created, independent of the
+#   monthly schedule, cooldown and open-pull-requests-limit. Requires
+#   Dependabot alerts and security updates to be enabled for this fork.
+#   Fixes that land at the same time are grouped into one PR per ecosystem.
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /src/affectlog/frontend
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 2
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "fix(deps)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      npm-security:
+        applies-to: security-updates
+        patterns: ["*"]
+      npm-minor-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 2
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "fix(deps)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      pip-security:
+        applies-to: security-updates
+        patterns: ["*"]
+      pip-minor-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: docker
+    directories:
+      - /
+      - /src/affectlog/frontend
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 1
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+      # CI tests on Python 3.11; change the interpreter deliberately, not
+      # through a grouped base-image bump.
+      - dependency-name: "python"
+        update-types: ["version-update:semver-minor"]
+    groups:
+      docker-images:
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 1
+    commit-message:
+      prefix: "chore(ci)"
+    groups:
+      github-actions:
+        patterns: ["*"]
