@@ -7,7 +7,9 @@
 #   backend   — Ruff lint/format gate + pytest (hard gates); Bandit, pip-audit
 #               and mypy run as advisory checks (non-blocking until the baseline
 #               is clean — promote to blocking by removing continue-on-error).
-#   frontend  — install, lint, type-check and production build of the Vite app.
+#   frontend  — install, lint, type-check, production-scope dependency audit,
+#               security tests and production build of the Vite app (all
+#               blocking).
 #   images    — on main / tags only: publish container images to GHCR by
 #               invoking the reusable Container Images workflow (docker.yml).
 #   deploy    — on version tags only: roll the published images out to the
@@ -159,13 +161,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint (advisory)
+      # Blocking. Violations that predate the flat config are recorded in
+      # eslint-suppressions.json; any new violation fails the job.
+      - name: Lint
         run: npm run lint
-        continue-on-error: true
 
-      - name: Type-check (advisory)
+      - name: Type-check
         run: npm run typecheck
-        continue-on-error: true
+
+      # Blocking for the production dependency surface only. Dev/build-time
+      # advisories remain visible through Dependabot alerts and `npm audit`.
+      - name: Dependency audit (production scope)
+        run: npm audit --omit=dev --audit-level=high
 
       - name: Same-origin navigation tests
         run: npm run test:security
