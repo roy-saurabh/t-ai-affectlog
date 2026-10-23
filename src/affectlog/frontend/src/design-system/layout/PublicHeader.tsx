@@ -241,6 +241,12 @@ export function PublicHeader() {
     timerRef.current = setTimeout(() => setActiveMenu(null), 120);
   }
 
+  // Click (and Enter/Space) toggles a menu, so it can be opened without a pointer.
+  function toggleMenu(key: string) {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setActiveMenu((current) => (current === key ? null : key));
+  }
+
   return (
     <>
       {/* Skip to content */}
@@ -305,6 +311,7 @@ export function PublicHeader() {
                   aria-expanded={activeMenu === menu.key}
                   aria-haspopup="true"
                   id={`nav-${menu.key}`}
+                  onClick={() => toggleMenu(menu.key)}
                 >
                   {menu.label}
                   <ChevronDown

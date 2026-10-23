@@ -133,6 +133,8 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "ARG", "PTH"]
+# N803/N806: numerical code follows the scikit-learn/NumPy convention of an
+# uppercase X for feature matrices (arguments and locals derived from them).
 ignore = ["E501", "B008", "N806", "N803"]
 
 [tool.mypy]
