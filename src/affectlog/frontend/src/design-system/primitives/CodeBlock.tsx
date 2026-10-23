@@ -24,6 +24,16 @@ const DEFAULT_COLORS: Record<string, string> = {
   curl: "#FCD34D",
 };
 
+/** Key each line by its text plus an occurrence count, so repeated lines stay unique. */
+function withStableKeys(lines: CodeLine[]): Array<CodeLine & { key: string }> {
+  const seen = new Map<string, number>();
+  return lines.map((line) => {
+    const occurrence = seen.get(line.text) ?? 0;
+    seen.set(line.text, occurrence + 1);
+    return { ...line, key: `${line.text}#${occurrence}` };
+  });
+}
+
 function autoColor(text: string): string {
   const first = text.trimStart().split(" ")[0];
   if (first.startsWith("#")) return "#475569";
@@ -36,13 +46,14 @@ export function CodeBlock({ lines, label, className, copyable = true }: CodeBloc
   const plainText = lines.map((l) => l.text).join("\n");
 
   async function handleCopy() {
-    try {
-      await navigator.clipboard.writeText(plainText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (_) {
-      // clipboard not available
-    }
+    // The Clipboard API is missing in insecure contexts and may reject when permission is denied.
+    const written = await navigator.clipboard?.writeText(plainText).then(
+      () => true,
+      () => false,
+    );
+    if (!written) return;
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   }
 
   return (
@@ -84,9 +95,9 @@ export function CodeBlock({ lines, label, className, copyable = true }: CodeBloc
 
       <div className="p-4 md:p-5 overflow-x-auto">
         <pre className="font-mono text-sm leading-relaxed whitespace-pre" aria-label={label ?? "Code block"}>
-          {lines.map((line, i) => (
+          {withStableKeys(lines).map((line) => (
             <span
-              key={i}
+              key={line.key}
               className="block"
               style={{ color: line.color ?? autoColor(line.text) }}
             >

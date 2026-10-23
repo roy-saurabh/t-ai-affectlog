@@ -4,7 +4,6 @@ import { getStepHelp, type StepHelp } from "../../content/wizardHelp";
 
 interface ContextualHelpPanelProps {
   step: number;
-  activeAnalysisId?: string;
 }
 
 function HelpSection({ title, content }: { title: string; content: string }) {

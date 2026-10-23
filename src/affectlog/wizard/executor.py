@@ -11,7 +11,7 @@ import logging
 import socket
 import ssl
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from urllib.parse import urlparse
 
 from affectlog.config import get_settings
@@ -26,6 +26,9 @@ from affectlog.wizard.schemas import (
     WizardRunStatusResponse,
 )
 from affectlog.wizard.validator import validate_plan
+
+if TYPE_CHECKING:
+    from affectlog.capabilities.analyses import AnalysisDefinition
 
 log = logging.getLogger(__name__)
 
@@ -50,59 +53,71 @@ def _s(v: object) -> str:
 _WIZARD_RUNS: dict[str, dict[str, Any]] = {}
 
 
+def _resolve_public_ip(host: str, port: int) -> str:
+    """Resolve hostname → IP once and validate before connecting (SSRF guard)."""
+    try:
+        addrinfos = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
+        ip_str = str(addrinfos[0][4][0])
+        ip = ipaddress.ip_address(ip_str)
+    except (OSError, IndexError, ValueError) as exc:
+        raise ValueError(f"Could not resolve dataset URL hostname: {exc}") from exc
+
+    if any(ip in net for net in _PRIVATE_NETWORKS):
+        raise ValueError("Dataset URL resolves to a private or reserved address.")
+    return ip_str
+
+
+def _open_pinned_connection(
+    scheme: str, host: str, ip_str: str, port: int
+) -> http.client.HTTPConnection:
+    # Connect directly to the pre-resolved IP — no DNS re-lookup at request time.
+    # HTTPConnection is constructed with ip_str (validated IP) to prevent SSRF.
+    # For HTTPS, TLS is established via wrap_socket with server_hostname=host for
+    # correct SNI / cert verification; the ready socket is then injected so
+    # http.client never performs its own DNS lookup or TLS setup.
+    raw_sock = socket.create_connection((ip_str, port), timeout=60)
+    conn = http.client.HTTPConnection(ip_str, port=port, timeout=60)
+    if scheme == "https":
+        ctx = ssl.create_default_context()
+        conn.sock = ctx.wrap_socket(raw_sock, server_hostname=host)
+    else:
+        conn.sock = raw_sock
+    return conn
+
+
+def _download_dataset(dataset_url: str, run_dir: Path) -> Path:
+    parsed = urlparse(dataset_url)
+    host = parsed.hostname or ""
+    port = parsed.port or (443 if parsed.scheme == "https" else 80)
+    ip_str = _resolve_public_ip(host, port)
+
+    path_qs = (parsed.path or "/") + (f"?{parsed.query}" if parsed.query else "")
+    suffix = Path(parsed.path).suffix or ".csv"
+    dest = run_dir / f"input{suffix}"
+
+    conn: http.client.HTTPConnection | None = None
+    try:
+        conn = _open_pinned_connection(parsed.scheme, host, ip_str, port)
+        conn.request(
+            "GET",
+            path_qs,
+            headers={"Host": host, "User-Agent": "AffectLog-Executor/1.0"},
+        )
+        resp = conn.getresponse()
+        if resp.status != 200:
+            raise ValueError(f"Remote server returned HTTP {resp.status}.")
+        dest.write_bytes(resp.read())
+    finally:
+        if conn is not None:
+            with contextlib.suppress(Exception):
+                conn.close()
+    return dest
+
+
 def _resolve_dataset_path(dataset_path: str, run_dir: Path) -> Path:
     """Return a local Path for dataset_path, downloading first if it is a URL."""
-    parsed = urlparse(dataset_path)
-    if parsed.scheme in ("http", "https"):
-        host = parsed.hostname or ""
-        port = parsed.port or (443 if parsed.scheme == "https" else 80)
-
-        # Resolve hostname → IP once and validate before connecting (SSRF guard)
-        try:
-            addrinfos = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
-            ip_str = str(addrinfos[0][4][0])
-            ip = ipaddress.ip_address(ip_str)
-        except (OSError, IndexError, ValueError) as exc:
-            raise ValueError(f"Could not resolve dataset URL hostname: {exc}") from exc
-
-        if any(ip in net for net in _PRIVATE_NETWORKS):
-            raise ValueError("Dataset URL resolves to a private or reserved address.")
-
-        path_qs = (parsed.path or "/") + (f"?{parsed.query}" if parsed.query else "")
-        suffix = Path(parsed.path).suffix or ".csv"
-        dest = run_dir / f"input{suffix}"
-
-        # Connect directly to the pre-resolved IP — no DNS re-lookup at request time.
-        # HTTPConnection is constructed with ip_str (validated IP) to prevent SSRF.
-        # For HTTPS, TLS is established via wrap_socket with server_hostname=host for
-        # correct SNI / cert verification; the ready socket is then injected so
-        # http.client never performs its own DNS lookup or TLS setup.
-        conn: http.client.HTTPConnection | None = None
-        try:
-            raw_sock = socket.create_connection((ip_str, port), timeout=60)
-            if parsed.scheme == "https":
-                ctx = ssl.create_default_context()
-                tls_sock = ctx.wrap_socket(raw_sock, server_hostname=host)
-                conn = http.client.HTTPConnection(ip_str, port=port, timeout=60)
-                conn.sock = tls_sock
-            else:
-                conn = http.client.HTTPConnection(ip_str, port=port, timeout=60)
-                conn.sock = raw_sock
-            conn.request(
-                "GET",
-                path_qs,
-                headers={"Host": host, "User-Agent": "AffectLog-Executor/1.0"},
-            )
-            resp = conn.getresponse()
-            if resp.status != 200:
-                raise ValueError(f"Remote server returned HTTP {resp.status}.")
-            dest.write_bytes(resp.read())
-        finally:
-            if conn is not None:
-                with contextlib.suppress(Exception):
-                    conn.close()
-        return dest
-
+    if urlparse(dataset_path).scheme in ("http", "https"):
+        return _download_dataset(dataset_path, run_dir)
     return resolve_safe_path(Path.cwd(), dataset_path)
 
 
@@ -205,11 +220,6 @@ def _run_tabular(wizard_run_id: str, plan: WizardPlan, input_path: Path, run_dir
         row_count=row_count,
         privacy_report=privacy_report,
         metrics=metrics,
-        stages=[
-            {"name": "schema_profiling"},
-            {"name": "statistics"},
-            {"name": "compliance_export"},
-        ],
         artifacts={"schema_profile": str(schema_path), "metrics": str(metrics_path)},
         source_platform="Generic Tabular",
     )
@@ -452,6 +462,46 @@ _ARTIFACT_META: dict[str, tuple[str, str, str]] = {
 _HIDDEN_ARTIFACTS = {"wizard_meta.json", "invalid_rows.jsonl"}
 
 
+def _unlock_suggestion(analysis: AnalysisDefinition, plan: WizardPlan) -> str | None:
+    """Explain which missing input keeps an unselected analysis from running, if any."""
+    if analysis.requires_model and not plan.inputs.get("model_reference"):
+        return f"To enable {analysis.label}: add a compatible pre-trained model artifact or HTTP endpoint."
+    if analysis.requires_group_field and not plan.field_mappings.get("group_field"):
+        return f"To enable {analysis.label}: provide an ethically appropriate group/segment field and confirm lawful use."
+    if analysis.requires_predictions and not plan.inputs.get("predictions_reference"):
+        return (
+            f"To enable {analysis.label}: upload ranked predictions and ground-truth interactions."
+        )
+    return None
+
+
+def _artifact_entry(f: Path) -> OutputContractArtifact:
+    meta = _ARTIFACT_META.get(f.name)
+    if meta:
+        desc, fmt, privacy = meta
+    else:
+        desc = f"Pipeline artifact ({f.name})."
+        fmt = f.suffix.lstrip(".") or "bin"
+        privacy = "public"
+    return OutputContractArtifact(
+        filename=f.name,
+        format=fmt,
+        description=desc,
+        privacy_level=privacy,
+    )
+
+
+def _list_run_artifacts(run_dir: Path) -> list[OutputContractArtifact]:
+    """Build the artifact list from what actually exists on disk."""
+    if not run_dir.exists():
+        return []
+    return [
+        _artifact_entry(f)
+        for f in sorted(run_dir.iterdir())
+        if f.is_file() and f.name not in _HIDDEN_ARTIFACTS
+    ]
+
+
 def get_run_results(wizard_run_id: str) -> WizardRunResultsResponse | None:
     try:
         validate_run_id(wizard_run_id)
@@ -475,46 +525,15 @@ def get_run_results(wizard_run_id: str) -> WizardRunResultsResponse | None:
 
     developer_suggestions: list[str] = []
     for a in ANALYSES:
-        if a.id not in plan.selected_analyses:
-            if a.requires_model and not plan.inputs.get("model_reference"):
-                not_analyzed.append(a.label)
-                developer_suggestions.append(
-                    f"To enable {a.label}: add a compatible pre-trained model artifact or HTTP endpoint."
-                )
-            elif a.requires_group_field and not plan.field_mappings.get("group_field"):
-                not_analyzed.append(a.label)
-                developer_suggestions.append(
-                    f"To enable {a.label}: provide an ethically appropriate group/segment field and confirm lawful use."
-                )
-            elif a.requires_predictions and not plan.inputs.get("predictions_reference"):
-                not_analyzed.append(a.label)
-                developer_suggestions.append(
-                    f"To enable {a.label}: upload ranked predictions and ground-truth interactions."
-                )
+        if a.id in plan.selected_analyses:
+            continue
+        suggestion = _unlock_suggestion(a, plan)
+        if suggestion:
+            not_analyzed.append(a.label)
+            developer_suggestions.append(suggestion)
 
-    # Build artifact list from what actually exists on disk
     run_dir = resolve_safe_path(Path(get_settings().runs_dir), wizard_run_id)
-    artifacts: list[OutputContractArtifact] = []
-    if run_dir.exists():
-        for f in sorted(run_dir.iterdir()):
-            if not f.is_file() or f.name in _HIDDEN_ARTIFACTS:
-                continue
-            meta = _ARTIFACT_META.get(f.name)
-            if meta:
-                desc, fmt, privacy = meta
-            else:
-                ext = f.suffix.lstrip(".")
-                desc = f"Pipeline artifact ({f.name})."
-                fmt = ext or "bin"
-                privacy = "public"
-            artifacts.append(
-                OutputContractArtifact(
-                    filename=f.name,
-                    format=fmt,
-                    description=desc,
-                    privacy_level=privacy,
-                )
-            )
+    artifacts = _list_run_artifacts(run_dir)
 
     key_findings = [
         f"Assessment completed for {len(analyzed)} selected analyses.",

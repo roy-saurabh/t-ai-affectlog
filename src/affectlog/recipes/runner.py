@@ -10,6 +10,8 @@ Stages:
 
 from __future__ import annotations
 
+import csv
+import io
 import json
 import logging
 from pathlib import Path
@@ -39,6 +41,97 @@ from affectlog.transform.maskott_csv_to_xapi import convert_maskott_csv_to_xapi
 from affectlog.transform.verb_mapper import VerbMapper
 
 logger = logging.getLogger(__name__)
+
+
+def _extract_json_statements(input_path: Path, normalized_path: Path) -> int:
+    """Convert a JSON array/object (e.g. becomino {"statements": [...]}) to JSONL."""
+    with input_path.open(encoding="utf-8") as jf:
+        raw = json.load(jf)
+    statements = raw.get("statements", raw) if isinstance(raw, dict) else raw
+    count = 0
+    with normalized_path.open("w", encoding="utf-8") as out:
+        for stmt in statements:
+            out.write(json.dumps(stmt) + "\n")
+            count += 1
+    return count
+
+
+def _write_metrics_csv(metrics: dict[str, Any], csv_path: Path) -> None:
+    """Write a flat CSV of the scalar metric values."""
+    csv_buf = io.StringIO()
+    writer = csv.writer(csv_buf)
+    writer.writerow(["metric", "value"])
+    for k, v in metrics.items():
+        if isinstance(v, (int, float, str, bool, type(None))):
+            writer.writerow([k, v])
+    csv_path.write_text(csv_buf.getvalue(), encoding="utf-8")
+
+
+def _export_compliance_artifacts(
+    ctx: RunContext,
+    store: ArtifactStore,
+    recipe: Recipe,
+    *,
+    input_path: Path,
+    total_rows: int,
+    privacy_report: dict[str, Any],
+    metrics: dict[str, Any],
+    temp_stats: dict[str, Any],
+    cfg_hash: str,
+) -> None:
+    run_dir = ctx.run_dir
+
+    if recipe.compliance.export_field_inventory:
+        fi_path = run_dir / "field_inventory.csv"
+        export_field_inventory(fi_path)
+        ctx.add_artifact("field_inventory", fi_path)
+
+    if recipe.compliance.export_data_card:
+        card = build_data_card(
+            dataset_name=recipe.source_platform,
+            schema_fields=MASKOTT_REQUIRED_COLUMNS,
+            row_count=total_rows,
+            privacy_report=privacy_report,
+            descriptive_stats={
+                "min_timestamp": temp_stats.get("min_timestamp", ""),
+                "max_timestamp": temp_stats.get("max_timestamp", ""),
+            },
+            recipe_name=recipe.name,
+            run_id=ctx.run_id,
+        )
+        dc_path = store.write_json("data_card.json", card)
+        ctx.add_artifact("data_card", dc_path)
+
+    if recipe.compliance.export_jsonld:
+        graph = build_compliance_graph(
+            run_id=ctx.run_id,
+            dataset_name=recipe.source_platform,
+            fields=MASKOTT_REQUIRED_COLUMNS,
+            privacy_report=privacy_report,
+            metrics=metrics,
+            stages=[st.to_dict() for st in ctx.stages],
+            config_hash=cfg_hash,
+        )
+        jld_path = run_dir / "compliance_graph.jsonld"
+        export_jsonld(graph, jld_path)
+        ctx.add_artifact("compliance_graph", jld_path)
+
+    if recipe.compliance.export_sop:
+        sop_text = build_sop(
+            run_id=ctx.run_id,
+            recipe_name=recipe.name,
+            input_path=str(input_path),
+            config_hash=cfg_hash,
+            schema_fields=MASKOTT_REQUIRED_COLUMNS,
+            row_count=total_rows,
+            privacy_report=privacy_report,
+            metrics=metrics,
+            artifacts=ctx.artifacts,
+            source_platform=recipe.source_platform,
+        )
+        sop_path = run_dir / "SOP.md"
+        export_sop(sop_text, sop_path)
+        ctx.add_artifact("sop", sop_path)
 
 
 def run_audit(
@@ -125,16 +218,7 @@ def run_audit(
         tr_path = store.write_json("transform_report.json", summary)
         ctx.add_artifact("transform_report", tr_path)
     elif ext == ".json":
-        # Convert JSON array/object (e.g. becomino {"statements": [...]}) → JSONL
-        normalized_path = run_dir / "normalized.jsonl"
-        with input_path.open(encoding="utf-8") as jf:
-            raw = json.load(jf)
-        statements = raw.get("statements", raw) if isinstance(raw, dict) else raw
-        count = 0
-        with normalized_path.open("w", encoding="utf-8") as out:
-            for stmt in statements:
-                out.write(json.dumps(stmt) + "\n")
-                count += 1
+        count = _extract_json_statements(input_path, normalized_path)
         s.record_count_in = count
         s.record_count_out = count
         tr_path = store.write_json(
@@ -213,18 +297,8 @@ def run_audit(
     metrics_path = store.write_json("metrics.json", metrics_combined)
     ctx.add_artifact("metrics", metrics_path)
 
-    # Write flat CSV of key metric values
-    import csv
-    import io
-
-    csv_buf = io.StringIO()
-    writer = csv.writer(csv_buf)
-    writer.writerow(["metric", "value"])
-    for k, v in metrics_combined.items():
-        if isinstance(v, (int, float, str, bool, type(None))):
-            writer.writerow([k, v])
     csv_path = run_dir / "metrics.csv"
-    csv_path.write_text(csv_buf.getvalue(), encoding="utf-8")
+    _write_metrics_csv(metrics_combined, csv_path)
     ctx.add_artifact("metrics_csv", csv_path)
 
     s.finish("ok")
@@ -232,58 +306,17 @@ def run_audit(
     # ── Stage: compliance_map / export_artifacts ─────────────────────
     s = ctx.new_stage("compliance_map")
 
-    if recipe.compliance.export_field_inventory:
-        fi_path = run_dir / "field_inventory.csv"
-        export_field_inventory(fi_path)
-        ctx.add_artifact("field_inventory", fi_path)
-
-    if recipe.compliance.export_data_card:
-        card = build_data_card(
-            dataset_name=recipe.source_platform,
-            schema_fields=MASKOTT_REQUIRED_COLUMNS,
-            row_count=total_rows,
-            privacy_report=privacy_report,
-            descriptive_stats={
-                "min_timestamp": temp_stats.get("min_timestamp", ""),
-                "max_timestamp": temp_stats.get("max_timestamp", ""),
-            },
-            recipe_name=recipe.name,
-            run_id=ctx.run_id,
-        )
-        dc_path = store.write_json("data_card.json", card)
-        ctx.add_artifact("data_card", dc_path)
-
-    if recipe.compliance.export_jsonld:
-        graph = build_compliance_graph(
-            run_id=ctx.run_id,
-            dataset_name=recipe.source_platform,
-            fields=MASKOTT_REQUIRED_COLUMNS,
-            privacy_report=privacy_report,
-            metrics=metrics_combined,
-            stages=[st.to_dict() for st in ctx.stages],
-            config_hash=cfg_hash,
-        )
-        jld_path = run_dir / "compliance_graph.jsonld"
-        export_jsonld(graph, jld_path)
-        ctx.add_artifact("compliance_graph", jld_path)
-
-    if recipe.compliance.export_sop:
-        sop_text = build_sop(
-            run_id=ctx.run_id,
-            recipe_name=recipe.name,
-            input_path=str(input_path),
-            config_hash=cfg_hash,
-            schema_fields=MASKOTT_REQUIRED_COLUMNS,
-            row_count=total_rows,
-            privacy_report=privacy_report,
-            metrics=metrics_combined,
-            stages=[st.to_dict() for st in ctx.stages],
-            artifacts=ctx.artifacts,
-            source_platform=recipe.source_platform,
-        )
-        sop_path = run_dir / "SOP.md"
-        export_sop(sop_text, sop_path)
-        ctx.add_artifact("sop", sop_path)
+    _export_compliance_artifacts(
+        ctx,
+        store,
+        recipe,
+        input_path=input_path,
+        total_rows=total_rows,
+        privacy_report=privacy_report,
+        metrics=metrics_combined,
+        temp_stats=temp_stats,
+        cfg_hash=cfg_hash,
+    )
 
     annex = build_annex_iv(ctx.run_id)
     ann_path = run_dir / "eu_ai_act_annex_iv.json"

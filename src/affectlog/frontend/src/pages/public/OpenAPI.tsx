@@ -1,7 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Code2, ArrowRight, ExternalLink, Terminal, Lock, Activity, Database, Cpu, FileText, Share2 } from "lucide-react";
+import { Code2, ExternalLink, Terminal, Lock, Database, Cpu, FileText, Share2 } from "lucide-react";
 import { PublicHeader } from "../../components/public/PublicHeader";
 import { PublicFooter } from "../../components/public/PublicFooter";
 import { GridBackground, GlowOrb } from "../../design-system/primitives/GridBackground";

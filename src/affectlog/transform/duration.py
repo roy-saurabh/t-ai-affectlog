@@ -19,7 +19,7 @@ def duration_to_iso8601(value: object) -> str | None:
     if not s or s.lower() in ("null", "none", "na", "nan"):
         return None
     # Already ISO 8601?
-    if s.startswith("PT") or s.startswith("P"):
+    if s.startswith("P"):
         return s
     # Numeric string
     try:

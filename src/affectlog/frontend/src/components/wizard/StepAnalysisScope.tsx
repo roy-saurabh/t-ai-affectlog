@@ -1,10 +1,9 @@
 import React from "react";
 import { CheckSquare, Square, ChevronRight, Clock } from "lucide-react";
 import clsx from "clsx";
-import type { ScopeItem } from "../../api/wizard";
+import type { RecommendResponse, ScopeItem } from "../../api/wizard";
 import { ScopeBadge } from "./ScopeBadge";
 import { UnsupportedAnalysisCard } from "./UnsupportedAnalysisCard";
-import type { RecommendResponse } from "../../api/wizard";
 
 interface StepAnalysisScopeProps {
   recommendation: RecommendResponse | null;

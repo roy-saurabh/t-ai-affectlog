@@ -11,6 +11,41 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 
+_WRAPPER_KEYS = ("statements", "events", "data", "records", "items")
+
+
+def _records_from_object(parsed: dict[str, Any]) -> list[Any]:
+    """Unwrap an object that holds an event array; otherwise treat it as a single record."""
+    for key in _WRAPPER_KEYS:
+        value = parsed.get(key)
+        if isinstance(value, list):
+            return value[:10] or [parsed]
+    return [parsed]
+
+
+def _records_from_json_lines(raw: str) -> list[Any]:
+    records: list[Any] = []
+    for line in raw.split("\n")[:10]:
+        line = line.strip()
+        if line:
+            with contextlib.suppress(json.JSONDecodeError):
+                records.append(json.loads(line))
+    return records
+
+
+def _parse_sample_records(raw: str) -> list[Any]:
+    """Parse a JSON array, a single (possibly wrapped) object, or JSONL — in that order."""
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        return _records_from_json_lines(raw)
+    if isinstance(parsed, list):
+        return parsed[:10]
+    if isinstance(parsed, dict):
+        return _records_from_object(parsed)
+    return []
+
+
 def infer_json_schema(path: Path | str) -> dict[str, Any]:
     """
     Load a JSON or JSONL sample and infer key structure.
@@ -21,29 +56,7 @@ def infer_json_schema(path: Path | str) -> dict[str, Any]:
         logger.warning("Not a regular file: %s", path)
         return {}
     raw = path.read_text(encoding="utf-8").strip()
-
-    records: list[dict[str, Any]] = []
-
-    # Try JSON array first, then single object, then JSONL
-    try:
-        parsed = json.loads(raw)
-        if isinstance(parsed, list):
-            records = parsed[:10]
-        elif isinstance(parsed, dict):
-            # May be wrapped — look for event arrays
-            for key in ("statements", "events", "data", "records", "items"):
-                if key in parsed and isinstance(parsed[key], list):
-                    records = parsed[key][:10]
-                    break
-            if not records:
-                records = [parsed]
-    except json.JSONDecodeError:
-        # Try JSONL
-        for line in raw.split("\n")[:10]:
-            line = line.strip()
-            if line:
-                with contextlib.suppress(json.JSONDecodeError):
-                    records.append(json.loads(line))
+    records = _parse_sample_records(raw)
 
     if not records:
         logger.warning("No parseable records found in %s", path)

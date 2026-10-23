@@ -21,12 +21,9 @@ async function request<T>(
     ...options,
   });
   if (!res.ok) {
-    let detail = `HTTP ${res.status}`;
-    try {
-      const body = await res.json();
-      detail = body.detail ?? detail;
-    } catch (_) { /* ignore */ }
-    throw new ApiError(res.status, detail);
+    // Error bodies are not always JSON; fall back to the HTTP status in that case.
+    const body = await res.json().catch(() => null);
+    throw new ApiError(res.status, body?.detail ?? `HTTP ${res.status}`);
   }
   if (res.status === 204) return undefined as T;
   return res.json() as Promise<T>;

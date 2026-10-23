@@ -44,13 +44,13 @@ export default function ResetPassword() {
           <form onSubmit={handleSubmit} className="bg-slate-900 border border-slate-700 rounded-2xl p-8 space-y-5">
             {error && <div className="bg-red-950/50 border border-red-800 text-red-300 px-4 py-3 rounded-lg text-sm">{error}</div>}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">New password (min 12 chars)</label>
-              <input type="password" required minLength={12} value={newPassword} onChange={(e) => setNewPassword(e.target.value)}
+              <label htmlFor="reset-password" className="block text-sm font-medium text-slate-300 mb-1.5">New password (min 12 chars)</label>
+              <input id="reset-password" type="password" required minLength={12} value={newPassword} onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full bg-slate-800 border border-slate-600 focus:border-indigo-500 text-white rounded-lg px-4 py-3 text-sm outline-none" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Confirm password</label>
-              <input type="password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+              <label htmlFor="reset-password-confirm" className="block text-sm font-medium text-slate-300 mb-1.5">Confirm password</label>
+              <input id="reset-password-confirm" type="password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full bg-slate-800 border border-slate-600 focus:border-indigo-500 text-white rounded-lg px-4 py-3 text-sm outline-none" />
             </div>
             <button type="submit" disabled={loading}

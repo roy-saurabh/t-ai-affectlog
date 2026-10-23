@@ -43,7 +43,7 @@ export function StepRunReview({ plan, validationPassed, onRun, running }: StepRu
         {running ? (
           <>
             <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-            Starting assessment…
+            <span>Starting assessment…</span>
           </>
         ) : (
           <>

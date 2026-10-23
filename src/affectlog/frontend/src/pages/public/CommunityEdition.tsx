@@ -157,6 +157,20 @@ function WhatIsIncluded() {
   );
 }
 
+function EditionSupport({
+  value,
+  checkClassName,
+  textClassName,
+}: {
+  value: boolean | string;
+  checkClassName: string;
+  textClassName: string;
+}) {
+  if (value === true) return <CheckCircle2 size={15} className={`${checkClassName} mx-auto`} />;
+  if (value === false) return <span className="text-slate-600">—</span>;
+  return <span className={`text-xs ${textClassName}`}>{value}</span>;
+}
+
 function ComparisonTable() {
   const rows = [
     { feature: "Dataset audit workflows",         community: true,               managed: true  },
@@ -202,14 +216,10 @@ function ComparisonTable() {
               >
                 <div className="text-slate-300">{row.feature}</div>
                 <div className="text-center">
-                  {row.community === true   ? <CheckCircle2 size={15} className="text-[#67E8F9] mx-auto" />
-                   : row.community === false ? <span className="text-slate-600">—</span>
-                   : <span className="text-xs text-slate-400">{String(row.community)}</span>}
+                  <EditionSupport value={row.community} checkClassName="text-[#67E8F9]" textClassName="text-slate-400" />
                 </div>
                 <div className="text-center">
-                  {row.managed === true   ? <CheckCircle2 size={15} className="text-[#C4B5FD] mx-auto" />
-                   : row.managed === false ? <span className="text-slate-600">—</span>
-                   : <span className="text-xs text-[#C4B5FD]">{String(row.managed)}</span>}
+                  <EditionSupport value={row.managed} checkClassName="text-[#C4B5FD]" textClassName="text-[#C4B5FD]" />
                 </div>
               </div>
             ))}
@@ -285,12 +295,12 @@ function ContributionSection() {
                     className="block rounded-2xl p-5 border transition-all duration-200 hover:-translate-y-0.5 group"
                     style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                     onMouseEnter={(e) => {
-                      const el = e.currentTarget as HTMLAnchorElement;
+                      const el = e.currentTarget;
                       el.style.borderColor = "rgba(103,232,249,0.25)";
                       el.style.background  = "rgba(103,232,249,0.04)";
                     }}
                     onMouseLeave={(e) => {
-                      const el = e.currentTarget as HTMLAnchorElement;
+                      const el = e.currentTarget;
                       el.style.borderColor = "rgba(203,213,225,0.10)";
                       el.style.background  = "rgba(255,255,255,0.025)";
                     }}

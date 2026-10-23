@@ -25,11 +25,31 @@ const SCOPE_MATRIX: ScopeItem[] = [
   { label: "Cross-dataset Join",status: "out-of-scope" },
 ];
 
-const STATUS_CONFIG: Record<string, { color: string; label: string; dot: string }> = {
-  "available":    { color: "#86EFAC", label: "Available",     dot: "#86EFAC" },
-  "needs-input":  { color: "#FCD34D", label: "Needs input",   dot: "#FCD34D" },
-  "out-of-scope": { color: "#FCA5A5", label: "Out of scope",  dot: "#FCA5A5" },
+const STATUS_CONFIG: Record<string, { color: string; label: string; dot: string; glyph: string }> = {
+  "available":    { color: "#86EFAC", label: "Available",     dot: "#86EFAC", glyph: "✓" },
+  "needs-input":  { color: "#FCD34D", label: "Needs input",   dot: "#FCD34D", glyph: "?" },
+  "out-of-scope": { color: "#FCA5A5", label: "Out of scope",  dot: "#FCA5A5", glyph: "✗" },
 };
+
+type Step = (typeof STEPS)[number];
+
+const STEP_STYLE = {
+  active:  { fill: "rgba(103,232,249,0.18)", stroke: "#67E8F9",                mark: "#67E8F9", label: "#F8FAFC" },
+  done:    { fill: "rgba(134,239,172,0.14)", stroke: "#86EFAC",                mark: "#86EFAC", label: "#86EFAC" },
+  pending: { fill: "rgba(15,23,42,0.72)",    stroke: "rgba(203,213,225,0.18)", mark: "#6F7D96", label: "#6F7D96" },
+};
+
+function stepStyle(step: Step) {
+  if (step.active) return STEP_STYLE.active;
+  if (step.done) return STEP_STYLE.done;
+  return STEP_STYLE.pending;
+}
+
+function stepGlyph(step: Step, index: number): string {
+  if (step.done) return "✓";
+  if (step.active) return "→";
+  return `${index + 1}`;
+}
 
 function useTick(ms: number, max: number) {
   const [tick, setTick] = useState(0);
@@ -66,6 +86,7 @@ export function GuidedWizardScopeVisual() {
         {/* ── Steps ─────────────────────────────────────────── */}
         {STEPS.map((step, i) => {
           const cy = 54 + i * 56;
+          const style = stepStyle(step);
           return (
             <g key={step.label}>
               {/* Connector */}
@@ -84,38 +105,26 @@ export function GuidedWizardScopeVisual() {
                 cx={55}
                 cy={cy}
                 r={14}
-                fill={
-                  step.active
-                    ? "rgba(103,232,249,0.18)"
-                    : step.done
-                    ? "rgba(134,239,172,0.14)"
-                    : "rgba(15,23,42,0.72)"
-                }
-                stroke={
-                  step.active
-                    ? "#67E8F9"
-                    : step.done
-                    ? "#86EFAC"
-                    : "rgba(203,213,225,0.18)"
-                }
+                fill={style.fill}
+                stroke={style.stroke}
                 strokeWidth={step.active ? 1.4 : 1}
               />
               <text
                 x={55}
                 y={cy + 4}
                 textAnchor="middle"
-                fill={step.active ? "#67E8F9" : step.done ? "#86EFAC" : "#6F7D96"}
+                fill={style.mark}
                 fontSize="9"
                 fontFamily="var(--font-mono)"
                 fontWeight="700"
               >
-                {step.done ? "✓" : step.active ? "→" : `${i + 1}`}
+                {stepGlyph(step, i)}
               </text>
               {/* Step label */}
               <text
                 x={80}
                 y={cy + 4}
-                fill={step.active ? "#F8FAFC" : step.done ? "#86EFAC" : "#6F7D96"}
+                fill={style.label}
                 fontSize="9.5"
                 fontFamily="var(--font-sans)"
                 fontWeight={step.active ? "600" : "400"}
@@ -163,7 +172,7 @@ export function GuidedWizardScopeVisual() {
                 {item.label}
               </text>
               <text x={595} y={row_y + 5} textAnchor="end" fill={cfg.color} fontSize="8.5" fontFamily="var(--font-mono)" opacity="0.70">
-                {item.status === "available" ? "✓" : item.status === "needs-input" ? "?" : "✗"}
+                {cfg.glyph}
               </text>
             </g>
           );

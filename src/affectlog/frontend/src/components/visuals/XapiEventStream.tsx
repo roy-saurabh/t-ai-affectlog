@@ -44,7 +44,7 @@ export function XapiEventStream() {
       <div className="space-y-1.5">
         {EVENTS.map((ev, i) => (
           <motion.div
-            key={i}
+            key={`${ev.actor}-${ev.t}`}
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.35, delay: 0.2 + i * 0.15 }}

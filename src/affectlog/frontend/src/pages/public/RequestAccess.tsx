@@ -49,6 +49,15 @@ const INIT: FormData = {
   consent: false,
 };
 
+/** Indicator colours for a completed, current, or upcoming form step. */
+function stepIndicatorStyle(index: number, current: number): React.CSSProperties {
+  if (index < current) return { background: "#67E8F9", border: "none", color: "#67E8F9" };
+  if (index === current) {
+    return { background: "rgba(103,232,249,0.15)", border: "1px solid #67E8F9", color: "#67E8F9" };
+  }
+  return { background: "rgba(203,213,225,0.10)", border: "1px solid rgba(203,213,225,0.20)", color: "#475569" };
+}
+
 const inputCls = "input";
 const labelCls = "block text-sm font-medium text-slate-300 mb-2";
 
@@ -112,11 +121,7 @@ export default function RequestAccess() {
                         <div className="flex items-center gap-2">
                           <div
                             className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all"
-                            style={{
-                              background: i < stepIndex ? "#67E8F9" : i === stepIndex ? "rgba(103,232,249,0.15)" : "rgba(203,213,225,0.10)",
-                              border: i === stepIndex ? "1px solid #67E8F9" : i < stepIndex ? "none" : "1px solid rgba(203,213,225,0.20)",
-                              color: i <= stepIndex ? "#67E8F9" : "#475569",
-                            }}
+                            style={stepIndicatorStyle(i, stepIndex)}
                           >
                             {i < stepIndex ? <CheckCircle2 size={12} /> : i + 1}
                           </div>

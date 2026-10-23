@@ -41,8 +41,8 @@ export default function ForgotPassword() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 <p className="text-slate-400 text-sm">Enter your email and we'll send a reset link if your account exists.</p>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1.5">Email address</label>
-                  <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                  <label htmlFor="forgot-password-email" className="block text-sm font-medium text-slate-300 mb-1.5">Email address</label>
+                  <input id="forgot-password-email" required type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                     className="w-full bg-slate-800 border border-slate-600 focus:border-indigo-500 text-white rounded-lg px-4 py-3 text-sm outline-none" />
                 </div>
                 <button type="submit" disabled={loading}

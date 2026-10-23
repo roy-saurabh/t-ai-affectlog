@@ -13,6 +13,12 @@ const DATA = [
 
 const chartData = DATA.map((d) => ({ ...d, fullMark: 1.0 }));
 
+function scoreColor(score: number): string {
+  if (score > 0.65) return "#86EFAC";
+  if (score > 0.5) return "#FCD34D";
+  return "#FCA5A5";
+}
+
 export function FairnessMetricRadar() {
   return (
     <motion.div
@@ -52,7 +58,7 @@ export function FairnessMetricRadar() {
           <div key={d.metric} className="text-center">
             <div
               className="text-xs font-semibold"
-              style={{ color: d.score > 0.65 ? "#86EFAC" : d.score > 0.5 ? "#FCD34D" : "#FCA5A5" }}
+              style={{ color: scoreColor(d.score) }}
             >
               {(d.score * 100).toFixed(0)}%
             </div>

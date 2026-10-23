@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  ArrowRight, Database, ShieldCheck, BarChart2, Cpu,
-  FileText, Code2, Layers, Activity, Eye, Share2, Lock,
+  ArrowRight, Database, ShieldCheck, BarChart2,
+  FileText, Activity, Eye, Share2, Lock,
 } from "lucide-react";
 import { PublicHeader } from "../../components/public/PublicHeader";
 import { PublicFooter } from "../../components/public/PublicFooter";

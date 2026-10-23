@@ -60,12 +60,11 @@ async def validate_dataset(
     req: DatasetValidateRequest,
     _request_id: Annotated[str, Depends(get_request_id)],
 ) -> DatasetValidateResponse:
-    from affectlog.exceptions import IngestError
     from affectlog.ingest.validators import validate_schema
 
     try:
         result = validate_schema(req.file_path, req.schema_name)
-    except (IngestError, FileNotFoundError, Exception) as exc:
+    except Exception as exc:
         result = {
             "valid": False,
             "error": str(exc),

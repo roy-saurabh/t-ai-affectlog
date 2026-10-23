@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CheckCircle, XCircle, Loader, AlertTriangle, X } from "lucide-react";
+import { CheckCircle, XCircle, Loader, AlertTriangle } from "lucide-react";
 import clsx from "clsx";
 import type { WizardRunStatusResponse } from "../../api/wizard";
 import { getRunProgress } from "../../api/wizard";
@@ -106,8 +106,8 @@ export function StepRunProgress({ runId, onComplete }: StepRunProgressProps) {
 
       {status?.warnings && status.warnings.length > 0 && (
         <div className="space-y-2">
-          {status.warnings.map((w, i) => (
-            <div key={i} className="flex items-start gap-2.5 rounded-xl border border-amber-500/20 bg-amber-500/5 p-3">
+          {status.warnings.map((w) => (
+            <div key={w} className="flex items-start gap-2.5 rounded-xl border border-amber-500/20 bg-amber-500/5 p-3">
               <AlertTriangle size={12} className="text-amber-400 flex-shrink-0 mt-0.5" />
               <p className="text-xs text-slate-500">{w}</p>
             </div>
@@ -117,8 +117,8 @@ export function StepRunProgress({ runId, onComplete }: StepRunProgressProps) {
 
       {status?.errors && status.errors.length > 0 && (
         <div className="space-y-2">
-          {status.errors.map((e, i) => (
-            <div key={i} className="flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/10 p-3">
+          {status.errors.map((e) => (
+            <div key={e} className="flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/10 p-3">
               <XCircle size={12} className="text-red-400 flex-shrink-0 mt-0.5" />
               <p className="text-xs text-slate-400">{e}</p>
             </div>

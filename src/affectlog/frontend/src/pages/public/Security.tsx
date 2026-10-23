@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  Shield, Lock, CheckCircle2, ArrowRight, ExternalLink,
-  Eye, Key, AlertTriangle, Fingerprint, FileText, Server,
-  Users, Activity, ShieldCheck,
+  Shield, CheckCircle2, ArrowRight, ExternalLink,
+  Eye, Key, AlertTriangle, Fingerprint, FileText,
+  Users, Activity,
 } from "lucide-react";
 import { PublicHeader } from "../../components/public/PublicHeader";
 import { PublicFooter } from "../../components/public/PublicFooter";

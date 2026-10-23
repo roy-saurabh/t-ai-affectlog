@@ -63,8 +63,8 @@ export default function Datasets() {
       {/* Schema selector */}
       <div className="card flex items-center gap-4 flex-wrap">
         <div>
-          <label className="stat-label block mb-1">Validation Schema</label>
-          <select className="select" value={schema} onChange={(e) => setSchema(e.target.value)}>
+          <label htmlFor="dataset-schema" className="stat-label block mb-1">Validation Schema</label>
+          <select id="dataset-schema" className="select" value={schema} onChange={(e) => setSchema(e.target.value)}>
             <option value="maskott_csv_v1">maskott_csv_v1 — Maskott/Tactileo teacher activity</option>
           </select>
         </div>
@@ -79,9 +79,10 @@ export default function Datasets() {
           <FileText size={16} className="text-sky-400" /> CSV Files
           <span className="text-xs text-slate-600 font-normal">({csvFiles.length})</span>
         </h2>
-        {loading ? (
+        {loading && (
           <div className="card py-10 text-center text-slate-500 text-sm">Loading files…</div>
-        ) : csvFiles.length === 0 ? (
+        )}
+        {!loading && csvFiles.length === 0 && (
           <div className="card border-dashed border-slate-600 py-10 text-center">
             <Database size={28} className="mx-auto text-slate-600 mb-2" />
             <p className="text-slate-500 text-sm">No CSV files found.</p>
@@ -89,7 +90,8 @@ export default function Datasets() {
               Place files in <code className="text-slate-500">data/samples/</code> or <code className="text-slate-500">data/raw/</code>
             </p>
           </div>
-        ) : (
+        )}
+        {!loading && csvFiles.length > 0 && (
           <div className="card p-0 overflow-hidden">
             <table className="w-full text-sm">
               <thead>

@@ -1,9 +1,8 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Save, X } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import clsx from "clsx";
 
-import { WizardProgress, WIZARD_STEPS } from "./WizardProgress";
+import { WizardProgress } from "./WizardProgress";
 import { ContextualHelpPanel } from "./ContextualHelpPanel";
 import { WizardSummaryPanel } from "./WizardSummaryPanel";
 import { StepInputSource, type InputMode } from "./StepInputSource";
@@ -32,7 +31,6 @@ import {
   type WizardRunResponse,
   type WizardRunResultsResponse,
   type WizardPlan,
-  type ValidationIssue,
   type UserHints,
 } from "../../api/wizard";
 import { getDefaultPlotsForFormat } from "../../content/plotCatalog";
@@ -40,13 +38,13 @@ import { WIZARD_PRESETS, type WizardPreset } from "../../content/wizardPresets";
 
 const TOTAL_STEPS = 10;
 
-interface PrivacySettings {
+type PrivacySettings = {
   pseudonymise_entities: boolean;
   redact_free_text: boolean;
   suppress_timestamps: boolean;
   raw_export_disabled: boolean;
   privacy_acknowledged: boolean;
-}
+};
 
 export function WizardShell() {
   const navigate = useNavigate();
@@ -140,7 +138,7 @@ export function WizardShell() {
       selected_analyses: selectedAnalyses,
       selected_plots: selectedPlots,
       selected_exports: ["metrics_json", "metrics_csv", "sop_markdown", "audit_manifest_json", "data_card_json"],
-      privacy_settings: privacySettings as unknown as Record<string, unknown>,
+      privacy_settings: privacySettings,
       inputs: {
         dataset_path: datasetPath,
         model_path: modelPath || undefined,
@@ -149,7 +147,7 @@ export function WizardShell() {
         has_probability_output: hasProbabilityOutput,
       },
       purpose: "full_audit",
-      model_context: hasModel ? (modelContext as unknown as Record<string, unknown>) : {},
+      model_context: hasModel ? modelContext : {},
     };
   }
 

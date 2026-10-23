@@ -75,34 +75,34 @@ export default function Register() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Full name *</label>
-              <input required value={form.full_name} onChange={field("full_name")} type="text"
+              <label htmlFor="register-full-name" className="block text-sm font-medium text-slate-300 mb-1.5">Full name *</label>
+              <input id="register-full-name" required value={form.full_name} onChange={field("full_name")} type="text"
                 className="w-full bg-slate-800 border border-slate-600 focus:border-indigo-500 text-white rounded-lg px-4 py-3 text-sm outline-none" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Email address *</label>
-              <input required value={form.email} onChange={field("email")} type="email"
+              <label htmlFor="register-email" className="block text-sm font-medium text-slate-300 mb-1.5">Email address *</label>
+              <input id="register-email" required value={form.email} onChange={field("email")} type="email"
                 className="w-full bg-slate-800 border border-slate-600 focus:border-indigo-500 text-white rounded-lg px-4 py-3 text-sm outline-none" />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Organisation</label>
-            <input value={form.organization} onChange={field("organization")} type="text"
+            <label htmlFor="register-organization" className="block text-sm font-medium text-slate-300 mb-1.5">Organisation</label>
+            <input id="register-organization" value={form.organization} onChange={field("organization")} type="text"
               className="w-full bg-slate-800 border border-slate-600 focus:border-indigo-500 text-white rounded-lg px-4 py-3 text-sm outline-none"
               placeholder="University / Institution / Company" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Your role</label>
-              <input value={form.role_description} onChange={field("role_description")} type="text"
+              <label htmlFor="register-role" className="block text-sm font-medium text-slate-300 mb-1.5">Your role</label>
+              <input id="register-role" value={form.role_description} onChange={field("role_description")} type="text"
                 className="w-full bg-slate-800 border border-slate-600 focus:border-indigo-500 text-white rounded-lg px-4 py-3 text-sm outline-none"
                 placeholder="Researcher / Data Engineer / …" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Requested access profile</label>
-              <select value={form.requested_access_profile} onChange={field("requested_access_profile")}
+              <label htmlFor="register-access-profile" className="block text-sm font-medium text-slate-300 mb-1.5">Requested access profile</label>
+              <select id="register-access-profile" value={form.requested_access_profile} onChange={field("requested_access_profile")}
                 className="w-full bg-slate-800 border border-slate-600 focus:border-indigo-500 text-white rounded-lg px-4 py-3 text-sm outline-none">
                 {ACCESS_PROFILES.map((p) => <option key={p}>{p}</option>)}
               </select>
@@ -110,8 +110,8 @@ export default function Register() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Reason for access</label>
-            <textarea rows={4} value={form.reason_for_access} onChange={field("reason_for_access")}
+            <label htmlFor="register-reason" className="block text-sm font-medium text-slate-300 mb-1.5">Reason for access</label>
+            <textarea id="register-reason" rows={4} value={form.reason_for_access} onChange={field("reason_for_access")}
               className="w-full bg-slate-800 border border-slate-600 focus:border-indigo-500 text-white rounded-lg px-4 py-3 text-sm outline-none resize-none"
               placeholder="Briefly describe your intended use of the platform and the data you plan to assess…" />
           </div>

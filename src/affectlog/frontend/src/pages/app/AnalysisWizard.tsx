@@ -5,6 +5,12 @@ import { listRuns, type WizardRunResponse } from "../../api/wizard";
 import { WizardShell } from "../../components/wizard/WizardShell";
 import { WIZARD_PRESETS } from "../../content/wizardPresets";
 
+function runStatusDot(status: string): string {
+  if (status === "completed") return "bg-emerald-400";
+  if (status === "failed") return "bg-red-400";
+  return "bg-amber-400";
+}
+
 function WizardHome() {
   const navigate = useNavigate();
   const [runs, setRuns] = React.useState<WizardRunResponse[]>([]);
@@ -150,15 +156,15 @@ function WizardHome() {
       {/* Past runs */}
       <div className="space-y-3">
         <p className="text-sm font-semibold text-white">Past assessments</p>
-        {loading ? (
-          <div className="text-xs text-slate-600 animate-pulse">Loading…</div>
-        ) : runs.length === 0 ? (
+        {loading && <div className="text-xs text-slate-600 animate-pulse">Loading…</div>}
+        {!loading && runs.length === 0 && (
           <div className="rounded-xl border border-slate-700/40 bg-slate-800/20 p-8 text-center">
             <Wand2 size={20} className="mx-auto mb-2 text-slate-600" />
             <p className="text-sm text-slate-500">No assessments yet.</p>
             <p className="text-xs text-slate-600 mt-1">Start your first guided assessment above.</p>
           </div>
-        ) : (
+        )}
+        {!loading && runs.length > 0 && (
           <div className="space-y-2">
             {runs.slice(0, 10).map((run) => (
               <button
@@ -168,10 +174,7 @@ function WizardHome() {
                 className="w-full flex items-center gap-4 rounded-xl border border-slate-700/50 bg-slate-800/30 px-4 py-3 text-left hover:border-slate-600/50 hover:bg-slate-800/60 transition-all"
               >
                 <div
-                  className={`h-2 w-2 rounded-full flex-shrink-0 ${
-                    run.status === "completed" ? "bg-emerald-400" :
-                    run.status === "failed" ? "bg-red-400" : "bg-amber-400"
-                  }`}
+                  className={`h-2 w-2 rounded-full flex-shrink-0 ${runStatusDot(run.status)}`}
                 />
                 <span className="font-mono text-xs text-slate-400 flex-shrink-0">
                   {run.wizard_run_id}

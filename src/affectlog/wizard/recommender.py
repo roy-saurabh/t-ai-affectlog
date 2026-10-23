@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from affectlog.capabilities.analyses import ANALYSES, ANALYSIS_BY_ID
-from affectlog.capabilities.plots import PLOTS
+from affectlog.capabilities.analyses import ANALYSES, ANALYSIS_BY_ID, AnalysisDefinition
+from affectlog.capabilities.plots import PLOTS, PlotDefinition
 from affectlog.wizard.schemas import (
     RecommendRequest,
     RecommendResponse,
@@ -132,6 +132,47 @@ _PURPOSE_ANALYSES: dict[WizardPurpose, list[str]] = {
 }
 
 
+# (requirement flag, request flag, default reason, analysis message may override the reason)
+_INPUT_REQUIREMENTS: tuple[tuple[str, str, str, bool], ...] = (
+    ("requires_model", "has_model", "Requires a registered model artifact or endpoint.", True),
+    ("requires_predictions", "has_predictions", "Requires prediction output file.", True),
+    ("requires_ground_truth", "has_ground_truth", "Requires ground-truth file.", True),
+    ("requires_group_field", "has_group_field", "Requires a group/segment field.", True),
+    (
+        "requires_probability_output",
+        "has_probability_output",
+        "Requires probability outputs from the model.",
+        False,
+    ),
+)
+
+
+_PLOT_REQUIREMENTS: tuple[tuple[str, str, str, bool], ...] = (
+    ("requires_model", "has_model", "Requires model.", True),
+    ("requires_predictions", "has_predictions", "Requires predictions.", True),
+    ("requires_ground_truth", "has_ground_truth", "Requires ground truth.", False),
+    ("requires_group_field", "has_group_field", "Requires group field.", True),
+    (
+        "requires_probability_output",
+        "has_probability_output",
+        "Requires probability outputs.",
+        False,
+    ),
+)
+
+
+def _missing_input_reason(
+    capability: AnalysisDefinition | PlotDefinition,
+    req: RecommendRequest,
+    requirements: tuple[tuple[str, str, str, bool], ...] = _INPUT_REQUIREMENTS,
+) -> str | None:
+    for requirement, provided, reason, overridable in requirements:
+        if getattr(capability, requirement) and not getattr(req, provided):
+            custom = capability.unavailable_message if overridable else None
+            return custom or reason
+    return None
+
+
 def _is_analysis_available(
     analysis_id: str,
     detected_format: str,
@@ -146,38 +187,15 @@ def _is_analysis_available(
             ScopeStatus.OUT_OF_SCOPE,
             a.unavailable_message or f"Not compatible with {detected_format} format.",
         )
-    if a.requires_model and not req.has_model:
+    reason = _missing_input_reason(a, req)
+    if reason:
+        return ScopeStatus.CONDITIONAL, reason
+    missing = [f for f in a.required_fields if f not in req.field_mappings]
+    if missing:
         return (
             ScopeStatus.CONDITIONAL,
-            a.unavailable_message or "Requires a registered model artifact or endpoint.",
+            f"Requires field mapping for: {', '.join(missing)}.",
         )
-    if a.requires_predictions and not req.has_predictions:
-        return (
-            ScopeStatus.CONDITIONAL,
-            a.unavailable_message or "Requires prediction output file.",
-        )
-    if a.requires_ground_truth and not req.has_ground_truth:
-        return (
-            ScopeStatus.CONDITIONAL,
-            a.unavailable_message or "Requires ground-truth file.",
-        )
-    if a.requires_group_field and not req.has_group_field:
-        return (
-            ScopeStatus.CONDITIONAL,
-            a.unavailable_message or "Requires a group/segment field.",
-        )
-    if a.requires_probability_output and not req.has_probability_output:
-        return (
-            ScopeStatus.CONDITIONAL,
-            "Requires probability outputs from the model.",
-        )
-    if a.required_fields:
-        missing = [f for f in a.required_fields if f not in req.field_mappings]
-        if missing:
-            return (
-                ScopeStatus.CONDITIONAL,
-                f"Requires field mapping for: {', '.join(missing)}.",
-            )
     return ScopeStatus.AVAILABLE, "Ready to run."
 
 
@@ -199,14 +217,12 @@ def _scope_item_from_analysis(analysis_id: str, status: ScopeStatus, why: str) -
     )
 
 
-def recommend(req: RecommendRequest) -> RecommendResponse:
-    detected_format = req.inspection_result.detected_format or "generic_csv_tabular"
-    purpose_analyses = _PURPOSE_ANALYSES.get(req.purpose, [a.id for a in ANALYSES])
-
+def _classify_analyses(
+    purpose_analyses: list[str], detected_format: str, req: RecommendRequest
+) -> tuple[list[ScopeItem], list[ScopeItem], list[ScopeItem]]:
     valid: list[ScopeItem] = []
     conditional: list[ScopeItem] = []
     invalid: list[ScopeItem] = []
-
     for analysis_id in purpose_analyses:
         status, why = _is_analysis_available(analysis_id, detected_format, req)
         item = _scope_item_from_analysis(analysis_id, status, why)
@@ -216,118 +232,74 @@ def recommend(req: RecommendRequest) -> RecommendResponse:
             conditional.append(item)
         else:
             invalid.append(item)
+    return valid, conditional, invalid
 
-    # Analyses explicitly out of scope (not in purpose list) — check if they're being asked about
-    {a.id for a in ANALYSES}
+
+def _incompatible_outside_purpose(
+    purpose_analyses: list[str], detected_format: str, req: RecommendRequest
+) -> list[ScopeItem]:
+    """Analyses outside the purpose list that also cannot run on the detected format."""
     purpose_set = set(purpose_analyses)
-    for a in ANALYSES:
-        if (
-            a.id not in purpose_set
-            and a.compatible_formats
-            and detected_format not in a.compatible_formats
-        ):
-            invalid.append(
-                _scope_item_from_analysis(
-                    a.id,
-                    ScopeStatus.OUT_OF_SCOPE,
-                    a.unavailable_message
-                    or f"Not in scope for {req.purpose.value} purpose and not compatible with {detected_format}.",
-                )
-            )
+    return [
+        _scope_item_from_analysis(
+            a.id,
+            ScopeStatus.OUT_OF_SCOPE,
+            a.unavailable_message
+            or f"Not in scope for {req.purpose.value} purpose and not compatible with {detected_format}.",
+        )
+        for a in ANALYSES
+        if a.id not in purpose_set
+        and a.compatible_formats
+        and detected_format not in a.compatible_formats
+    ]
 
-    # ── Plots ──────────────────────────────────────────────────────────
-    valid_analysis_ids = {i.id for i in valid}
+
+def _plot_block_reason(
+    plot: PlotDefinition, req: RecommendRequest, detected_format: str, valid_analysis_ids: set[str]
+) -> tuple[ScopeStatus, str] | None:
+    """Return why a plot cannot be produced for this plan, or None when it is available."""
+    if plot.compatible_formats and detected_format not in plot.compatible_formats:
+        return (
+            ScopeStatus.OUT_OF_SCOPE,
+            plot.unavailable_message or f"Not compatible with {detected_format}.",
+        )
+    reason = _missing_input_reason(plot, req, _PLOT_REQUIREMENTS)
+    if reason:
+        return ScopeStatus.CONDITIONAL, reason
+    if plot.required_analyses and not valid_analysis_ids.intersection(plot.required_analyses):
+        return (
+            ScopeStatus.CONDITIONAL,
+            f"Requires analysis: {', '.join(plot.required_analyses)}.",
+        )
+    return None
+
+
+def _classify_plots(
+    req: RecommendRequest, detected_format: str, valid_analysis_ids: set[str]
+) -> tuple[list[ScopeItem], list[ScopeItem]]:
     valid_plots: list[ScopeItem] = []
     invalid_plots: list[ScopeItem] = []
     for p in PLOTS:
-        if p.compatible_formats and detected_format not in p.compatible_formats:
+        blocked = _plot_block_reason(p, req, detected_format, valid_analysis_ids)
+        if blocked:
+            status, why = blocked
             invalid_plots.append(
+                ScopeItem(id=p.id, label=p.label, status=status, description=p.purpose, why=why)
+            )
+        else:
+            valid_plots.append(
                 ScopeItem(
                     id=p.id,
                     label=p.label,
-                    status=ScopeStatus.OUT_OF_SCOPE,
+                    status=ScopeStatus.AVAILABLE,
                     description=p.purpose,
-                    why=p.unavailable_message or f"Not compatible with {detected_format}.",
+                    why="Available for current analysis plan.",
                 )
             )
-            continue
-        if p.requires_model and not req.has_model:
-            invalid_plots.append(
-                ScopeItem(
-                    id=p.id,
-                    label=p.label,
-                    status=ScopeStatus.CONDITIONAL,
-                    description=p.purpose,
-                    why=p.unavailable_message or "Requires model.",
-                )
-            )
-            continue
-        if p.requires_predictions and not req.has_predictions:
-            invalid_plots.append(
-                ScopeItem(
-                    id=p.id,
-                    label=p.label,
-                    status=ScopeStatus.CONDITIONAL,
-                    description=p.purpose,
-                    why=p.unavailable_message or "Requires predictions.",
-                )
-            )
-            continue
-        if p.requires_ground_truth and not req.has_ground_truth:
-            invalid_plots.append(
-                ScopeItem(
-                    id=p.id,
-                    label=p.label,
-                    status=ScopeStatus.CONDITIONAL,
-                    description=p.purpose,
-                    why="Requires ground truth.",
-                )
-            )
-            continue
-        if p.requires_group_field and not req.has_group_field:
-            invalid_plots.append(
-                ScopeItem(
-                    id=p.id,
-                    label=p.label,
-                    status=ScopeStatus.CONDITIONAL,
-                    description=p.purpose,
-                    why=p.unavailable_message or "Requires group field.",
-                )
-            )
-            continue
-        if p.requires_probability_output and not req.has_probability_output:
-            invalid_plots.append(
-                ScopeItem(
-                    id=p.id,
-                    label=p.label,
-                    status=ScopeStatus.CONDITIONAL,
-                    description=p.purpose,
-                    why="Requires probability outputs.",
-                )
-            )
-            continue
-        if p.required_analyses and not valid_analysis_ids.intersection(p.required_analyses):
-            invalid_plots.append(
-                ScopeItem(
-                    id=p.id,
-                    label=p.label,
-                    status=ScopeStatus.CONDITIONAL,
-                    description=p.purpose,
-                    why=f"Requires analysis: {', '.join(p.required_analyses)}.",
-                )
-            )
-            continue
-        valid_plots.append(
-            ScopeItem(
-                id=p.id,
-                label=p.label,
-                status=ScopeStatus.AVAILABLE,
-                description=p.purpose,
-                why="Available for current analysis plan.",
-            )
-        )
+    return valid_plots, invalid_plots
 
-    # ── Expected artifacts ─────────────────────────────────────────────
+
+def _expected_artifacts(req: RecommendRequest) -> list[str]:
     artifacts = [
         "metrics.json",
         "metrics.csv",
@@ -339,28 +311,46 @@ def recommend(req: RecommendRequest) -> RecommendResponse:
     if req.has_model:
         artifacts.append("model_card.json")
     artifacts.extend(["data_card.json", "compliance_graph.jsonld"])
+    return artifacts
 
-    # ── Runtime estimate ───────────────────────────────────────────────
-    row_count = req.inspection_result.row_count_estimate or 100_000
+
+def _runtime_estimate_seconds(req: RecommendRequest, row_count: int) -> int:
     base_time = max(30, row_count // 10_000)
     if req.has_model:
         base_time += 120
     if req.purpose == WizardPurpose.FULL_AUDIT:
         base_time *= 2
+    return base_time
 
-    # ── Missing inputs ─────────────────────────────────────────────────
+
+_OPTIONAL_INPUT_HINTS = (
+    ("model", "Model artifact (.pkl, .onnx, .pt, .h5) or HTTP endpoint URL"),
+    ("prediction", "Prediction output CSV"),
+    ("ground", "Ground-truth CSV"),
+    ("group", "Group/segment field mapping"),
+)
+
+
+def _optional_inputs(conditional: list[ScopeItem]) -> list[str]:
+    reasons = [i.why.lower() for i in conditional if i.status == ScopeStatus.CONDITIONAL]
+    return [hint for keyword, hint in _OPTIONAL_INPUT_HINTS if any(keyword in r for r in reasons)]
+
+
+def recommend(req: RecommendRequest) -> RecommendResponse:
+    detected_format = req.inspection_result.detected_format or "generic_csv_tabular"
+    purpose_analyses = _PURPOSE_ANALYSES.get(req.purpose, [a.id for a in ANALYSES])
+
+    valid, conditional, invalid = _classify_analyses(purpose_analyses, detected_format, req)
+    invalid.extend(_incompatible_outside_purpose(purpose_analyses, detected_format, req))
+
+    valid_plots, invalid_plots = _classify_plots(req, detected_format, {i.id for i in valid})
+
+    artifacts = _expected_artifacts(req)
+    row_count = req.inspection_result.row_count_estimate or 100_000
+    base_time = _runtime_estimate_seconds(req, row_count)
+
     missing_inputs: list[str] = []
-    optional_inputs: list[str] = []
-    if any(i.status == ScopeStatus.CONDITIONAL and "model" in i.why.lower() for i in conditional):
-        optional_inputs.append("Model artifact (.pkl, .onnx, .pt, .h5) or HTTP endpoint URL")
-    if any(
-        i.status == ScopeStatus.CONDITIONAL and "prediction" in i.why.lower() for i in conditional
-    ):
-        optional_inputs.append("Prediction output CSV")
-    if any(i.status == ScopeStatus.CONDITIONAL and "ground" in i.why.lower() for i in conditional):
-        optional_inputs.append("Ground-truth CSV")
-    if any(i.status == ScopeStatus.CONDITIONAL and "group" in i.why.lower() for i in conditional):
-        optional_inputs.append("Group/segment field mapping")
+    optional_inputs = _optional_inputs(conditional)
 
     # ── Scope summary ──────────────────────────────────────────────────
     scope_summary = (

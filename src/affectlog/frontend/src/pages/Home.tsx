@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FlaskConical, Database, ShieldCheck, Cpu, ArrowRight, TrendingUp,
-  Wand2, Activity, BarChart2, CheckCircle2, AlertTriangle, Clock,
+  Wand2, Activity, BarChart2, AlertTriangle,
   FileText, Package, PlayCircle,
 } from "lucide-react";
 import { checkHealth, listRuns, type RunEntry } from "../api";
@@ -30,12 +30,12 @@ function QuickAction({
       className="text-left p-5 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 group w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40"
       style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.12)" }}
       onMouseEnter={(e) => {
-        const el = e.currentTarget as HTMLButtonElement;
+        const el = e.currentTarget;
         el.style.borderColor = `${color}35`;
         el.style.background = `${color}07`;
       }}
       onMouseLeave={(e) => {
-        const el = e.currentTarget as HTMLButtonElement;
+        const el = e.currentTarget;
         el.style.borderColor = "rgba(203,213,225,0.12)";
         el.style.background = "rgba(255,255,255,0.025)";
       }}
@@ -78,10 +78,23 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
+type HealthState = { status: string; version?: string } | null;
+
+function apiStatusLabel(health: HealthState): string {
+  if (health?.status === "ok") return "Online";
+  return health ? "Error" : "—";
+}
+
+function apiStatusAccent(health: HealthState): "green" | "red" | "cyan" {
+  if (health?.status === "ok") return "green";
+  if (health?.status === "error") return "red";
+  return "cyan";
+}
+
 // ── Main dashboard ────────────────────────────────────────────────────────
 export default function AppDashboard() {
   const { user } = useAuth();
-  const [health, setHealth] = useState<{ status: string; version?: string } | null>(null);
+  const [health, setHealth] = useState<HealthState>(null);
   const [runs,   setRuns]   = useState<RunEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -90,8 +103,8 @@ export default function AppDashboard() {
       checkHealth().catch(() => ({ status: "error" })),
       listRuns().catch(() => ({ runs: [] })),
     ]).then(([h, r]) => {
-      setHealth(h as { status: string; version?: string });
-      setRuns((r as { runs: RunEntry[] }).runs.slice(0, 8));
+      setHealth(h);
+      setRuns(r.runs.slice(0, 8));
       setLoading(false);
     });
   }, []);
@@ -133,10 +146,10 @@ export default function AppDashboard() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <MetricCard
           label="API Status"
-          value={health?.status === "ok" ? "Online" : health ? "Error" : "—"}
+          value={apiStatusLabel(health)}
           sub={health?.version ? `v${health.version}` : "connecting"}
           icon={Activity}
-          accent={health?.status === "ok" ? "green" : health?.status === "error" ? "red" : "cyan"}
+          accent={apiStatusAccent(health)}
           loading={loading}
         />
         <MetricCard
@@ -222,7 +235,7 @@ export default function AppDashboard() {
           </Link>
         </div>
 
-        {loading ? (
+        {loading && (
           <div className="rounded-2xl border" style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(203,213,225,0.12)" }}>
             <div className="space-y-px p-2">
               {[0, 1, 2].map((i) => (
@@ -230,7 +243,8 @@ export default function AppDashboard() {
               ))}
             </div>
           </div>
-        ) : runs.length === 0 ? (
+        )}
+        {!loading && runs.length === 0 && (
           <div
             className="rounded-2xl p-10 text-center border border-dashed"
             style={{ borderColor: "rgba(203,213,225,0.15)", background: "rgba(255,255,255,0.015)" }}
@@ -252,7 +266,8 @@ export default function AppDashboard() {
               <Wand2 size={12} /> Start guided assessment <ArrowRight size={11} />
             </Link>
           </div>
-        ) : (
+        )}
+        {!loading && runs.length > 0 && (
           <div
             className="rounded-2xl overflow-hidden border"
             style={{ borderColor: "rgba(203,213,225,0.12)" }}
@@ -331,11 +346,11 @@ export default function AppDashboard() {
                 className="flex flex-col items-center gap-2.5 p-4 rounded-xl border text-center transition-all duration-200 hover:-translate-y-0.5 group"
                 style={{ background: "rgba(255,255,255,0.02)", borderColor: "rgba(203,213,225,0.10)" }}
                 onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement;
+                  const el = e.currentTarget;
                   el.style.borderColor = `${cap.color}30`;
                 }}
                 onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement;
+                  const el = e.currentTarget;
                   el.style.borderColor = "rgba(203,213,225,0.10)";
                 }}
               >

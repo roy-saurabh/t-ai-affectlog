@@ -36,7 +36,7 @@ class ExplanationGenerator:
         if method in ("shap", "auto"):
             try:
                 return self._shap_importance(X)
-            except (ImportError, Exception) as exc:
+            except Exception as exc:
                 logger.info("SHAP not available (%s); falling back to permutation.", exc)
 
         if y is None:

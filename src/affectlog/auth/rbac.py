@@ -5,16 +5,12 @@ RBAC helpers — load user permissions from DB and check them.
 from __future__ import annotations
 
 import uuid
-from typing import TYPE_CHECKING
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from affectlog.db.models import Role, RolePermission, UserRole
-
-if TYPE_CHECKING:
-    pass
 
 
 async def get_user_permissions(db: AsyncSession, user_id: uuid.UUID) -> set[str]:

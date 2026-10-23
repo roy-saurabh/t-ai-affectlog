@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { ShieldCheck, FileText, Download, CheckCircle2, AlertCircle, ChevronRight } from "lucide-react";
-import { getComplianceGraph, getAuditSop, listRuns } from "../api";
+import { ShieldCheck, FileText, Download, CheckCircle2, ChevronRight } from "lucide-react";
+import { getComplianceGraph, getAuditSop } from "../api";
 
 const EU_AI_CHECKLIST = [
   { id: "1.a", text: "AI system purpose and intended use documented", category: "Purpose" },
@@ -36,7 +36,7 @@ export default function Compliance() {
       ]);
       setGraph(g);
       setSop(s);
-    } catch (e) {
+    } catch {
       setError("Could not load compliance data for this run.");
     }
     setLoading(false);

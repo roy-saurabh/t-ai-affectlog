@@ -96,8 +96,8 @@ async def send_email(
         await aiosmtplib.send(msg, **send_kwargs)
         logger.info("Email sent to %s (template=%s)", _s(to), _s(template))
         return True
-    except Exception as exc:
-        logger.error("Failed to send email to %s: %s", _s(to), exc)
+    except Exception:
+        logger.exception("Failed to send email to %s", _s(to))
         return False
 
 

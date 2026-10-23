@@ -40,10 +40,12 @@ log = logging.getLogger(__name__)
 router = APIRouter(prefix="/v1/wizard", tags=["Guided Assessment Wizard"])
 
 # Shared response documentation constants (avoid duplicate-literal SonarQube issues).
-_RESP_400 = {400: {"description": "Bad request."}}
-_RESP_404 = {404: {"description": "Wizard run not found."}}
-_RESP_500 = {500: {"description": "Internal error."}}
-_RESP_422 = {422: {"description": "Invalid plan input."}}
+_BAD_REQUEST = {"description": "Bad request."}
+_RUN_NOT_FOUND = {"description": "Wizard run not found."}
+_INTERNAL_ERROR = {"description": "Internal error."}
+_INVALID_PLAN = {"description": "Invalid plan input."}
+_RESP_404 = {404: _RUN_NOT_FOUND}
+_RESP_500 = {500: _INTERNAL_ERROR}
 
 
 @router.post(
@@ -106,7 +108,7 @@ async def get_output_contract(plan: WizardPlan) -> OutputContract:
     "/run",
     response_model=WizardRunResponse,
     summary="Execute the wizard plan via the production audit pipeline",
-    responses={**_RESP_400, **_RESP_422, **_RESP_500},
+    responses={400: _BAD_REQUEST, 422: _INVALID_PLAN, 500: _INTERNAL_ERROR},
 )
 async def run_wizard(req: WizardRunRequest, background_tasks: BackgroundTasks) -> WizardRunResponse:
     if not req.output_contract_confirmed:
@@ -198,7 +200,7 @@ async def get_wizard_run_results(wizard_run_id: str) -> WizardRunResultsResponse
 @router.get(
     "/runs/{wizard_run_id}/artifacts/{filename}",
     summary="Download a single artifact from a completed wizard run",
-    responses={**_RESP_400, **_RESP_404},
+    responses={400: _BAD_REQUEST, 404: _RUN_NOT_FOUND},
 )
 async def download_wizard_run_artifact(wizard_run_id: str, filename: str) -> Any:
     import re
@@ -226,7 +228,7 @@ async def download_wizard_run_artifact(wizard_run_id: str, filename: str) -> Any
 @router.get(
     "/runs/{wizard_run_id}/artifacts",
     summary="List artifacts for a completed wizard run",
-    responses={**_RESP_400, **_RESP_404},
+    responses={400: _BAD_REQUEST, 404: _RUN_NOT_FOUND},
 )
 async def get_wizard_run_artifacts(wizard_run_id: str) -> dict[str, Any]:
     from pathlib import Path

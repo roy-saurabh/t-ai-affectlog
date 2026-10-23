@@ -213,6 +213,14 @@ function PricingTiers() {
   );
 }
 
+const EDITION_COLUMNS = ["ce", "mc", "pt", "byoc"] as const;
+
+function AvailabilityCell({ value, color }: { value: boolean | string; color: string }) {
+  if (value === true) return <CheckCircle2 size={14} className="mx-auto" style={{ color }} />;
+  if (value === false) return <span className="text-slate-700">—</span>;
+  return <span className="text-xs" style={{ color }}>{value}</span>;
+}
+
 function FeatureComparison() {
   const categories = [
     {
@@ -291,11 +299,9 @@ function FeatureComparison() {
                     }}
                   >
                     <div className="text-slate-300">{row.label}</div>
-                    {[row.ce, row.mc, row.pt, row.byoc].map((v, vi) => (
-                      <div key={vi} className="text-center">
-                        {v === true  ? <CheckCircle2 size={14} className="mx-auto" style={{ color: colors[vi] }} />
-                         : v === false ? <span className="text-slate-700">—</span>
-                         : <span className="text-xs" style={{ color: colors[vi] }}>{String(v)}</span>}
+                    {EDITION_COLUMNS.map((column, vi) => (
+                      <div key={column} className="text-center">
+                        <AvailabilityCell value={row[column]} color={colors[vi]} />
                       </div>
                     ))}
                   </div>

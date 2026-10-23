@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
 interface BeamPoint { x: number; y: number; }
 
@@ -23,7 +23,7 @@ export function AnimatedBeam({
 }: AnimatedBeamProps) {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
-  const len = Math.sqrt(dx * dx + dy * dy);
+  const len = Math.hypot(dx, dy);
 
   return (
     <line
@@ -136,7 +136,7 @@ export function DataFlowLine({
   for (let i = 1; i < points.length; i++) {
     const dx = points[i].x - points[i - 1].x;
     const dy = points[i].y - points[i - 1].y;
-    len += Math.sqrt(dx * dx + dy * dy);
+    len += Math.hypot(dx, dy);
   }
 
   return (

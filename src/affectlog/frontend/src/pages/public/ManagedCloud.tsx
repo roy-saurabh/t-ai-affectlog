@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  Cloud, ArrowRight, CheckCircle2, Shield, BarChart2,
-  Server, Lock, Users, Activity, Database, FileText, GitBranch,
+  Cloud, ArrowRight, Shield,
+  Lock, Users, Activity, GitBranch,
 } from "lucide-react";
 import { PublicHeader } from "../../components/public/PublicHeader";
 import { PublicFooter } from "../../components/public/PublicFooter";

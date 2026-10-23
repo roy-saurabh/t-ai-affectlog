@@ -2,41 +2,31 @@
 
 from __future__ import annotations
 
-import json
+from collections import defaultdict
 from pathlib import Path
 from typing import Any
+
+from affectlog.ingest.json_reader import iter_jsonl_records
+
+
+def _is_missing(value: Any) -> bool:
+    return value is None or value == "" or value == []
 
 
 def compute_quality(
     path: Path | str, fields: list[str] | None = None, limit: int = 0
 ) -> dict[str, Any]:
     """Compute missingness/completeness per field."""
-    path = Path(path)
-    from collections import defaultdict
-
     field_null: dict[str, int] = defaultdict(int)
     field_total: dict[str, int] = defaultdict(int)
     total = 0
 
-    with path.open(encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                evt = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            total += 1
-            if limit and total > limit:
-                break
-
-            check_fields = fields or list(evt.keys())
-            for fld in check_fields:
-                field_total[fld] += 1
-                val = evt.get(fld)
-                if val is None or val == "" or val == []:
-                    field_null[fld] += 1
+    for evt in iter_jsonl_records(Path(path), limit):
+        total += 1
+        for fld in fields or list(evt.keys()):
+            field_total[fld] += 1
+            if _is_missing(evt.get(fld)):
+                field_null[fld] += 1
 
     per_field = {}
     for fld in field_total:

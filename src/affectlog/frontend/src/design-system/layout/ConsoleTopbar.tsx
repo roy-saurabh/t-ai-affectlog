@@ -12,6 +12,38 @@ interface ConsoleTopbarProps {
   actions?: React.ReactNode;
 }
 
+function TopbarHeading({ breadcrumbs, title }: Pick<ConsoleTopbarProps, "breadcrumbs" | "title">) {
+  if (breadcrumbs && breadcrumbs.length > 0) {
+    return (
+      <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm overflow-hidden">
+        {breadcrumbs.map((bc, i) => (
+          <React.Fragment key={bc.label}>
+            {i > 0 && (
+              <ChevronRight size={12} className="text-slate-600 flex-shrink-0" aria-hidden="true" />
+            )}
+            {bc.to && i < breadcrumbs.length - 1 ? (
+              <Link
+                to={bc.to}
+                className="text-slate-500 hover:text-slate-300 transition-colors truncate"
+              >
+                {bc.label}
+              </Link>
+            ) : (
+              <span className={cn("truncate", i === breadcrumbs.length - 1 ? "text-slate-200 font-medium" : "text-slate-500")}>
+                {bc.label}
+              </span>
+            )}
+          </React.Fragment>
+        ))}
+      </nav>
+    );
+  }
+  if (title) {
+    return <h1 className="text-sm font-semibold text-slate-200 truncate">{title}</h1>;
+  }
+  return null;
+}
+
 export function ConsoleTopbar({ onMenuOpen, breadcrumbs, title, actions }: ConsoleTopbarProps) {
   return (
     <header
@@ -33,31 +65,7 @@ export function ConsoleTopbar({ onMenuOpen, breadcrumbs, title, actions }: Conso
 
       {/* Breadcrumb / title */}
       <div className="flex-1 flex items-center gap-1.5 overflow-hidden min-w-0">
-        {breadcrumbs && breadcrumbs.length > 0 ? (
-          <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm overflow-hidden">
-            {breadcrumbs.map((bc, i) => (
-              <React.Fragment key={bc.label}>
-                {i > 0 && (
-                  <ChevronRight size={12} className="text-slate-600 flex-shrink-0" aria-hidden="true" />
-                )}
-                {bc.to && i < breadcrumbs.length - 1 ? (
-                  <Link
-                    to={bc.to}
-                    className="text-slate-500 hover:text-slate-300 transition-colors truncate"
-                  >
-                    {bc.label}
-                  </Link>
-                ) : (
-                  <span className={cn("truncate", i === breadcrumbs.length - 1 ? "text-slate-200 font-medium" : "text-slate-500")}>
-                    {bc.label}
-                  </span>
-                )}
-              </React.Fragment>
-            ))}
-          </nav>
-        ) : title ? (
-          <h1 className="text-sm font-semibold text-slate-200 truncate">{title}</h1>
-        ) : null}
+        <TopbarHeading breadcrumbs={breadcrumbs} title={title} />
       </div>
 
       {/* Right actions */}

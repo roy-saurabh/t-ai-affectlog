@@ -17,6 +17,15 @@ function usePulse(interval = 1200) {
   return tick;
 }
 
+const IDLE_STROKE = "rgba(203,213,225,0.22)";
+
+/** Main-circle radius and colours for a step that is active, already done, or still ahead. */
+function stepTone(color: string, active: boolean, done: boolean) {
+  if (active) return { radius: 20, fill: `${color}20`, stroke: color, mark: color };
+  if (done) return { radius: 14, fill: `${color}18`, stroke: color, mark: color };
+  return { radius: 16, fill: "rgba(15,23,42,0.80)", stroke: IDLE_STROKE, mark: "#6F7D96" };
+}
+
 export function RequestAccessJourneyVisual() {
   const activeStep = usePulse(1200);
   const [mounted, setMounted] = useState(false);
@@ -87,6 +96,7 @@ export function RequestAccessJourneyVisual() {
         {STEPS.map((step, i) => {
           const active = mounted && activeStep === i;
           const done   = mounted && i < activeStep;
+          const tone   = stepTone(step.color, active, done);
           return (
             <g
               key={step.id}
@@ -102,9 +112,9 @@ export function RequestAccessJourneyVisual() {
               <circle
                 cx={step.x}
                 cy={cy}
-                r={active ? 20 : done ? 14 : 16}
-                fill={active ? `${step.color}20` : done ? `${step.color}18` : "rgba(15,23,42,0.80)"}
-                stroke={active || done ? step.color : "rgba(203,213,225,0.22)"}
+                r={tone.radius}
+                fill={tone.fill}
+                stroke={tone.stroke}
                 strokeWidth={active ? 1.6 : 1}
                 style={{ transition: "all 0.4s ease" }}
               />
@@ -114,7 +124,7 @@ export function RequestAccessJourneyVisual() {
                 x={step.x}
                 y={cy + 4}
                 textAnchor="middle"
-                fill={active || done ? step.color : "#6F7D96"}
+                fill={tone.mark}
                 fontSize={active ? "11" : "10"}
                 fontFamily="var(--font-mono)"
                 fontWeight="700"

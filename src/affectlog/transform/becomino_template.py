@@ -109,16 +109,23 @@ def _detect_verb_path(record: dict[str, Any]) -> str:
     return "verb"
 
 
+def _detect_xapi_actor_path(actor: dict[str, Any]) -> str | None:
+    account = actor.get("account")
+    if isinstance(account, dict) and "name" in account:
+        return "actor.account.name"
+    if "mbox" in actor:
+        return "actor.mbox"
+    if "name" in actor:
+        return "actor.name"
+    return None
+
+
 def _detect_actor_path(record: dict[str, Any]) -> str:
-    if "actor" in record:
-        a = record["actor"]
-        if isinstance(a, dict):
-            if "account" in a and isinstance(a["account"], dict) and "name" in a["account"]:
-                return "actor.account.name"
-            if "mbox" in a:
-                return "actor.mbox"
-            if "name" in a:
-                return "actor.name"
+    actor = record.get("actor")
+    if isinstance(actor, dict):
+        path = _detect_xapi_actor_path(actor)
+        if path:
+            return path
     for candidate in ("userId", "user_id", "entityId", "learner_id"):
         if candidate in record:
             return candidate

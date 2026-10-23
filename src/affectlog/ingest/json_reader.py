@@ -30,6 +30,27 @@ def iter_jsonl(
         yield chunk
 
 
+def iter_jsonl_records(path: Path | str, limit: int = 0) -> Generator[dict[str, Any], None, None]:
+    """Yield records from a JSONL file one at a time, skipping blank and malformed lines.
+
+    *limit* = 0 means read all records.
+    """
+    count = 0
+    with Path(path).open(encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            count += 1
+            if limit and count > limit:
+                return
+            yield record
+
+
 def read_json(path: Path | str) -> Any:
     with Path(path).open(encoding="utf-8") as f:
         return json.load(f)

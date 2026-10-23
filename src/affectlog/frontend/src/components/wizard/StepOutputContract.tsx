@@ -1,9 +1,8 @@
 import React from "react";
 import { FileCheck, AlertTriangle, Clock, HardDrive } from "lucide-react";
-import type { OutputContract } from "../../api/wizard";
+import type { OutputContract, ValidationIssue } from "../../api/wizard";
 import { OutputArtifactCard } from "./OutputArtifactCard";
 import { GuardrailAlert } from "./GuardrailAlert";
-import type { ValidationIssue } from "../../api/wizard";
 
 interface StepOutputContractProps {
   contract: OutputContract | null;
@@ -115,8 +114,8 @@ export function StepOutputContract({
           <p className="text-xs font-medium text-amber-300">Limitations</p>
         </div>
         <ul className="space-y-1.5 text-[11px] text-slate-500">
-          {contract.limitations.map((l, i) => (
-            <li key={i} className="flex items-start gap-1.5">
+          {contract.limitations.map((l) => (
+            <li key={l} className="flex items-start gap-1.5">
               <span className="text-slate-600 flex-shrink-0">•</span>
               {l}
             </li>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu, X, Github, ChevronDown, ArrowRight,
   Database, ShieldCheck, Cpu, BarChart3, FileText, Wand2,
   Server, Cloud, Lock, Code2, Package,
-  Globe, Network, Share2,
-  BookOpen, Map, GitBranch, BookMarked, Wrench,
+  Globe, Network,
+  BookOpen, GitBranch, BookMarked, Wrench,
   ClipboardList, ExternalLink,
 } from "lucide-react";
 import { cn } from "../cn";
@@ -286,9 +286,12 @@ export function PublicHeader() {
           {/* Nav */}
           <nav className="flex items-center gap-1 flex-1" aria-label="Main navigation">
             {NAV_MENUS.map((menu) => (
+              // Hover is tracked on the wrapper so the menu stays open while the pointer
+              // moves from the trigger button into the dropdown panel.
               <div
                 key={menu.key}
                 className="relative"
+                role="none"
                 onMouseEnter={() => openMenu(menu.key)}
                 onMouseLeave={scheduleClose}
               >

@@ -47,6 +47,12 @@ const RISK_CONFIG = {
   },
 };
 
+function completenessBarColor(completeness: number): string {
+  if (completeness >= 0.9) return "bg-emerald-500";
+  if (completeness >= 0.7) return "bg-amber-500";
+  return "bg-red-500";
+}
+
 export default function PrivacyPanel({ riskLevel, sparsityRatio, completeness }: Props) {
   const cfg = RISK_CONFIG[riskLevel] ?? RISK_CONFIG.unknown;
   const Icon = cfg.icon;
@@ -77,7 +83,7 @@ export default function PrivacyPanel({ riskLevel, sparsityRatio, completeness }:
               <div
                 className={clsx(
                   "h-full rounded-full",
-                  completeness >= 0.9 ? "bg-emerald-500" : completeness >= 0.7 ? "bg-amber-500" : "bg-red-500",
+                  completenessBarColor(completeness),
                 )}
                 style={{ width: `${completeness * 100}%` }}
               />

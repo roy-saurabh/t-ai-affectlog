@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { X, LogOut, Settings, ChevronRight } from "lucide-react";
+import { X, LogOut, Settings } from "lucide-react";
 import { cn } from "../cn";
 import type { LucideIcon } from "lucide-react";
 import { useAuth } from "../../auth/AuthProvider";

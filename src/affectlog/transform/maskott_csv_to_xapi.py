@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, overload
 
 from affectlog.core.time import parse_iso
 from affectlog.ingest.csv_reader import read_maskott_csv
@@ -21,49 +21,66 @@ from affectlog.transform.verb_mapper import VerbMapper
 logger = logging.getLogger(__name__)
 
 
+def _optional_str(row: dict[str, Any], key: str) -> str | None:
+    """Return the field as a string, or None when it is missing or empty."""
+    value = row.get(key)
+    return str(value) if value else None
+
+
+@overload
+def _pseudonymise(
+    pseudonymizer: Pseudonymizer | None, allow_raw: bool, field: str, value: str
+) -> str: ...
+
+
+@overload
+def _pseudonymise(
+    pseudonymizer: Pseudonymizer | None, allow_raw: bool, field: str, value: str | None
+) -> str | None: ...
+
+
+def _pseudonymise(
+    pseudonymizer: Pseudonymizer | None, allow_raw: bool, field: str, value: str | None
+) -> str | None:
+    """Hash *value* when pseudonymisation is active; otherwise return it unchanged."""
+    if value and pseudonymizer and not allow_raw:
+        return pseudonymizer.hash(field, value)
+    return value
+
+
 def row_to_xapi(
     row: dict[str, Any],
     *,
     pseudonymizer: Pseudonymizer | None = None,
     verb_mapper: VerbMapper | None = None,
-    template: dict[str, Any] | None = None,  # noqa: ARG001
     allow_raw: bool = False,
 ) -> dict[str, Any]:
     """Convert a single Maskott CSV row dict to a normalized xAPI statement dict."""
     vm = verb_mapper or VerbMapper()
     verb = vm.get(str(row.get("ViewContext", "")))
+    hashing_enabled = bool(pseudonymizer) and not allow_raw
 
     # Actor pseudonymisation
     entity_id = str(row.get("EntityId", ""))
     is_anon = _parse_bool(row.get("IsViewerAnonymous"))
-
     if is_anon or not entity_id:
         actor_name = "anonymous"
-    elif pseudonymizer and not allow_raw:
-        actor_name = pseudonymizer.hash("EntityId", entity_id)
     else:
-        actor_name = entity_id
+        actor_name = _pseudonymise(pseudonymizer, allow_raw, "EntityId", entity_id)
 
-    # EntityUaiCode
-    uai_raw = str(row.get("EntityUaiCode", "")) if row.get("EntityUaiCode") else None
-    if uai_raw and pseudonymizer and not allow_raw:
-        uai_hashed = pseudonymizer.hash("EntityUaiCode", uai_raw)
-    else:
-        uai_hashed = None
+    # EntityUaiCode — only the hash is ever exported, never the raw code
+    uai_raw = _optional_str(row, "EntityUaiCode")
+    uai_hashed = (
+        _pseudonymise(pseudonymizer, allow_raw, "EntityUaiCode", uai_raw)
+        if hashing_enabled
+        else None
+    )
 
-    # Statement ID
-    stmt_id_raw = str(row.get("_id", ""))
-    if pseudonymizer and not allow_raw:
-        stmt_id = pseudonymizer.hash("_id", stmt_id_raw) if stmt_id_raw else stmt_id_raw
-    else:
-        stmt_id = stmt_id_raw
-
-    # ActivitySessionId
-    session_raw = str(row.get("ActivitySessionId", "")) if row.get("ActivitySessionId") else None
-    if session_raw and pseudonymizer and not allow_raw:
-        session_id = pseudonymizer.hash("ActivitySessionId", session_raw)
-    else:
-        session_id = session_raw  # type: ignore[assignment]
+    # Statement ID and ActivitySessionId
+    stmt_id = _pseudonymise(pseudonymizer, allow_raw, "_id", str(row.get("_id", "")))
+    session_id = _pseudonymise(
+        pseudonymizer, allow_raw, "ActivitySessionId", _optional_str(row, "ActivitySessionId")
+    )
 
     # Duration
     duration_raw = row.get("Duration")
@@ -75,12 +92,12 @@ def row_to_xapi(
     timestamp = ts_parsed.isoformat() if ts_parsed else ts_raw
 
     # Resource
-    resource_id = str(row.get("ResourceId", "")) if row.get("ResourceId") else ""
-    resource_type = str(row.get("ResourceType", "")) if row.get("ResourceType") else ""
+    resource_id = _optional_str(row, "ResourceId") or ""
+    resource_type = _optional_str(row, "ResourceType") or ""
 
     # Collection
-    collection_id = str(row.get("CollectionId", "")) if row.get("CollectionId") else None
-    view_context = str(row.get("ViewContext", "")) if row.get("ViewContext") else ""
+    collection_id = _optional_str(row, "CollectionId")
+    view_context = _optional_str(row, "ViewContext") or ""
 
     stmt: dict[str, Any] = {
         "id": stmt_id,
@@ -190,7 +207,6 @@ def convert_maskott_csv_to_xapi(
                         row,
                         pseudonymizer=pseudonymizer,
                         verb_mapper=verb_mapper,
-                        template=template,
                         allow_raw=allow_raw,
                     )
                     out_f.write(json.dumps(stmt, ensure_ascii=False, default=str) + "\n")

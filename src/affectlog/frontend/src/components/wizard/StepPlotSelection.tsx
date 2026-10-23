@@ -1,5 +1,4 @@
 import React from "react";
-import { BarChart2 } from "lucide-react";
 import { PLOT_CATALOG, getDefaultPlotsForFormat } from "../../content/plotCatalog";
 import { PlotPreviewCard } from "./PlotPreviewCard";
 

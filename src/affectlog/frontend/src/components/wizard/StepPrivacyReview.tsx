@@ -134,21 +134,19 @@ export function StepPrivacyReview({
       </div>
 
       <div className="rounded-xl border border-indigo-500/30 bg-indigo-500/5 p-4">
-        <label className="flex items-start gap-3 cursor-pointer">
+        <label className="grid grid-cols-[auto_1fr] items-start gap-x-3 cursor-pointer">
           <input
             type="checkbox"
             checked={privacySettings.privacy_acknowledged}
             onChange={(e) => onSettingChange("privacy_acknowledged", e.target.checked)}
-            className="mt-0.5 h-4 w-4 rounded border-slate-600 bg-slate-800 text-indigo-600 focus:ring-indigo-500"
+            className="row-span-2 mt-0.5 h-4 w-4 rounded border-slate-600 bg-slate-800 text-indigo-600 focus:ring-indigo-500"
           />
-          <div>
-            <p className="text-xs font-medium text-slate-300">Privacy acknowledgement</p>
-            <p className="mt-1 text-[11px] text-slate-500">
-              I confirm that the uploaded dataset complies with applicable data protection regulations,
-              that appropriate consents or legal bases are in place, and that I understand the privacy
-              controls described above.
-            </p>
-          </div>
+          <span className="text-xs font-medium text-slate-300">Privacy acknowledgement</span>
+          <span className="mt-1 text-[11px] text-slate-500">
+            I confirm that the uploaded dataset complies with applicable data protection regulations,
+            that appropriate consents or legal bases are in place, and that I understand the privacy
+            controls described above.
+          </span>
         </label>
       </div>
     </div>

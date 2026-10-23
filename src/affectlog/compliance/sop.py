@@ -92,6 +92,44 @@ affectlog audit \\
 """
 
 
+def _metrics_section(metrics: dict[str, Any] | None) -> str:
+    metrics_lines = [
+        f"- **{k}:** {v}"
+        for k, v in (metrics or {}).items()
+        if isinstance(v, (int, float, str, bool))
+    ]
+    return "\n".join(metrics_lines) if metrics_lines else "_No metrics computed._"
+
+
+def _findings_section(metrics: dict[str, Any] | None) -> str:
+    metrics = metrics or {}
+    actor_gini = metrics.get("actor_gini", 0)
+    resource_gini = metrics.get("resource_gini", 0)
+    sparsity = metrics.get("sparsity_ratio", 0)
+
+    findings_lines = []
+    if actor_gini and actor_gini > 0.6:
+        findings_lines.append(
+            f"- **High actor concentration** (Gini={actor_gini:.3f}): top users dominate activity log."
+        )
+    if resource_gini and resource_gini > 0.6:
+        findings_lines.append(
+            f"- **High resource concentration** (Gini={resource_gini:.3f}): a few resources account for most accesses."
+        )
+    if sparsity and sparsity > 0.95:
+        findings_lines.append(
+            f"- **Very sparse entity-resource matrix** (sparsity={sparsity:.3f}): typical for real-world recommendation logs."
+        )
+    return (
+        "\n".join(findings_lines) if findings_lines else "_Audit complete — no critical findings._"
+    )
+
+
+def _artifact_list(artifacts: dict[str, str] | None) -> str:
+    artifact_lines = [f"- `{name}`: `{path}`" for name, path in (artifacts or {}).items()]
+    return "\n".join(artifact_lines) if artifact_lines else "_None_"
+
+
 def build_sop(
     run_id: str,
     recipe_name: str,
@@ -101,45 +139,10 @@ def build_sop(
     row_count: int,
     privacy_report: dict[str, Any] | None = None,
     metrics: dict[str, Any] | None = None,
-    stages: list[dict[str, Any]] | None = None,  # noqa: ARG001
     artifacts: dict[str, str] | None = None,
     source_platform: str = "Maskott/Tactileo",
     schema: str = "maskott_csv_v1",
 ) -> str:
-    metrics_lines = []
-    if metrics:
-        for k, v in metrics.items():
-            if isinstance(v, (int, float, str, bool)):
-                metrics_lines.append(f"- **{k}:** {v}")
-    metrics_section = "\n".join(metrics_lines) if metrics_lines else "_No metrics computed._"
-
-    findings_lines = []
-    if metrics:
-        actor_gini = metrics.get("actor_gini", 0)
-        resource_gini = metrics.get("resource_gini", 0)
-        sparsity = metrics.get("sparsity_ratio", 0)
-        if actor_gini and actor_gini > 0.6:
-            findings_lines.append(
-                f"- **High actor concentration** (Gini={actor_gini:.3f}): top users dominate activity log."
-            )
-        if resource_gini and resource_gini > 0.6:
-            findings_lines.append(
-                f"- **High resource concentration** (Gini={resource_gini:.3f}): a few resources account for most accesses."
-            )
-        if sparsity and sparsity > 0.95:
-            findings_lines.append(
-                f"- **Very sparse entity-resource matrix** (sparsity={sparsity:.3f}): typical for real-world recommendation logs."
-            )
-    findings_section = (
-        "\n".join(findings_lines) if findings_lines else "_Audit complete — no critical findings._"
-    )
-
-    artifact_lines = []
-    if artifacts:
-        for name, path in artifacts.items():
-            artifact_lines.append(f"- `{name}`: `{path}`")
-    artifact_list = "\n".join(artifact_lines) if artifact_lines else "_None_"
-
     pseudo = privacy_report or {}
     risk = pseudo.get("risk_summary", {})
 
@@ -157,9 +160,9 @@ def build_sop(
         pseudo_fields=", ".join(pseudo.get("fields_pseudonymised", [])),
         allow_raw=str(pseudo.get("allow_raw_identifiers", False)),
         risk_level=risk.get("level", "unknown"),
-        metrics_section=metrics_section,
-        findings_section=findings_section,
-        artifact_list=artifact_list,
+        metrics_section=_metrics_section(metrics),
+        findings_section=_findings_section(metrics),
+        artifact_list=_artifact_list(artifacts),
     )
 
 

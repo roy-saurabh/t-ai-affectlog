@@ -26,7 +26,7 @@ interface StepInputSourceProps {
 const ACCEPTED_FORMATS = [".csv", ".tsv", ".json", ".jsonl", ".ndjson", ".parquet", ".pq"];
 const ACCEPTED_MODELS = [".pkl", ".joblib", ".onnx", ".pt", ".pth", ".h5", ".keras"];
 
-function FileInput_({
+function PathInputField({
   label,
   hint,
   icon: Icon,
@@ -151,7 +151,7 @@ export function StepInputSource({
       </div>
 
       <div className="space-y-4">
-        <FileInput_
+        <PathInputField
           label="Dataset file"
           hint={`Accepted: ${ACCEPTED_FORMATS.join(", ")}. Max file size depends on tenant quota.`}
           icon={Database}
@@ -162,7 +162,7 @@ export function StepInputSource({
 
         {inputMode === "model_aware" && (
           <>
-            <FileInput_
+            <PathInputField
               label="Model artifact"
               hint={`Accepted: ${ACCEPTED_MODELS.join(", ")}. Or enter an HTTP endpoint URL.`}
               icon={Cpu}
@@ -171,7 +171,7 @@ export function StepInputSource({
               onChange={onModelPathChange}
               optional
             />
-            <FileInput_
+            <PathInputField
               label="Prediction output CSV"
               hint="CSV with model predictions. Required for classification/regression/recommender metrics."
               icon={FileInput}
@@ -180,7 +180,7 @@ export function StepInputSource({
               onChange={onPredictionPathChange}
               optional
             />
-            <FileInput_
+            <PathInputField
               label="Ground-truth CSV"
               hint="CSV with verified labels or interaction data. Required for precision/recall/nDCG."
               icon={FileInput}

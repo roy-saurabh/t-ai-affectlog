@@ -127,7 +127,7 @@ export function ComplianceJsonLdGraphVisual() {
               />
               {lines.map((line, li) => (
                 <text
-                  key={li}
+                  key={line}
                   x={node.x}
                   y={node.y + (lines.length === 1 ? 4 : -3 + li * 13)}
                   textAnchor="middle"

@@ -23,6 +23,12 @@ const STAGES = [
   "compute_coverage", "compute_fairness", "quality", "compliance_map",
 ];
 
+function StageIcon({ index, currentIdx }: { index: number; currentIdx: number }) {
+  if (index < currentIdx) return <CheckCircle2 size={12} className="flex-shrink-0" />;
+  if (index === currentIdx) return <RefreshCw size={12} className="animate-spin flex-shrink-0" />;
+  return <Clock size={12} className="flex-shrink-0" />;
+}
+
 function StageList({ currentIdx }: { currentIdx: number }) {
   return (
     <div className="space-y-1">
@@ -36,11 +42,7 @@ function StageList({ currentIdx }: { currentIdx: number }) {
             i > currentIdx && "text-slate-600",
           )}
         >
-          {i < currentIdx
-            ? <CheckCircle2 size={12} className="flex-shrink-0" />
-            : i === currentIdx
-              ? <RefreshCw size={12} className="animate-spin flex-shrink-0" />
-              : <Clock size={12} className="flex-shrink-0" />}
+          <StageIcon index={i} currentIdx={currentIdx} />
           {stage.replace(/_/g, " ")}
         </div>
       ))}
@@ -129,7 +131,7 @@ export default function Audit() {
 
           {/* Input dataset */}
           <div>
-            <label className="stat-label block mb-2">Input Dataset</label>
+            <label htmlFor="audit-input-path" className="stat-label block mb-2">Input Dataset</label>
             <div className="space-y-2">
               {/* Quick-select from available files */}
               {files.length > 0 && (
@@ -152,6 +154,7 @@ export default function Audit() {
                 </div>
               )}
               <input
+                id="audit-input-path"
                 className="input"
                 placeholder="data/samples/maskott_csv_sample.csv"
                 value={inputPath}
@@ -162,8 +165,9 @@ export default function Audit() {
 
           {/* Recipe */}
           <div>
-            <label className="stat-label block mb-2">Pipeline Recipe</label>
+            <label htmlFor="audit-recipe" className="stat-label block mb-2">Pipeline Recipe</label>
             <select
+              id="audit-recipe"
               className="select w-full"
               value={recipePath}
               onChange={(e) => setRecipePath(e.target.value)}
@@ -318,7 +322,7 @@ function LoadRun({
       onLoad(dash);
       onRunId(id);
       onStep("done");
-    } catch (e) {
+    } catch {
       setErr("Run not found or dashboard not generated yet.");
     }
     setLoading(false);

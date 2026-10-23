@@ -46,22 +46,33 @@ async def _verify_recaptcha(token: str, remote_ip: str | None, action: str) -> N
         data = resp.json()
     except Exception as exc:
         logger.warning("reCAPTCHA verification request failed: %s", exc)
-        raise HTTPException(status_code=503, detail="reCAPTCHA verification unavailable.") from None
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="reCAPTCHA verification unavailable.",
+        ) from None
 
     if not data.get("success"):
-        raise HTTPException(status_code=400, detail="reCAPTCHA verification failed.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="reCAPTCHA verification failed."
+        )
 
     allowed = {h.strip() for h in settings.recaptcha_allowed_hostnames.split(",")}
     hostname = data.get("hostname", "")
     if allowed and hostname not in allowed:
-        raise HTTPException(status_code=400, detail="reCAPTCHA hostname not allowed.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="reCAPTCHA hostname not allowed."
+        )
 
     if data.get("action") != action:
-        raise HTTPException(status_code=400, detail="reCAPTCHA action mismatch.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="reCAPTCHA action mismatch."
+        )
 
     score = float(data.get("score", 0))
     if score < settings.recaptcha_min_score:
-        raise HTTPException(status_code=400, detail="reCAPTCHA score too low.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="reCAPTCHA score too low."
+        )
 
 
 class ManagedAccessRequestIn(BaseModel):
@@ -153,7 +164,9 @@ async def request_managed_access(
     settings = get_settings()
     if settings.recaptcha_enabled:
         if not body.recaptcha_token:
-            raise HTTPException(status_code=400, detail="reCAPTCHA token is required.")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="reCAPTCHA token is required."
+            )
         remote_ip = request.client.host if request.client else None
         await _verify_recaptcha(body.recaptcha_token, remote_ip, settings.recaptcha_contact_action)
     try:

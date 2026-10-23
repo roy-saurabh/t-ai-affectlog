@@ -69,8 +69,9 @@ export default function Login() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Email address</label>
+              <label htmlFor="login-email" className="block text-sm font-medium text-slate-300 mb-1.5">Email address</label>
               <input
+                id="login-email"
                 type="email"
                 required
                 autoComplete="email"
@@ -83,12 +84,13 @@ export default function Login() {
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-sm font-medium text-slate-300">Password</label>
+                <label htmlFor="login-password" className="block text-sm font-medium text-slate-300">Password</label>
                 <Link to="/forgot-password" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
                   Forgot password?
                 </Link>
               </div>
               <input
+                id="login-password"
                 type="password"
                 required
                 autoComplete="current-password"

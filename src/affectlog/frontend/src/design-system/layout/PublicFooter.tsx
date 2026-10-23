@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ExternalLink, Github, ChevronDown, ArrowRight, Server, Cloud } from "lucide-react";
+import { ExternalLink, Github, ChevronDown, ArrowRight, Server } from "lucide-react";
 import { cn } from "../cn";
 
 const GITHUB = "https://github.com/Prometheus-X-association/t-ai-affectlog";
@@ -261,7 +261,7 @@ export function PublicFooter() {
         </div>
 
         {/* Accent line */}
-        <div className="accent-line-trust mb-10" role="separator" />
+        <hr className="accent-line-trust mb-10 border-0" />
 
         {/* Link columns — desktop */}
         <nav className="hidden md:grid grid-cols-3 lg:grid-cols-6 gap-8 mb-12" aria-label="Footer links">

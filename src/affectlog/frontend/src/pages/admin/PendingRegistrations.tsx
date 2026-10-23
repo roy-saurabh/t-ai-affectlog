@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import { adminApi, PendingRegistration } from "../../api/admin";
 import { CheckCircle2, XCircle, HelpCircle, ChevronDown, ChevronUp } from "lucide-react";
 
@@ -12,6 +12,7 @@ function RegistrationRow({ reg, onAction }: { reg: PendingRegistration; onAction
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [devToken, setDevToken] = useState<string | null>(null);
+  const fieldId = useId();
 
   const approve = async () => {
     setLoading(true);
@@ -30,27 +31,21 @@ function RegistrationRow({ reg, onAction }: { reg: PendingRegistration; onAction
 
   return (
     <div className="bg-slate-800/40 border border-slate-700 rounded-xl overflow-hidden mb-3">
-      <div
-        className="flex items-center justify-between p-4 cursor-pointer"
-        role="button"
-        tabIndex={0}
+      <button
+        type="button"
+        className="flex w-full items-center justify-between p-4 text-left cursor-pointer"
+        aria-expanded={expanded}
         onClick={() => setExpanded((x) => !x)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            setExpanded((x) => !x);
-          }
-        }}
       >
-        <div className="flex-1 min-w-0">
-          <p className="font-medium text-white text-sm">{reg.full_name}</p>
-          <p className="text-slate-400 text-xs">{reg.email} · {reg.organization ?? "—"}</p>
-        </div>
-        <div className="flex items-center gap-3">
+        <span className="block flex-1 min-w-0">
+          <span className="block font-medium text-white text-sm">{reg.full_name}</span>
+          <span className="block text-slate-400 text-xs">{reg.email} · {reg.organization ?? "—"}</span>
+        </span>
+        <span className="flex items-center gap-3">
           <span className="text-xs text-slate-500">{new Date(reg.created_at).toLocaleDateString()}</span>
           {expanded ? <ChevronUp size={14} className="text-slate-500" /> : <ChevronDown size={14} className="text-slate-500" />}
-        </div>
-      </div>
+        </span>
+      </button>
 
       {expanded && (
         <div className="border-t border-slate-700 p-4 space-y-4">
@@ -62,15 +57,15 @@ function RegistrationRow({ reg, onAction }: { reg: PendingRegistration; onAction
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-slate-400 mb-1">Assign role</label>
-              <select value={role} onChange={(e) => setRole(e.target.value)}
+              <label htmlFor={`${fieldId}-role`} className="block text-xs text-slate-400 mb-1">Assign role</label>
+              <select id={`${fieldId}-role`} value={role} onChange={(e) => setRole(e.target.value)}
                 className="w-full bg-slate-700 border border-slate-600 text-white rounded px-3 py-2 text-xs">
                 {ROLES.map((r) => <option key={r}>{r}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">Assign workspace</label>
-              <select value={workspace} onChange={(e) => setWorkspace(e.target.value)}
+              <label htmlFor={`${fieldId}-workspace`} className="block text-xs text-slate-400 mb-1">Assign workspace</label>
+              <select id={`${fieldId}-workspace`} value={workspace} onChange={(e) => setWorkspace(e.target.value)}
                 className="w-full bg-slate-700 border border-slate-600 text-white rounded px-3 py-2 text-xs">
                 {WORKSPACES.map((w) => <option key={w}>{w}</option>)}
               </select>
@@ -78,8 +73,8 @@ function RegistrationRow({ reg, onAction }: { reg: PendingRegistration; onAction
           </div>
 
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Admin notes (optional)</label>
-            <textarea rows={2} value={notes} onChange={(e) => setNotes(e.target.value)}
+            <label htmlFor={`${fieldId}-notes`} className="block text-xs text-slate-400 mb-1">Admin notes (optional)</label>
+            <textarea id={`${fieldId}-notes`} rows={2} value={notes} onChange={(e) => setNotes(e.target.value)}
               className="w-full bg-slate-700 border border-slate-600 text-white rounded px-3 py-2 text-xs resize-none" />
           </div>
 
@@ -131,14 +126,14 @@ export default function PendingRegistrations() {
         </button>
       </div>
 
-      {loading ? (
-        <div className="text-slate-500 text-sm">Loading…</div>
-      ) : regs.length === 0 ? (
+      {loading && <div className="text-slate-500 text-sm">Loading…</div>}
+      {!loading && regs.length === 0 && (
         <div className="text-center py-16 text-slate-500">
           <HelpCircle size={32} className="mx-auto mb-3 opacity-40" />
           No pending registrations.
         </div>
-      ) : (
+      )}
+      {!loading && regs.length > 0 && (
         <div>{regs.map((r) => <RegistrationRow key={r.id} reg={r} onAction={load} />)}</div>
       )}
     </div>

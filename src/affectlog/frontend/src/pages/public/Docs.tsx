@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   BookOpen, ArrowRight, ExternalLink, Server, Shield,
-  Users, Code2, BookMarked, Cpu, Activity, Wrench,
+  Code2, BookMarked, Cpu, Activity, Wrench,
 } from "lucide-react";
 import { PublicHeader } from "../../components/public/PublicHeader";
 import { PublicFooter } from "../../components/public/PublicFooter";
@@ -264,7 +264,7 @@ function QuickstartPaths() {
 
                   <ol className="space-y-2 flex-1 mb-5">
                     {path.steps.map((step, j) => (
-                      <li key={j} className="flex items-center gap-2.5 text-sm text-slate-400">
+                      <li key={step} className="flex items-center gap-2.5 text-sm text-slate-400">
                         <span
                           className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
                           style={{ background: `${path.color}12`, color: path.color }}
@@ -278,7 +278,7 @@ function QuickstartPaths() {
 
                   {"to" in path.cta ? (
                     <Link
-                      to={path.cta.to as string}
+                      to={path.cta.to}
                       className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
                       style={{ color: path.color }}
                     >

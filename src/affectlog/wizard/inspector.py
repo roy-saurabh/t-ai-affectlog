@@ -11,6 +11,8 @@ import logging
 import socket
 import ssl
 import tempfile
+from collections.abc import Callable
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -48,6 +50,67 @@ def _is_url(s: str) -> bool:
         return False
 
 
+def _resolve_public_ip(host: str, port: int) -> tuple[str | None, str]:
+    """
+    Resolve *host* exactly once and reject private or reserved addresses (SSRF guard).
+    Returns (ip, "") or (None, error_msg).
+    """
+    try:
+        addrinfos = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
+    except OSError:
+        return None, "Could not resolve hostname."
+    if not addrinfos:
+        return None, "Could not resolve hostname."
+    ip_str = str(addrinfos[0][4][0])
+
+    try:
+        ip = ipaddress.ip_address(ip_str)
+    except ValueError:
+        return None, "Could not parse resolved IP address."
+
+    if any(ip in net for net in _PRIVATE_NETWORKS):
+        return None, "URL resolves to a private or reserved address."
+    return ip_str, ""
+
+
+def _open_pinned_connection(
+    scheme: str, host: str, ip_str: str, port: int
+) -> http.client.HTTPConnection:
+    # Connect directly to the pre-resolved IP — no DNS re-lookup at request time.
+    # HTTPConnection is constructed with ip_str (validated IP, not user-supplied host)
+    # to prevent SSRF. For HTTPS the TLS handshake uses server_hostname=host for
+    # correct SNI / certificate verification; the socket is then injected so
+    # http.client never performs its own DNS lookup or TLS setup.
+    raw_sock = socket.create_connection((ip_str, port), timeout=30)
+    conn = http.client.HTTPConnection(ip_str, port=port, timeout=30)
+    if scheme == "https":
+        ctx = ssl.create_default_context()
+        conn.sock = ctx.wrap_socket(raw_sock, server_hostname=host)
+    else:
+        conn.sock = raw_sock
+    return conn
+
+
+def _read_limited_body(resp: http.client.HTTPResponse) -> tuple[bytes | None, str]:
+    """Return (body, "") for a 200 response within the size cap, else (None, error_msg)."""
+    # Do NOT follow redirects — redirect targets bypass the SSRF validation above
+    if resp.status in (301, 302, 303, 307, 308):
+        return None, f"Redirects are not followed for security (HTTP {resp.status})."
+    if resp.status != 200:
+        return None, f"Remote server returned HTTP {resp.status}."
+
+    content_length = int(resp.getheader("Content-Length", 0) or 0)
+    if content_length > _URL_SIZE_LIMIT:
+        return (
+            None,
+            f"Remote file too large ({content_length // 1_048_576} MB). Limit is 50 MB.",
+        )
+    data = resp.read(_URL_SIZE_LIMIT + 1)
+    if len(data) > _URL_SIZE_LIMIT:
+        return None, "Remote file exceeds 50 MB limit."
+    return data, ""
+
+
 def _fetch_url_to_tempfile(url: str) -> tuple[Path, int] | tuple[None, str]:
     """
     Download url into a named temp file.
@@ -62,64 +125,23 @@ def _fetch_url_to_tempfile(url: str) -> tuple[Path, int] | tuple[None, str]:
         return None, "No hostname in URL."
     port = parsed.port or (443 if parsed.scheme == "https" else 80)
 
-    # Resolve hostname → IP exactly once and validate before connecting (SSRF guard)
-    try:
-        addrinfos = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
-        if not addrinfos:
-            return None, "Could not resolve hostname."
-        ip_str = str(addrinfos[0][4][0])
-    except OSError:
-        return None, "Could not resolve hostname."
-
-    try:
-        ip = ipaddress.ip_address(ip_str)
-    except ValueError:
-        return None, "Could not parse resolved IP address."
-
-    if any(ip in net for net in _PRIVATE_NETWORKS):
-        return None, "URL resolves to a private or reserved address."
+    ip_str, error = _resolve_public_ip(host, port)
+    if ip_str is None:
+        return None, error
 
     path_qs = (parsed.path or "/") + (f"?{parsed.query}" if parsed.query else "")
 
     conn: http.client.HTTPConnection | None = None
     try:
-        # Connect directly to the pre-resolved IP — no DNS re-lookup at request time.
-        # HTTPConnection is constructed with ip_str (validated IP, not user-supplied host)
-        # to prevent SSRF. For HTTPS the TLS handshake uses server_hostname=host for
-        # correct SNI / certificate verification; the socket is then injected so
-        # http.client never performs its own DNS lookup or TLS setup.
-        raw_sock = socket.create_connection((ip_str, port), timeout=30)
-        if parsed.scheme == "https":
-            ctx = ssl.create_default_context()
-            tls_sock = ctx.wrap_socket(raw_sock, server_hostname=host)
-            conn = http.client.HTTPConnection(ip_str, port=port, timeout=30)
-            conn.sock = tls_sock
-        else:
-            conn = http.client.HTTPConnection(ip_str, port=port, timeout=30)
-            conn.sock = raw_sock
-
+        conn = _open_pinned_connection(parsed.scheme, host, ip_str, port)
         conn.request(
             "GET",
             path_qs,
             headers={"Host": host, "User-Agent": "AffectLog-Inspector/1.0"},
         )
-        resp = conn.getresponse()
-
-        # Do NOT follow redirects — redirect targets bypass the SSRF validation above
-        if resp.status in (301, 302, 303, 307, 308):
-            return None, f"Redirects are not followed for security (HTTP {resp.status})."
-        if resp.status != 200:
-            return None, f"Remote server returned HTTP {resp.status}."
-
-        content_length = int(resp.getheader("Content-Length", 0) or 0)
-        if content_length > _URL_SIZE_LIMIT:
-            return (
-                None,
-                f"Remote file too large ({content_length // 1_048_576} MB). Limit is 50 MB.",
-            )
-        data = resp.read(_URL_SIZE_LIMIT + 1)
-        if len(data) > _URL_SIZE_LIMIT:
-            return None, "Remote file exceeds 50 MB limit."
+        data, error = _read_limited_body(conn.getresponse())
+        if data is None:
+            return None, error
 
         with tempfile.NamedTemporaryFile(delete=False, suffix=".tmp") as tf:
             tf.write(data)
@@ -171,7 +193,7 @@ _SESSION_KEYWORDS = ["session", "trace", "attempt"]
 _GROUP_KEYWORDS = ["group", "class", "cohort", "segment", "category", "school", "institution"]
 
 
-def _likely_roles(col: str, sample_vals: list[str]) -> list[FieldRole]:  # noqa: ARG001
+def _likely_roles(col: str) -> list[FieldRole]:
     roles: list[FieldRole] = []
     cl = col.lower().replace("-", "_").replace(" ", "_")
     if any(kw in cl for kw in _TIMESTAMP_KEYWORDS):
@@ -305,170 +327,147 @@ def _score_xapi(cols: list[str], rows: list[dict[str, Any]]) -> float:
     return required_matches / len(XAPI_REQUIRED)
 
 
+_FORMAT_BY_SUFFIX: dict[str, tuple[str, float]] = {
+    ".parquet": ("parquet_tabular", 0.95),
+    ".pq": ("parquet_tabular", 0.95),
+    ".pkl": ("model_artifact_sklearn", 0.9),
+    ".joblib": ("model_artifact_sklearn", 0.9),
+    ".onnx": ("model_artifact_onnx", 0.95),
+    ".pt": ("model_artifact_torch", 0.9),
+    ".pth": ("model_artifact_torch", 0.9),
+    ".h5": ("model_artifact_tensorflow", 0.9),
+    ".keras": ("model_artifact_tensorflow", 0.9),
+}
+
+
+def _detect_csv_format(cols: list[str]) -> tuple[str, float]:
+    maskott_score = _score_maskott(cols)
+    if maskott_score >= 0.8:
+        return "maskott_csv_v1", maskott_score
+    return "generic_csv_tabular", 0.7
+
+
+def _detect_jsonl_format(cols: list[str], rows: list[dict[str, Any]]) -> tuple[str, float]:
+    xapi_score = _score_xapi(cols, rows)
+    return "generic_xapi_jsonl", xapi_score if xapi_score >= 0.7 else 0.5
+
+
+def _detect_json_format(cols: list[str], rows: list[dict[str, Any]]) -> tuple[str, float]:
+    xapi_score = _score_xapi(cols, rows)
+    if xapi_score >= 0.7:
+        return "generic_xapi_json", xapi_score
+    if rows and "id" in rows[0]:
+        return "becomino_json", 0.5
+    return "generic_xapi_json", 0.4
+
+
 def _detect_format(
-    path: Path,  # noqa: ARG001
     cols: list[str],
     rows: list[dict[str, Any]],
     suffix: str,
 ) -> tuple[str | None, float]:
     if suffix in (".csv", ".tsv"):
-        maskott_score = _score_maskott(cols)
-        if maskott_score >= 0.8:
-            return "maskott_csv_v1", maskott_score
-        return "generic_csv_tabular", 0.7
-    if suffix == ".jsonl" or suffix == ".ndjson":
-        xapi_score = _score_xapi(cols, rows)
-        if xapi_score >= 0.7:
-            return "generic_xapi_jsonl", xapi_score
-        return "generic_xapi_jsonl", 0.5
+        return _detect_csv_format(cols)
+    if suffix in (".jsonl", ".ndjson"):
+        return _detect_jsonl_format(cols, rows)
     if suffix == ".json":
-        xapi_score = _score_xapi(cols, rows)
-        if xapi_score >= 0.7:
-            return "generic_xapi_json", xapi_score
-        if rows and "id" in (rows[0] if rows else {}):
-            return "becomino_json", 0.5
-        return "generic_xapi_json", 0.4
-    if suffix in (".parquet", ".pq"):
-        return "parquet_tabular", 0.95
-    if suffix in (".pkl", ".joblib"):
-        return "model_artifact_sklearn", 0.9
-    if suffix == ".onnx":
-        return "model_artifact_onnx", 0.95
-    if suffix in (".pt", ".pth"):
-        return "model_artifact_torch", 0.9
-    if suffix in (".h5", ".keras"):
-        return "model_artifact_tensorflow", 0.9
-    return None, 0.0
+        return _detect_json_format(cols, rows)
+    return _FORMAT_BY_SUFFIX.get(suffix, (None, 0.0))
 
 
-def inspect(req: InspectInputRequest) -> InspectInputResponse:
-    path_str = req.dataset_path or req.dataset_reference
-    if not path_str:
-        return InspectInputResponse(
-            is_supported=False,
-            unsupported_reason="No dataset path or reference provided.",
-        )
+_SampleReader = Callable[[Path], tuple[list[str], list[dict[str, Any]], int]]
 
-    _temp_path: Path | None = None
-    fetched_size: int | None = None
+_SAMPLE_READERS: dict[str, _SampleReader] = {
+    ".csv": _read_csv_sample,
+    ".tsv": _read_csv_sample,
+    ".json": _read_json_sample,
+    ".jsonl": _read_jsonl_sample,
+    ".ndjson": _read_jsonl_sample,
+}
 
-    if _is_url(path_str):
-        result, meta = _fetch_url_to_tempfile(path_str)
-        if result is None:
-            return InspectInputResponse(
-                is_supported=False,
-                unsupported_reason=str(meta),
-            )
-        _temp_path = result
-        assert isinstance(meta, int)
-        fetched_size = meta
-        path = _temp_path
-        # Preserve original extension so format detection works by suffix
-        suffix = Path(urlparse(path_str).path).suffix.lower() or path.suffix.lower()
-    else:
-        _s = get_settings()
-        _allowed_bases = [
-            Path(_s.data_dir).resolve(),
-            Path(_s.runs_dir).resolve(),
-            Path(tempfile.gettempdir()).resolve(),
-        ]
-        resolved = Path(path_str).resolve()
-        if not any(resolved.is_relative_to(base) for base in _allowed_bases):
-            return InspectInputResponse(
-                is_supported=False,
-                unsupported_reason="Dataset path is outside the allowed directories.",
-            )
-        path = resolved
-        if not path.exists():
-            return InspectInputResponse(
-                is_supported=False,
-                unsupported_reason="File not found.",
-            )
-        if not path.is_file():
-            return InspectInputResponse(
-                is_supported=False,
-                unsupported_reason="Path is not a file.",
-            )
-        suffix = path.suffix.lower()
+_MASKOTT_FIELD_ROLES = {
+    "entity_field": "entityid",
+    "item_field": "resourceid",
+    "timestamp_field": "accessdate",
+    "session_field": "activitysessionid",
+    "verb_field": "viewcontext",
+}
 
-    # ── Read sample ────────────────────────────────────────────────────
-    cols: list[str] = []
-    rows: list[dict[str, Any]] = []
-    total_rows = 0
-    file_size = fetched_size if fetched_size is not None else path.stat().st_size
 
-    if suffix in (".csv", ".tsv"):
-        cols, row_dicts, total_rows = _read_csv_sample(path)
-        rows = row_dicts
-    elif suffix in (".json",):
-        cols, rows, total_rows = _read_json_sample(path)
-    elif suffix in (".jsonl", ".ndjson"):
-        cols, rows, total_rows = _read_jsonl_sample(path)
+@dataclass
+class _ResolvedInput:
+    path: Path
+    suffix: str
+    file_size: int
+    temp_path: Path | None = None
 
-    # Text-based formats with no columns are unreadable — fail early rather
-    # than letting the user advance to schema mapping with an empty inventory.
-    _tabular_suffixes = {".csv", ".tsv", ".json", ".jsonl", ".ndjson"}
-    if suffix in _tabular_suffixes and not cols:
-        return InspectInputResponse(
-            is_supported=False,
-            unsupported_reason="No columns detected — file may be empty or malformed.",
-        )
 
-    # ── Format detection ───────────────────────────────────────────────
-    detected_format, confidence = _detect_format(path, cols, rows, suffix)
+def _unsupported(reason: str) -> InspectInputResponse:
+    return InspectInputResponse(is_supported=False, unsupported_reason=reason)
 
-    # Apply user hints
-    if req.user_hints.dataset_type and req.user_hints.dataset_type in FORMAT_BY_ID:
-        detected_format = req.user_hints.dataset_type
-        confidence = max(confidence, 0.9)
 
-    is_supported = detected_format is not None
+def _resolve_remote_input(url: str) -> _ResolvedInput | InspectInputResponse:
+    result, meta = _fetch_url_to_tempfile(url)
+    if result is None:
+        return _unsupported(str(meta))
+    assert isinstance(meta, int)
+    # Preserve original extension so format detection works by suffix
+    suffix = Path(urlparse(url).path).suffix.lower() or result.suffix.lower()
+    return _ResolvedInput(path=result, suffix=suffix, file_size=meta, temp_path=result)
 
-    # ── Field inventory ────────────────────────────────────────────────
-    field_inventory: list[FieldInventoryEntry] = []
-    for col in cols:
-        sample_vals = [str(r.get(col, "")) for r in rows[:20] if r.get(col) is not None]
-        unique_count = len({str(r.get(col, "")) for r in rows if r.get(col) is not None})
-        missing = sum(1 for r in rows if not r.get(col))
-        missing_rate = missing / len(rows) if rows else None
-        field_inventory.append(
-            FieldInventoryEntry(
-                name=col,
-                inferred_type=_infer_type(sample_vals),
-                cardinality=unique_count,
-                missing_rate=missing_rate,
-                sample_values=sample_vals[:5],
-                pii_flag=_is_pii(col),
-                likely_roles=_likely_roles(col, sample_vals),
-            )
-        )
 
-    # ── Compatibility scores ───────────────────────────────────────────
-    maskott_score = _score_maskott(cols) if cols else None
-    xapi_score = _score_xapi(cols, rows) if (cols or rows) else None
+def _resolve_local_input(path_str: str) -> _ResolvedInput | InspectInputResponse:
+    settings = get_settings()
+    allowed_bases = [
+        Path(settings.data_dir).resolve(),
+        Path(settings.runs_dir).resolve(),
+        Path(tempfile.gettempdir()).resolve(),
+    ]
+    path = Path(path_str).resolve()
+    if not any(path.is_relative_to(base) for base in allowed_bases):
+        return _unsupported("Dataset path is outside the allowed directories.")
+    if not path.exists():
+        return _unsupported("File not found.")
+    if not path.is_file():
+        return _unsupported("Path is not a file.")
+    return _ResolvedInput(path=path, suffix=path.suffix.lower(), file_size=path.stat().st_size)
 
-    # ── Pre-mapped fields for Maskott ─────────────────────────────────
-    pre_mapped: dict[str, str] = {}
-    if detected_format == "maskott_csv_v1":
-        col_lower = {c.lower(): c for c in cols}
-        mapping = {
-            "entity_field": "entityid",
-            "item_field": "resourceid",
-            "timestamp_field": "accessdate",
-            "session_field": "activitysessionid",
-            "verb_field": "viewcontext",
-        }
-        for role, pattern in mapping.items():
-            if pattern in col_lower:
-                pre_mapped[role] = col_lower[pattern]
 
-    # ── Missing required fields ────────────────────────────────────────
-    missing_required: list[str] = []
-    if detected_format == "maskott_csv_v1":
-        col_set = {c.lower() for c in cols}
-        missing_required = [f for f in MASKOTT_REQUIRED if f.lower() not in col_set]
+def _read_sample(path: Path, suffix: str) -> tuple[list[str], list[dict[str, Any]], int]:
+    reader = _SAMPLE_READERS.get(suffix)
+    return reader(path) if reader else ([], [], 0)
 
-    # ── Risk warnings ──────────────────────────────────────────────────
+
+def _field_inventory_entry(col: str, rows: list[dict[str, Any]]) -> FieldInventoryEntry:
+    sample_vals = [str(r.get(col, "")) for r in rows[:20] if r.get(col) is not None]
+    unique_count = len({str(r.get(col, "")) for r in rows if r.get(col) is not None})
+    missing = sum(1 for r in rows if not r.get(col))
+    return FieldInventoryEntry(
+        name=col,
+        inferred_type=_infer_type(sample_vals),
+        cardinality=unique_count,
+        missing_rate=missing / len(rows) if rows else None,
+        sample_values=sample_vals[:5],
+        pii_flag=_is_pii(col),
+        likely_roles=_likely_roles(col),
+    )
+
+
+def _maskott_pre_mapping(cols: list[str]) -> dict[str, str]:
+    col_lower = {c.lower(): c for c in cols}
+    return {
+        role: col_lower[pattern]
+        for role, pattern in _MASKOTT_FIELD_ROLES.items()
+        if pattern in col_lower
+    }
+
+
+def _maskott_missing_required(cols: list[str]) -> list[str]:
+    col_set = {c.lower() for c in cols}
+    return [f for f in MASKOTT_REQUIRED if f.lower() not in col_set]
+
+
+def _risk_warnings(field_inventory: list[FieldInventoryEntry], total_rows: int) -> list[str]:
     risk_warnings: list[str] = []
     pii_fields = [f.name for f in field_inventory if f.pii_flag]
     if pii_fields:
@@ -480,31 +479,82 @@ def inspect(req: InspectInputRequest) -> InspectInputResponse:
         risk_warnings.append(
             f"Large dataset ({total_rows:,} rows). Statistical analyses will use sampling where necessary."
         )
+    return risk_warnings
 
-    response = InspectInputResponse(
+
+def _round_score(score: float | None) -> float | None:
+    return round(score, 3) if score is not None else None
+
+
+def _format_label(detected_format: str | None) -> str | None:
+    if detected_format in FORMAT_BY_ID:
+        return FORMAT_BY_ID[detected_format].label
+    return detected_format
+
+
+def _inspect_file(req: InspectInputRequest, source: _ResolvedInput) -> InspectInputResponse:
+    cols, rows, total_rows = _read_sample(source.path, source.suffix)
+
+    # Text-based formats with no columns are unreadable — fail early rather
+    # than letting the user advance to schema mapping with an empty inventory.
+    if source.suffix in _SAMPLE_READERS and not cols:
+        return _unsupported("No columns detected — file may be empty or malformed.")
+
+    # ── Format detection ───────────────────────────────────────────────
+    detected_format, confidence = _detect_format(cols, rows, source.suffix)
+
+    # Apply user hints
+    if req.user_hints.dataset_type and req.user_hints.dataset_type in FORMAT_BY_ID:
+        detected_format = req.user_hints.dataset_type
+        confidence = max(confidence, 0.9)
+
+    is_supported = detected_format is not None
+    field_inventory = [_field_inventory_entry(col, rows) for col in cols]
+
+    # ── Compatibility scores ───────────────────────────────────────────
+    maskott_score = _score_maskott(cols) if cols else None
+    xapi_score = _score_xapi(cols, rows) if (cols or rows) else None
+
+    # ── Maskott pre-mapped and missing required fields ─────────────────
+    is_maskott = detected_format == "maskott_csv_v1"
+    pre_mapped = _maskott_pre_mapping(cols) if is_maskott else {}
+    missing_required = _maskott_missing_required(cols) if is_maskott else []
+
+    return InspectInputResponse(
         detected_format=detected_format,
-        detected_format_label=FORMAT_BY_ID[detected_format].label
-        if detected_format in FORMAT_BY_ID
-        else detected_format,
+        detected_format_label=_format_label(detected_format),
         format_confidence=round(confidence, 3),
         row_count_estimate=total_rows,
-        file_size_bytes=file_size,
+        file_size_bytes=source.file_size,
         field_inventory=field_inventory,
-        xapi_compatibility_score=round(xapi_score, 3) if xapi_score is not None else None,
+        xapi_compatibility_score=_round_score(xapi_score),
         becomino_template_match_score=None,
-        maskott_schema_match_score=round(maskott_score, 3) if maskott_score is not None else None,
+        maskott_schema_match_score=_round_score(maskott_score),
         missing_required_fields=missing_required,
         detected_model_type=None,
         model_adapter_compatibility=None,
-        risk_warnings=risk_warnings,
-        recommended_next_step="confirm_schema" if not pre_mapped else "confirm_mapping",
+        risk_warnings=_risk_warnings(field_inventory, total_rows),
+        recommended_next_step="confirm_mapping" if pre_mapped else "confirm_schema",
         is_supported=is_supported,
-        unsupported_reason=None if is_supported else f"Unsupported file type: {suffix}",
+        unsupported_reason=None if is_supported else f"Unsupported file type: {source.suffix}",
         pre_mapped_fields=pre_mapped,
     )
 
-    if _temp_path is not None:
-        with contextlib.suppress(Exception):
-            _temp_path.unlink(missing_ok=True)
 
-    return response
+def inspect(req: InspectInputRequest) -> InspectInputResponse:
+    path_str = req.dataset_path or req.dataset_reference
+    if not path_str:
+        return _unsupported("No dataset path or reference provided.")
+
+    resolved = (
+        _resolve_remote_input(path_str) if _is_url(path_str) else _resolve_local_input(path_str)
+    )
+    if isinstance(resolved, InspectInputResponse):
+        return resolved
+
+    try:
+        return _inspect_file(req, resolved)
+    finally:
+        if resolved.temp_path is not None:
+            with contextlib.suppress(Exception):
+                resolved.temp_path.unlink(missing_ok=True)

@@ -2,10 +2,27 @@
 
 from __future__ import annotations
 
-import json
 from collections import Counter
 from pathlib import Path
 from typing import Any
+
+from affectlog.ingest.json_reader import iter_jsonl_records
+
+
+def _actor_name(evt: dict[str, Any]) -> str:
+    actor = evt.get("actor", {})
+    return str(actor.get("account", {}).get("name") or actor.get("mbox", "unknown"))
+
+
+def _duration_seconds(evt: dict[str, Any]) -> float | None:
+    """Return the raw duration in seconds, or None when absent or not numeric."""
+    dur_raw = evt.get("context", {}).get("extensions", {}).get("durationRaw")
+    if dur_raw is None:
+        return None
+    try:
+        return float(dur_raw)
+    except (TypeError, ValueError):
+        return None
 
 
 def compute_descriptive_stats(path: Path | str, limit: int = 0) -> dict[str, Any]:
@@ -13,7 +30,6 @@ def compute_descriptive_stats(path: Path | str, limit: int = 0) -> dict[str, Any
     Stream through a JSONL file and compute descriptive stats.
     *limit* = 0 means process all rows.
     """
-    path = Path(path)
     actor_counter: Counter[str] = Counter()
     resource_counter: Counter[str] = Counter()
     resource_type_counter: Counter[str] = Counter()
@@ -24,46 +40,28 @@ def compute_descriptive_stats(path: Path | str, limit: int = 0) -> dict[str, Any
     null_durations = 0
     total_duration = 0.0
 
-    with path.open(encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                evt = json.loads(line)
-            except json.JSONDecodeError:
-                continue
+    for evt in iter_jsonl_records(Path(path), limit):
+        total += 1
+        actor_counter[_actor_name(evt)] += 1
 
-            total += 1
-            if limit and total > limit:
-                break
+        obj_id = evt.get("object", {}).get("id", "unknown")
+        resource_counter[str(obj_id)] += 1
 
-            actor = evt.get("actor", {}).get("account", {}).get("name") or evt.get("actor", {}).get(
-                "mbox", "unknown"
-            )
-            actor_counter[str(actor)] += 1
+        rtype = evt.get("object", {}).get("definition", {}).get("type", "unknown")
+        resource_type_counter[str(rtype)] += 1
 
-            obj_id = evt.get("object", {}).get("id", "unknown")
-            resource_counter[str(obj_id)] += 1
+        verb = evt.get("verb", {}).get("display", {}).get("en-US", "unknown")
+        verb_counter[str(verb)] += 1
 
-            rtype = evt.get("object", {}).get("definition", {}).get("type", "unknown")
-            resource_type_counter[str(rtype)] += 1
+        categories = evt.get("context", {}).get("contextActivities", {}).get("category", [])
+        for cat in categories:
+            view_context_counter[str(cat.get("id", "unknown"))] += 1
 
-            verb = evt.get("verb", {}).get("display", {}).get("en-US", "unknown")
-            verb_counter[str(verb)] += 1
-
-            categories = evt.get("context", {}).get("contextActivities", {}).get("category", [])
-            for cat in categories:
-                view_context_counter[str(cat.get("id", "unknown"))] += 1
-
-            dur_raw = evt.get("context", {}).get("extensions", {}).get("durationRaw")
-            if dur_raw is not None:
-                try:
-                    total_duration += float(dur_raw)
-                except (TypeError, ValueError):
-                    null_durations += 1
-            else:
-                null_durations += 1
+        duration = _duration_seconds(evt)
+        if duration is None:
+            null_durations += 1
+        else:
+            total_duration += duration
 
     n_unique_actors = len(actor_counter)
     n_unique_resources = len(resource_counter)

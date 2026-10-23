@@ -63,7 +63,7 @@ export function AuroraBackground({
           const op  = orb.opacity ?? 0.85;
           return (
             <div
-              key={i}
+              key={`${orb.color}-${orb.x}-${orb.y}`}
               className="absolute animate-aurora"
               style={{
                 left: orb.x,

@@ -50,7 +50,7 @@ function dictToBarData(d: Record<string, number>, maxItems = 12) {
   return Object.entries(d)
     .sort((a, b) => b[1] - a[1])
     .slice(0, maxItems)
-    .map(([name, value]) => ({ name: name.replace(/_/g, " "), value }));
+    .map(([name, value]) => ({ id: name, name: name.replace(/_/g, " "), value }));
 }
 
 // Compact dark tooltip
@@ -82,10 +82,15 @@ function CoverageTooltip({ active, payload, label }: {
   );
 }
 
+function concentrationLevel(value: number): { interp: string; color: string } {
+  if (value < 0.3) return { interp: "Low concentration", color: "text-emerald-400" };
+  if (value < 0.6) return { interp: "Moderate concentration", color: "text-amber-400" };
+  return { interp: "High concentration", color: "text-red-400" };
+}
+
 function GiniCard({ label, value }: { label: string; value: number }) {
   const pct = Math.round(value * 100);
-  const interp = value < 0.3 ? "Low concentration" : value < 0.6 ? "Moderate concentration" : "High concentration";
-  const color = value < 0.3 ? "text-emerald-400" : value < 0.6 ? "text-amber-400" : "text-red-400";
+  const { interp, color } = concentrationLevel(value);
   return (
     <div className="rounded-xl border border-slate-700/50 bg-slate-800/30 p-4 space-y-2">
       <p className="text-[11px] text-slate-500">{label}</p>
@@ -121,7 +126,7 @@ const PLOT_RENDERERS: Record<string, PlotRenderer> = {
             <YAxis tick={{ fill: "#64748b", fontSize: 10 }} />
             <Tooltip content={<DarkTooltip />} />
             <Bar dataKey="value" radius={[3, 3, 0, 0]}>
-              {chartData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+              {chartData.map((entry, i) => <Cell key={entry.id} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
@@ -142,7 +147,7 @@ const PLOT_RENDERERS: Record<string, PlotRenderer> = {
             <YAxis tick={{ fill: "#64748b", fontSize: 10 }} />
             <Tooltip content={<DarkTooltip />} />
             <Bar dataKey="value" radius={[3, 3, 0, 0]}>
-              {chartData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+              {chartData.map((entry, i) => <Cell key={entry.id} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
@@ -155,7 +160,7 @@ const PLOT_RENDERERS: Record<string, PlotRenderer> = {
     if (!raw || raw.length === 0) return null;
     const chartData = raw.slice(0, 10).map((r) => {
       const [res, cnt] = Array.isArray(r) ? r : [r.resource, r.count];
-      return { name: String(res).slice(0, 18), value: Number(cnt) };
+      return { id: String(res), name: String(res).slice(0, 18), value: Number(cnt) };
     });
     return (
       <div className="space-y-2">
@@ -166,7 +171,7 @@ const PLOT_RENDERERS: Record<string, PlotRenderer> = {
             <YAxis type="category" dataKey="name" tick={{ fill: "#64748b", fontSize: 10 }} width={72} />
             <Tooltip content={<DarkTooltip />} />
             <Bar dataKey="value" radius={[0, 3, 3, 0]}>
-              {chartData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+              {chartData.map((entry, i) => <Cell key={entry.id} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
@@ -254,7 +259,7 @@ const PLOT_RENDERERS: Record<string, PlotRenderer> = {
     const days = p.temporal?.top_10_days;
     if (hours && Object.keys(hours).length > 0) {
       const chartData = Object.entries(hours)
-        .map(([h, c]) => ({ name: `${h}h`, value: Number(c) }))
+        .map(([h, c]) => ({ id: h, name: `${h}h`, value: Number(c) }))
         .sort((a, b) => parseInt(a.name) - parseInt(b.name));
       return (
         <div className="space-y-2">
@@ -265,7 +270,7 @@ const PLOT_RENDERERS: Record<string, PlotRenderer> = {
               <YAxis tick={{ fill: "#64748b", fontSize: 10 }} />
               <Tooltip content={<DarkTooltip />} />
               <Bar dataKey="value" radius={[3, 3, 0, 0]}>
-                {chartData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+                {chartData.map((entry, i) => <Cell key={entry.id} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
@@ -273,7 +278,7 @@ const PLOT_RENDERERS: Record<string, PlotRenderer> = {
       );
     }
     if (days && days.length > 0) {
-      const chartData = days.slice(0, 10).map(([d, c]) => ({ name: d.slice(5), value: c }));
+      const chartData = days.slice(0, 10).map(([d, c]) => ({ id: d, name: d.slice(5), value: c }));
       return (
         <div className="space-y-2">
           <p className="text-[11px] font-medium text-slate-400">Top Active Days</p>
@@ -283,7 +288,7 @@ const PLOT_RENDERERS: Record<string, PlotRenderer> = {
               <YAxis tick={{ fill: "#64748b", fontSize: 10 }} />
               <Tooltip content={<DarkTooltip />} />
               <Bar dataKey="value" radius={[3, 3, 0, 0]}>
-                {chartData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+                {chartData.map((entry, i) => <Cell key={entry.id} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
@@ -379,8 +384,8 @@ export function StepResultsGuidance({ results, runId }: StepResultsGuidanceProps
         <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 space-y-2">
           <p className="text-xs font-semibold text-emerald-400">Key findings</p>
           <ul className="space-y-1.5">
-            {results.key_findings.map((f, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-slate-400">
+            {results.key_findings.map((f) => (
+              <li key={f} className="flex items-start gap-2 text-xs text-slate-400">
                 <CheckCircle size={11} className="text-emerald-400 flex-shrink-0 mt-0.5" />
                 {f}
               </li>
@@ -457,8 +462,8 @@ export function StepResultsGuidance({ results, runId }: StepResultsGuidanceProps
         <div className="space-y-2">
           <p className="text-xs font-semibold text-slate-400">Recommended next actions</p>
           <div className="space-y-2">
-            {results.recommended_next_actions.map((action, i) => (
-              <div key={i} className="flex items-start gap-2.5 rounded-xl border border-slate-700/50 bg-slate-800/20 p-3">
+            {results.recommended_next_actions.map((action) => (
+              <div key={action} className="flex items-start gap-2.5 rounded-xl border border-slate-700/50 bg-slate-800/20 p-3">
                 <ArrowRight size={12} className="text-indigo-400 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-slate-400">{action}</p>
               </div>
@@ -471,8 +476,8 @@ export function StepResultsGuidance({ results, runId }: StepResultsGuidanceProps
         <div className="space-y-2">
           <p className="text-xs font-semibold text-slate-400">Developer extension suggestions</p>
           <div className="space-y-2">
-            {results.developer_extension_suggestions.map((s, i) => (
-              <div key={i} className="flex items-start gap-2.5 rounded-xl border border-blue-500/20 bg-blue-500/5 p-3">
+            {results.developer_extension_suggestions.map((s) => (
+              <div key={s} className="flex items-start gap-2.5 rounded-xl border border-blue-500/20 bg-blue-500/5 p-3">
                 <Lightbulb size={12} className="text-blue-400 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-slate-500">{s}</p>
               </div>

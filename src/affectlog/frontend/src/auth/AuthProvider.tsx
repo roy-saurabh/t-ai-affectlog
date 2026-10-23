@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { authApi, MeResponse, UserOut } from "../api/auth";
 
 const SESSION_HINT_KEY = "affectlog_has_session";
@@ -57,8 +57,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [refresh]);
 
+  const value = useMemo(
+    () => ({ user, workspaces, loading, refresh, logout }),
+    [user, workspaces, loading, refresh, logout],
+  );
+
   return (
-    <AuthContext.Provider value={{ user, workspaces, loading, refresh, logout }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

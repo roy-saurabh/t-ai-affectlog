@@ -48,7 +48,7 @@ export function ComplianceGraphVisual() {
           const to   = getNode(edge.to);
           return (
             <line
-              key={i}
+              key={`${edge.from}-${edge.to}`}
               x1={from.x} y1={from.y}
               x2={to.x}   y2={to.y}
               stroke="rgba(203,213,225,0.25)"
@@ -84,7 +84,7 @@ export function ComplianceGraphVisual() {
             {node.label.includes("\n") ? (
               node.label.split("\n").map((line, j) => (
                 <text
-                  key={j}
+                  key={line}
                   x={node.x}
                   y={node.y + node.r + 14 + j * 12}
                   textAnchor="middle"

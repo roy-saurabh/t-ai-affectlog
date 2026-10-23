@@ -5,17 +5,14 @@ import {
   ArrowRight, CheckCircle2, ExternalLink, Github,
   Server, Cloud, Database, ShieldCheck, BarChart2,
   Cpu, FileText, Share2, Code2, Lock, Layers,
-  Terminal, Package, FlaskConical, Eye, Network,
+  Package, FlaskConical, Eye, Network,
   ClipboardList, Globe, Fingerprint, Activity,
 } from "lucide-react";
 import { PublicHeader } from "../../components/public/PublicHeader";
 import { PublicFooter } from "../../components/public/PublicFooter";
 import { HeroDataSpaceVisual } from "../../design-system/visuals/HeroDataSpaceVisual";
 import { EcosystemLifecycleVisual } from "../../design-system/visuals/EcosystemLifecycleVisual";
-import { DatasetToModelPipeline } from "../../components/visuals/DatasetToModelPipeline";
 import { XapiEventStream } from "../../components/visuals/XapiEventStream";
-import { FairnessMetricRadar } from "../../components/visuals/FairnessMetricRadar";
-import { AuditArtifactStack } from "../../components/visuals/AuditArtifactStack";
 import { CTABand } from "../../design-system/primitives/CTAGroup";
 import { GridBackground, GlowOrb } from "../../design-system/primitives/GridBackground";
 
@@ -83,7 +80,7 @@ function Hero() {
                 }}
               >
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#67E8F9" }} aria-hidden="true" />
-                Open-source core · AffectLog-managed option · Data-space ready
+                <span>Open-source core · AffectLog-managed option · Data-space ready</span>
               </div>
             </FadeUp>
 
@@ -153,11 +150,11 @@ function Hero() {
 
             {/* Trust badges */}
             <FadeUp delay={0.3}>
-              <div className="flex flex-wrap gap-2" role="list" aria-label="Platform properties">
+              <ul className="flex flex-wrap gap-2" aria-label="Platform properties">
                 {TRUST_ITEMS.map((item) => {
                   const Icon = item.icon;
                   return (
-                    <span
+                    <li
                       key={item.label}
                       className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border"
                       style={{
@@ -165,14 +162,13 @@ function Hero() {
                         borderColor: "rgba(203,213,225,0.14)",
                         background: "rgba(15,23,42,0.40)",
                       }}
-                      role="listitem"
                     >
                       <Icon size={11} style={{ color: item.color }} aria-hidden="true" />
                       {item.label}
-                    </span>
+                    </li>
                   );
                 })}
-              </div>
+              </ul>
             </FadeUp>
           </div>
 
@@ -379,23 +375,11 @@ function CapabilityGrid() {
             return (
               <FadeUp key={cap.title} delay={i * 0.03}>
                 <div
-                  className="rounded-xl p-5 h-full transition-all duration-200 border cursor-default group"
+                  className="rounded-xl p-5 h-full transition-all duration-200 border cursor-default group bg-white/[0.025] border-slate-300/10 hover:-translate-y-0.5 hover:bg-[color:var(--cap-hover-bg)] hover:border-[color:var(--cap-hover-border)]"
                   style={{
-                    background: "rgba(255,255,255,0.025)",
-                    borderColor: "rgba(203,213,225,0.10)",
-                  }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget as HTMLDivElement;
-                    el.style.borderColor = `${cap.color}35`;
-                    el.style.background  = `${cap.color}07`;
-                    el.style.transform   = "translateY(-2px)";
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget as HTMLDivElement;
-                    el.style.borderColor = "rgba(203,213,225,0.10)";
-                    el.style.background  = "rgba(255,255,255,0.025)";
-                    el.style.transform   = "translateY(0)";
-                  }}
+                    "--cap-hover-bg": `${cap.color}07`,
+                    "--cap-hover-border": `${cap.color}35`,
+                  } as React.CSSProperties}
                 >
                   <div
                     className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
@@ -474,7 +458,7 @@ function WorkflowSection() {
 
             <div className="space-y-0">
               {WORKFLOW_STEPS.map((s, i) => (
-                <FadeUp key={i} delay={i * 0.04}>
+                <FadeUp key={s.step} delay={i * 0.04}>
                   <div className="flex items-start gap-4">
                     <div className="flex flex-col items-center">
                       <div
@@ -836,12 +820,12 @@ function DeveloperSection() {
                     borderColor: "rgba(203,213,225,0.10)",
                   }}
                   onMouseEnter={(e) => {
-                    const el = e.currentTarget as HTMLAnchorElement;
+                    const el = e.currentTarget;
                     el.style.borderColor = "rgba(103,232,249,0.25)";
                     el.style.background  = "rgba(103,232,249,0.04)";
                   }}
                   onMouseLeave={(e) => {
-                    const el = e.currentTarget as HTMLAnchorElement;
+                    const el = e.currentTarget;
                     el.style.borderColor = "rgba(203,213,225,0.10)";
                     el.style.background  = "rgba(255,255,255,0.025)";
                   }}

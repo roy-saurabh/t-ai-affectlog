@@ -1,7 +1,7 @@
 import React from "react";
 import { Cpu, AlertCircle } from "lucide-react";
 
-export interface ModelContext {
+export type ModelContext = {
   model_path: string;
   adapter_type: string;
   task_type: string;
@@ -9,7 +9,7 @@ export interface ModelContext {
   has_probability_output: boolean;
   class_labels: string;
   model_card_available: boolean;
-}
+};
 
 interface StepModelContextProps {
   hasModel: boolean;
@@ -106,17 +106,15 @@ export function StepModelContext({
           { key: "has_probability_output" as const, label: "Model produces probability outputs", description: "Required for ROC, PR curve, and calibration plots." },
           { key: "model_card_available" as const, label: "Model card is available", description: "Pre-existing model documentation." },
         ].map(({ key, label, description }) => (
-          <label key={key} className="flex items-start gap-3 cursor-pointer rounded-xl border border-slate-700/50 bg-slate-800/30 p-3 hover:border-slate-600/50 transition-colors">
+          <label key={key} className="grid grid-cols-[auto_1fr] items-start gap-x-3 cursor-pointer rounded-xl border border-slate-700/50 bg-slate-800/30 p-3 hover:border-slate-600/50 transition-colors">
             <input
               type="checkbox"
               checked={!!modelContext[key]}
               onChange={(e) => update(key, e.target.checked)}
-              className="mt-0.5 h-4 w-4 rounded border-slate-600 bg-slate-800 text-indigo-600 focus:ring-indigo-500"
+              className="row-span-2 mt-0.5 h-4 w-4 rounded border-slate-600 bg-slate-800 text-indigo-600 focus:ring-indigo-500"
             />
-            <div>
-              <p className="text-xs font-medium text-slate-300">{label}</p>
-              <p className="text-[11px] text-slate-500">{description}</p>
-            </div>
+            <span className="text-xs font-medium text-slate-300">{label}</span>
+            <span className="text-[11px] text-slate-500">{description}</span>
           </label>
         ))}
       </div>

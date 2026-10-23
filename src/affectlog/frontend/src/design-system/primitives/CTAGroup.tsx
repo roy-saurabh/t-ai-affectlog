@@ -53,7 +53,7 @@ function CTAButton({ item, size }: { item: CTAItem; size: keyof typeof sizeMap }
   );
 
   const style = variantStyles(item.variant);
-  const icon = item.icon ? item.icon : item.variant === "github" ? <Github size={15} /> : null;
+  const icon = item.icon || (item.variant === "github" ? <Github size={15} /> : null);
 
   if (item.href) {
     return (

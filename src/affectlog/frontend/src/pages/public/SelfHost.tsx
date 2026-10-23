@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  Server, CheckCircle2, ArrowRight, ExternalLink, Terminal,
+  Server, ArrowRight, ExternalLink, Terminal,
   Database, Lock, Shield, GitBranch, Package,
 } from "lucide-react";
 import { PublicHeader } from "../../components/public/PublicHeader";
@@ -208,8 +208,8 @@ function SecurityHardening() {
             style={{ background: "rgba(11,16,32,0.8)", borderColor: "rgba(203,213,225,0.12)" }}
           >
             <div className="grid sm:grid-cols-2 gap-3">
-              {checks.map((item, i) => (
-                <div key={i} className="flex items-start gap-2.5 text-sm text-slate-300">
+              {checks.map((item) => (
+                <div key={item} className="flex items-start gap-2.5 text-sm text-slate-300">
                   <Shield size={13} className="text-[#86EFAC] mt-0.5 flex-shrink-0" />
                   {item}
                 </div>

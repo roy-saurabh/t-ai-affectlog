@@ -22,14 +22,19 @@ BOOL_TRUE = {"true", "1", "yes", "y", "t"}
 BOOL_FALSE = {"false", "0", "no", "n", "f"}
 
 
+def _parse_bool_token(value: str) -> bool | None:
+    if value in BOOL_TRUE:
+        return True
+    if value in BOOL_FALSE:
+        return False
+    return None
+
+
 def _normalise_bool_col(series: pl.Series) -> pl.Series:
     return (
         series.cast(pl.Utf8, strict=False)
         .str.to_lowercase()
-        .map_elements(
-            lambda v: True if v in BOOL_TRUE else (False if v in BOOL_FALSE else None),
-            return_dtype=pl.Boolean,
-        )
+        .map_elements(_parse_bool_token, return_dtype=pl.Boolean)
     )
 
 

@@ -2,9 +2,18 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any
+
+from affectlog.ingest.json_reader import iter_jsonl_records
+
+
+def _interpret_sparsity(sparsity: float) -> str:
+    if sparsity > 0.95:
+        return "Very sparse — typical of real-world recommendation datasets"
+    if sparsity > 0.7:
+        return "Moderately sparse"
+    return "Dense"
 
 
 def compute_sparsity(path: Path | str, limit: int = 0) -> dict[str, Any]:
@@ -14,34 +23,22 @@ def compute_sparsity(path: Path | str, limit: int = 0) -> dict[str, Any]:
     For very large datasets, uses sets of unique entities and resources
     plus the observed interaction count.
     """
-    path = Path(path)
     actors: set[str] = set()
     resources: set[str] = set()
     interactions: set[tuple[str, str]] = set()
     total = 0
 
-    with path.open(encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                evt = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            total += 1
-            if limit and total > limit:
-                break
+    for evt in iter_jsonl_records(Path(path), limit):
+        total += 1
+        actor = evt.get("actor", {}).get("account", {}).get("name", "")
+        resource = evt.get("object", {}).get("id", "")
 
-            actor = evt.get("actor", {}).get("account", {}).get("name", "")
-            resource = evt.get("object", {}).get("id", "")
-
-            if actor:
-                actors.add(actor)
-            if resource:
-                resources.add(resource)
-            if actor and resource:
-                interactions.add((actor, resource))
+        if actor:
+            actors.add(actor)
+        if resource:
+            resources.add(resource)
+        if actor and resource:
+            interactions.add((actor, resource))
 
     n_a = len(actors)
     n_r = len(resources)
@@ -57,11 +54,5 @@ def compute_sparsity(path: Path | str, limit: int = 0) -> dict[str, Any]:
         "observed_unique_interactions": observed,
         "sparsity_ratio": round(sparsity, 6),
         "density": round(1 - sparsity, 6),
-        "interpretation": (
-            "Very sparse — typical of real-world recommendation datasets"
-            if sparsity > 0.95
-            else "Moderately sparse"
-            if sparsity > 0.7
-            else "Dense"
-        ),
+        "interpretation": _interpret_sparsity(sparsity),
     }

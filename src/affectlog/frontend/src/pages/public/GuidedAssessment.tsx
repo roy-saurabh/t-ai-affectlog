@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  Wand2, ArrowRight, CheckCircle2, AlertTriangle, Lock,
-  Database, ShieldCheck, BarChart2, FileText, Cpu,
+  Wand2, ArrowRight, AlertTriangle, Lock,
+  FileText, Cpu,
 } from "lucide-react";
 import { PublicHeader } from "../../components/public/PublicHeader";
 import { PublicFooter } from "../../components/public/PublicFooter";
@@ -23,14 +23,14 @@ function FadeUp({ children, delay = 0, className }: { children: React.ReactNode;
 }
 
 const WIZARD_STEPS = [
-  { step: 1, title: "Input source",     desc: "Upload or connect a dataset. Format auto-detected.", color: "#67E8F9", icon: Database },
-  { step: 2, title: "Format detection", desc: "Schema inference, field type detection, Becomino matching.", color: "#93C5FD", icon: Database },
-  { step: 3, title: "Schema mapping",   desc: "Map fields to xAPI schema. Flag missing or ambiguous fields.", color: "#C4B5FD", icon: ShieldCheck },
-  { step: 4, title: "Privacy review",   desc: "PII scan results, risk flags, pseudonymisation decisions.", color: "#86EFAC", icon: Lock },
-  { step: 5, title: "Analysis scope",   desc: "Guardrails determine which analyses are valid for this dataset.", color: "#67E8F9", icon: BarChart2 },
-  { step: 6, title: "Plot selection",   desc: "Select from available visualizations for valid analyses only.", color: "#93C5FD", icon: BarChart2 },
-  { step: 7, title: "Output contract",  desc: "Review the exact artifacts and metrics that will be generated.", color: "#C4B5FD", icon: FileText },
-  { step: 8, title: "Run & review",     desc: "Async audit run. Results, findings, and artifact stack.", color: "#86EFAC", icon: Wand2 },
+  { step: 1, title: "Input source",     desc: "Upload or connect a dataset. Format auto-detected.", color: "#67E8F9" },
+  { step: 2, title: "Format detection", desc: "Schema inference, field type detection, Becomino matching.", color: "#93C5FD" },
+  { step: 3, title: "Schema mapping",   desc: "Map fields to xAPI schema. Flag missing or ambiguous fields.", color: "#C4B5FD" },
+  { step: 4, title: "Privacy review",   desc: "PII scan results, risk flags, pseudonymisation decisions.", color: "#86EFAC" },
+  { step: 5, title: "Analysis scope",   desc: "Guardrails determine which analyses are valid for this dataset.", color: "#67E8F9" },
+  { step: 6, title: "Plot selection",   desc: "Select from available visualizations for valid analyses only.", color: "#93C5FD" },
+  { step: 7, title: "Output contract",  desc: "Review the exact artifacts and metrics that will be generated.", color: "#C4B5FD" },
+  { step: 8, title: "Run & review",     desc: "Async audit run. Results, findings, and artifact stack.", color: "#86EFAC" },
 ];
 
 function Hero() {
@@ -107,7 +107,6 @@ function WizardSteps() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {WIZARD_STEPS.map((s, i) => {
-            const Icon = s.icon;
             return (
               <FadeUp key={s.step} delay={i * 0.04}>
                 <div

@@ -35,7 +35,7 @@ export function EcosystemLifecycleVisual() {
         {/* ── Connector arrows ───────────────────────────────── */}
         {ARROWS.map((a, i) => (
           <line
-            key={i}
+            key={`${a.x1}-${a.x2}`}
             x1={a.x1} y1={a.y1} x2={a.x2} y2={a.y2}
             stroke="rgba(203,213,225,0.35)"
             strokeWidth="1.5"

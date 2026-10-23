@@ -2,42 +2,34 @@
 
 from __future__ import annotations
 
-import json
 from collections import Counter
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from affectlog.core.time import parse_iso
+from affectlog.ingest.json_reader import iter_jsonl_records
+
+
+def _event_timestamp(evt: dict[str, Any]) -> datetime | None:
+    ts_raw = evt.get("timestamp", "")
+    return parse_iso(str(ts_raw)) if ts_raw else None
 
 
 def compute_temporal_stats(path: Path | str, limit: int = 0) -> dict[str, Any]:
-    path = Path(path)
     ts_list = []
     session_counter: Counter[str] = Counter()
     total = 0
 
-    with path.open(encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                evt = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            total += 1
-            if limit and total > limit:
-                break
+    for evt in iter_jsonl_records(Path(path), limit):
+        total += 1
+        dt = _event_timestamp(evt)
+        if dt:
+            ts_list.append(dt)
 
-            ts_raw = evt.get("timestamp", "")
-            if ts_raw:
-                dt = parse_iso(str(ts_raw))
-                if dt:
-                    ts_list.append(dt)
-
-            reg = evt.get("context", {}).get("registration")
-            if reg:
-                session_counter[str(reg)] += 1
+        reg = evt.get("context", {}).get("registration")
+        if reg:
+            session_counter[str(reg)] += 1
 
     if not ts_list:
         return {"total_events": total, "temporal_stats": None}

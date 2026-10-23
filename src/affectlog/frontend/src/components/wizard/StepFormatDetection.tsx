@@ -19,6 +19,12 @@ const SUPPORTED_OVERRIDES = [
   { id: "parquet_tabular", label: "Parquet Tabular" },
 ];
 
+function confidenceBarColor(value: number): string {
+  if (value >= 0.8) return "bg-emerald-500";
+  if (value >= 0.5) return "bg-amber-500";
+  return "bg-red-500";
+}
+
 function ConfidenceBar({ value }: { value: number }) {
   return (
     <div className="flex items-center gap-2">
@@ -26,7 +32,7 @@ function ConfidenceBar({ value }: { value: number }) {
         <div
           className={clsx(
             "h-full rounded-full transition-all",
-            value >= 0.8 ? "bg-emerald-500" : value >= 0.5 ? "bg-amber-500" : "bg-red-500",
+            confidenceBarColor(value),
           )}
           style={{ width: `${Math.round(value * 100)}%` }}
         />
@@ -142,8 +148,8 @@ export function StepFormatDetection({
 
       {inspection.risk_warnings.length > 0 && (
         <div className="space-y-2">
-          {inspection.risk_warnings.map((w, i) => (
-            <div key={i} className="flex items-start gap-2.5 rounded-xl border border-amber-500/20 bg-amber-500/5 p-3">
+          {inspection.risk_warnings.map((w) => (
+            <div key={w} className="flex items-start gap-2.5 rounded-xl border border-amber-500/20 bg-amber-500/5 p-3">
               <AlertCircle size={13} className="text-amber-400 flex-shrink-0 mt-0.5" />
               <p className="text-xs text-slate-400">{w}</p>
             </div>

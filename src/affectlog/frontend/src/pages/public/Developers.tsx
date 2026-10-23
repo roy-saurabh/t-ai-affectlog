@@ -1,10 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  Github, ArrowRight, Code2, Package, Cpu, BarChart2,
-  Share2, Eye, FileText, ShieldCheck, Terminal, BookOpen,
-  GitBranch, Wrench, ExternalLink,
+  Github, Code2, Package, Cpu, BarChart2,
+  Share2, Eye, FileText, ShieldCheck, ExternalLink,
 } from "lucide-react";
 import { PublicHeader } from "../../components/public/PublicHeader";
 import { PublicFooter } from "../../components/public/PublicFooter";
@@ -152,12 +150,12 @@ function ContributionTypes() {
                   className="block rounded-xl p-5 border transition-all duration-200 group hover:-translate-y-0.5"
                   style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(203,213,225,0.10)" }}
                   onMouseEnter={(e) => {
-                    const el = e.currentTarget as HTMLAnchorElement;
+                    const el = e.currentTarget;
                     el.style.borderColor = `${c.color}35`;
                     el.style.background  = `${c.color}06`;
                   }}
                   onMouseLeave={(e) => {
-                    const el = e.currentTarget as HTMLAnchorElement;
+                    const el = e.currentTarget;
                     el.style.borderColor = "rgba(203,213,225,0.10)";
                     el.style.background  = "rgba(255,255,255,0.025)";
                   }}

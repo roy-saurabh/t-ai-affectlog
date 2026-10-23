@@ -30,6 +30,40 @@ _ASSUMPTIONS = [
 ]
 
 
+def _add_analysis_artifacts(plan: WizardPlan, artifacts: list[OutputContractArtifact]) -> None:
+    for analysis_id in plan.selected_analyses:
+        a = ANALYSIS_BY_ID.get(analysis_id)
+        if not a:
+            continue
+        for artifact_filename in a.produced_artifacts:
+            if artifact_filename in {art.filename for art in artifacts}:
+                continue
+            artifacts.append(
+                OutputContractArtifact(
+                    filename=artifact_filename,
+                    format=artifact_filename.rsplit(".", 1)[-1],
+                    description=f"Produced by {a.label}.",
+                    privacy_level=a.sensitivity.value,
+                    required_analysis=a.id,
+                )
+            )
+
+
+def _add_export_artifacts(plan: WizardPlan, artifacts: list[OutputContractArtifact]) -> None:
+    for export_id in plan.selected_exports:
+        e = EXPORT_BY_ID.get(export_id)
+        if not e or e.filename_template in {art.filename for art in artifacts}:
+            continue
+        artifacts.append(
+            OutputContractArtifact(
+                filename=e.filename_template,
+                format=e.format.value,
+                description=e.description,
+                privacy_level="restricted" if e.privacy_sensitive else "public",
+            )
+        )
+
+
 def build_output_contract(plan: WizardPlan) -> OutputContract:
     # Dataset summary
     dataset_summary = (
@@ -76,39 +110,8 @@ def build_output_contract(plan: WizardPlan) -> OutputContract:
         ),
     ]
 
-    # Analysis-driven artifacts
-    for analysis_id in plan.selected_analyses:
-        a = ANALYSIS_BY_ID.get(analysis_id)
-        if not a:
-            continue
-        for artifact_filename in a.produced_artifacts:
-            existing = {art.filename for art in artifacts}
-            if artifact_filename not in existing:
-                artifacts.append(
-                    OutputContractArtifact(
-                        filename=artifact_filename,
-                        format=artifact_filename.rsplit(".", 1)[-1],
-                        description=f"Produced by {a.label}.",
-                        privacy_level=a.sensitivity.value,
-                        required_analysis=a.id,
-                    )
-                )
-
-    # Export-driven artifacts
-    for export_id in plan.selected_exports:
-        e = EXPORT_BY_ID.get(export_id)
-        if not e:
-            continue
-        existing = {art.filename for art in artifacts}
-        if e.filename_template not in existing:
-            artifacts.append(
-                OutputContractArtifact(
-                    filename=e.filename_template,
-                    format=e.format.value,
-                    description=e.description,
-                    privacy_level="restricted" if e.privacy_sensitive else "public",
-                )
-            )
+    _add_analysis_artifacts(plan, artifacts)
+    _add_export_artifacts(plan, artifacts)
 
     scope_summary = (
         f"{len(plan.selected_analyses)} analyses selected, "

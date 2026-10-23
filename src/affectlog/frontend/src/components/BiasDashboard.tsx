@@ -25,6 +25,10 @@ function truncate(s: string, n = 22): string {
   return last.length > n ? last.slice(0, n) + "…" : last;
 }
 
+function renderLegendLabel(value: string) {
+  return <span style={{ color: "#94a3b8", fontSize: "11px" }}>{value}</span>;
+}
+
 interface Props {
   payload: DashboardPayload;
 }
@@ -38,7 +42,7 @@ export default function BiasDashboard({ payload }: Props) {
   const rtData = Object.entries(resource_type_distribution || {})
     .sort((a, b) => b[1] - a[1])
     .slice(0, 8)
-    .map(([name, value]) => ({ name: truncate(name), value }));
+    .map(([name, value]) => ({ id: name, name: truncate(name), value }));
 
   const vData = Object.entries(verb_distribution || {})
     .sort((a, b) => b[1] - a[1])
@@ -105,13 +109,13 @@ export default function BiasDashboard({ payload }: Props) {
                   outerRadius={85}
                   paddingAngle={2}
                 >
-                  {rtData.map((_, i) => (
-                    <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
+                  {rtData.map((entry, i) => (
+                    <Cell key={entry.id} fill={PIE_COLORS[i % PIE_COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip contentStyle={CHART_STYLE} formatter={(v: number) => [v.toLocaleString(), "Events"]} />
                 <Legend
-                  formatter={(v) => <span style={{ color: "#94a3b8", fontSize: "11px" }}>{v}</span>}
+                  formatter={renderLegendLabel}
                   wrapperStyle={{ fontSize: "11px" }}
                 />
               </PieChart>

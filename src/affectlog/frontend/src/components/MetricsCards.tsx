@@ -25,6 +25,13 @@ function StatCard({ icon: Icon, label, value, sub, accent = "text-indigo-400" }:
   );
 }
 
+function giniAccent(gini: number | null | undefined): string {
+  if (gini == null) return "text-emerald-400";
+  if (gini >= 0.7) return "text-red-400";
+  if (gini >= 0.5) return "text-amber-400";
+  return "text-emerald-400";
+}
+
 export default function MetricsCards({ payload }: { payload: DashboardPayload }) {
   const {
     total_events, unique_actors, unique_resources,
@@ -57,14 +64,14 @@ export default function MetricsCards({ payload }: { payload: DashboardPayload })
         label="Actor Gini"
         value={actor_gini?.toFixed(3)}
         sub="0=equal, 1=concentrated"
-        accent={actor_gini != null && actor_gini >= 0.7 ? "text-red-400" : actor_gini != null && actor_gini >= 0.5 ? "text-amber-400" : "text-emerald-400"}
+        accent={giniAccent(actor_gini)}
       />
       <StatCard
         icon={Layers}
         label="Resource Gini"
         value={resource_gini?.toFixed(3)}
         sub="0=equal, 1=concentrated"
-        accent={resource_gini != null && resource_gini >= 0.7 ? "text-red-400" : resource_gini != null && resource_gini >= 0.5 ? "text-amber-400" : "text-emerald-400"}
+        accent={giniAccent(resource_gini)}
       />
       <StatCard
         icon={Clock}
