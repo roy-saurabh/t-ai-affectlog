@@ -88,7 +88,6 @@ app = FastAPI(
         "url": "https://github.com/Prometheus-X-association/t-ai-affectlog",
     },
     lifespan=lifespan,
-    openapi_version="3.1.0",
 )
 
 # ── Rate limiting ─────────────────────────────────────────────────────────
